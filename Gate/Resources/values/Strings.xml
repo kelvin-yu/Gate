@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="ApplicationName">Gate</string>
+    <string name="Name">Name:</string>
+  <string name="CardNumber">Card Number:</string>
+  <string name="AccessLevel">Access Level:</string>
+  <string name="Week">Day</string>
+  <string name="StartTime">Start Time</string>
+  <string name="EndTime">End Time</string>
+  <string name="DefaultStartTime">00:00</string>
+  <string name="DefaultEndTime">24:00</string>
+  <string name="Day">Day</string>
+  <string name="Monday">Monday</string>
+  <string name="Tuesday">Tuesday</string>
+  <string name="Wednesday">Wednesday</string>
+  <string name="Thursday">Thursday</string>
+  <string name="Friday">Friday</string>
+  <string name="Saturday">Saturday</string>
+  <string name="Sunday">Sunday</string>
+  <string name="EnablePassBack">Enable Passback:</string>
+  <string name="NumberOfUses">Number Of Uses:</string>
+  <string name="EnableDateRange">Enable Date Range:</string>
+  <string name="Cancel">Cancel</string>
+  <string name="Done">Done</string>
+  <string name="one">Reader 1</string>
+  <string name="two">Reader 2</string>
+  <string name="DeleteAll">Delete All</string>
+  <string name="DeleteCards">Delete All Cards</string>
+  <string name="DeleteAccessLevels">Delete All Access Levels</string>
+<string name="DateStart">Date Start:</string>
+<string name="DateEnd">Date End:</string>
+  <string name="Reconnect">Reconnnect</string>
+  <string name="DeleteTransactions">Delete All Transactions</string>
+  <string name="Time">Time:</string>
+  <string name="ErrorCode">Error Code:</string>
+  <string name="ReaderNumber">Reader Number:</string>
+</resources>

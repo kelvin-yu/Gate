@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:minWidth="25px"
+    android:minHeight="25px"
+    android:paddingLeft="10dp">
+    <LinearLayout
+        android:orientation="horizontal"
+        android:minWidth="25px"
+        android:minHeight="25px"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/linearLayout1"
+        android:paddingBottom="20dp"
+        android:layout_marginTop="7.2dp">
+        <TextView
+            android:text="@string/Name"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:id="@+id/cardNameView"
+            android:paddingRight="10dp" />
+        <EditText
+            android:inputType="textPersonName"
+            android:layout_width="215.5dp"
+            android:layout_height="match_parent"
+            android:id="@+id/cardNameField" />
+    </LinearLayout>
+    <LinearLayout
+        android:orientation="horizontal"
+        android:minWidth="25px"
+        android:minHeight="25px"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/linearLayout2"
+        android:paddingBottom="20dp">
+        <TextView
+            android:text="@string/CardNumber"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:id="@+id/cardField"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:paddingRight="10dp" />
+        <EditText
+            android:inputType="number"
+            android:layout_width="150.8dp"
+            android:layout_height="match_parent"
+            android:id="@+id/cardNumberField" />
+    </LinearLayout>
+    <LinearLayout
+        android:orientation="horizontal"
+        android:minWidth="25px"
+        android:minHeight="25px"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/linearLayout3">
+        <TextView
+            android:text="@string/AccessLevel"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:id="@+id/accessView"
+            android:paddingRight="20dp" />
+        <Spinner
+            android:layout_width="141.6dp"
+            android:layout_height="match_parent"
+            android:id="@+id/accessLevelSpinner" />
+    </LinearLayout>
+    <LinearLayout
+        android:orientation="horizontal"
+        android:minWidth="25px"
+        android:minHeight="25px"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/linearLayout4"
+        android:layout_marginTop="17.2dp">
+        <Button
+            android:text="@string/Cancel"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:id="@+id/cancelCardButton"
+            android:layout_marginLeft="137.4dp" />
+        <Button
+            android:text="@string/Done"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:id="@+id/doneCardButton"
+            android:layout_marginLeft="15.4dp" />
+    </LinearLayout>
+</LinearLayout>

@@ -1,0 +1,486 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:p1="http://schemas.android.com/apk/res/android"
+    p1:minWidth="25px"
+    p1:minHeight="25px"
+    p1:layout_width="match_parent"
+    p1:layout_height="match_parent"
+    p1:id="@+id/scrollView1">
+    <LinearLayout
+        p1:orientation="vertical"
+        p1:minWidth="25px"
+        p1:minHeight="25px"
+        p1:layout_width="match_parent"
+        p1:layout_height="match_parent"
+        p1:id="@+id/linearLayout1"
+        p1:paddingLeft="8dp">
+        <LinearLayout
+            p1:orientation="horizontal"
+            p1:minWidth="25px"
+            p1:minHeight="25px"
+            p1:layout_width="match_parent"
+            p1:layout_height="wrap_content"
+            p1:id="@+id/linearLayout2"
+            p1:layout_marginBottom="6.3dp">
+            <TextView
+                p1:text="@string/Name"
+                p1:textAppearance="?android:attr/textAppearanceLarge"
+                p1:layout_width="wrap_content"
+                p1:layout_height="match_parent"
+                p1:id="@+id/accessNameView"
+                p1:layout_marginRight="10dp"
+                p1:layout_gravity="bottom"
+                p1:gravity="bottom"
+                p1:layout_marginBottom="11.0dp" />
+            <EditText
+                p1:inputType="textPersonName"
+                p1:layout_width="218.3dp"
+                p1:layout_height="match_parent"
+                p1:id="@+id/accessNameField"
+                p1:gravity="bottom"
+                p1:layout_marginBottom="11.9dp" />
+        </LinearLayout>
+        <TableLayout
+            p1:minWidth="25px"
+            p1:minHeight="25px"
+            p1:layout_width="match_parent"
+            p1:layout_height="231.3dp"
+            p1:id="@+id/tableLayout1"
+            p1:layout_marginBottom="16.3dp">
+            <TableRow
+                p1:id="@+id/tableRow1">
+                <TextView
+                    p1:text="@string/Day"
+                    p1:textAppearance="?android:attr/textAppearanceLarge"
+                    p1:layout_column="0"
+                    p1:id="@+id/dayHeader1"
+                    p1:layout_width="74.4dp"
+                    p1:layout_marginBottom="5.5dp" />
+                <TextView
+                    p1:text="@string/StartTime"
+                    p1:textAppearance="?android:attr/textAppearanceLarge"
+                    p1:layout_column="1"
+                    p1:id="@+id/startTimeHeader"
+                    p1:layout_width="117.9dp" />
+                <TextView
+                    p1:text="@string/EndTime"
+                    p1:textAppearance="?android:attr/textAppearanceLarge"
+                    p1:layout_column="2"
+                    p1:id="@+id/endTimeHeader" />
+            </TableRow>
+            <TableRow
+                p1:id="@+id/tableRow2">
+                <TextView
+                    p1:text="@string/Sunday"
+                    p1:layout_column="0"
+                    p1:id="@+id/sundayView1"
+                    p1:textAppearance="?android:attr/textAppearanceMedium" />
+                <TextView
+                    p1:text="@string/DefaultStartTime"
+                    p1:layout_column="1"
+                    p1:id="@+id/startTimeSunday"
+                    p1:gravity="center"
+                    p1:textSize="20sp" />
+                <TextView
+                    p1:text="@string/DefaultEndTime"
+                    p1:layout_column="2"
+                    p1:gravity="center"
+                    p1:id="@+id/endTimeSunday"
+                    p1:textSize="20sp" />
+            </TableRow>
+            <TableRow
+                p1:id="@+id/tableRow3">
+                <TextView
+                    p1:text="@string/Monday"
+                    p1:layout_column="0"
+                    p1:id="@+id/mondayView1"
+                    p1:layout_height="wrap_content"
+                    p1:textAppearance="?android:attr/textAppearanceMedium"
+                    p1:layout_width="77.1dp" />
+                <TextView
+                    p1:text="@string/DefaultStartTime"
+                    p1:layout_column="1"
+                    p1:gravity="center"
+                    p1:id="@+id/startTimeMonday"
+                    p1:textSize="20sp" />
+                <TextView
+                    p1:text="@string/DefaultEndTime"
+                    p1:layout_column="2"
+                    p1:gravity="center"
+                    p1:id="@+id/endTimeMonday"
+                    p1:textSize="20sp" />
+            </TableRow>
+            <TableRow
+                p1:id="@+id/tableRow4">
+                <TextView
+                    p1:text="@string/Tuesday"
+                    p1:layout_column="0"
+                    p1:id="@+id/tuesdayView1"
+                    p1:textAppearance="?android:attr/textAppearanceMedium" />
+                <TextView
+                    p1:text="@string/DefaultStartTime"
+                    p1:layout_column="1"
+                    p1:gravity="center"
+                    p1:id="@+id/startTimeTuesday"
+                    p1:textSize="20sp" />
+                <TextView
+                    p1:text="@string/DefaultEndTime"
+                    p1:layout_column="2"
+                    p1:gravity="center"
+                    p1:id="@+id/endTimeTuesday"
+                    p1:textSize="20sp" />
+            </TableRow>
+            <TableRow
+                p1:id="@+id/tableRow6">
+                <TextView
+                    p1:text="@string/Wednesday"
+                    p1:layout_column="0"
+                    p1:id="@+id/wednesdayView1"
+                    p1:textAppearance="?android:attr/textAppearanceMedium" />
+                <TextView
+                    p1:text="@string/DefaultStartTime"
+                    p1:layout_column="1"
+                    p1:gravity="center"
+                    p1:id="@+id/startTimeWednesday"
+                    p1:textSize="20sp"
+                    p1:layout_width="111.7dp" />
+                <TextView
+                    p1:text="@string/DefaultEndTime"
+                    p1:layout_column="2"
+                    p1:gravity="center"
+                    p1:id="@+id/endTimeWednesday"
+                    p1:textSize="20sp" />
+            </TableRow>
+            <TableRow
+                p1:id="@+id/tableRow5">
+                <TextView
+                    p1:text="@string/Thursday"
+                    p1:layout_column="0"
+                    p1:id="@+id/thursdayView1"
+                    p1:textAppearance="?android:attr/textAppearanceMedium" />
+                <TextView
+                    p1:text="@string/DefaultStartTime"
+                    p1:layout_column="1"
+                    p1:gravity="center"
+                    p1:id="@+id/startTimeThursday"
+                    p1:textSize="20sp" />
+                <TextView
+                    p1:text="@string/DefaultEndTime"
+                    p1:layout_column="2"
+                    p1:gravity="center"
+                    p1:id="@+id/endTimeThursday"
+                    p1:textSize="20sp" />
+            </TableRow>
+            <TableRow
+                p1:id="@+id/tableRow7">
+                <TextView
+                    p1:text="@string/Friday"
+                    p1:layout_column="0"
+                    p1:id="@+id/fridayView1"
+                    p1:textAppearance="?android:attr/textAppearanceMedium" />
+                <TextView
+                    p1:text="@string/DefaultStartTime"
+                    p1:layout_column="1"
+                    p1:gravity="center"
+                    p1:id="@+id/startTimeFriday"
+                    p1:textSize="20sp" />
+                <TextView
+                    p1:text="@string/DefaultEndTime"
+                    p1:layout_column="2"
+                    p1:gravity="center"
+                    p1:id="@+id/endTimeFriday"
+                    p1:textSize="20sp" />
+            </TableRow>
+            <TableRow
+                p1:id="@+id/tableRow8">
+                <TextView
+                    p1:text="@string/Saturday"
+                    p1:layout_column="0"
+                    p1:id="@+id/saturdayView1"
+                    p1:textAppearance="?android:attr/textAppearanceMedium" />
+                <TextView
+                    p1:text="@string/DefaultStartTime"
+                    p1:layout_column="1"
+                    p1:gravity="center"
+                    p1:id="@+id/startTimeSaturday"
+                    p1:textSize="20sp" />
+                <TextView
+                    p1:text="@string/DefaultEndTime"
+                    p1:layout_column="2"
+                    p1:gravity="center"
+                    p1:id="@+id/endTimeSaturday"
+                    p1:textSize="20sp" />
+            </TableRow>
+        </TableLayout>
+        <TableLayout
+            p1:minWidth="25px"
+            p1:minHeight="25px"
+            p1:layout_width="match_parent"
+            p1:layout_height="268.3dp"
+            p1:id="@+id/tableLayout2"
+            p1:layout_marginBottom="12.7dp">
+            <TableRow
+                p1:id="@+id/tableRow9"
+                p1:layout_height="20.9dp">
+                <TextView
+                    p1:text="@string/Day"
+                    p1:textAppearance="?android:attr/textAppearanceLarge"
+                    p1:layout_column="0"
+                    p1:id="@+id/dayHeader2"
+                    p1:layout_width="100.9dp"
+                    p1:layout_marginBottom="5.5dp"
+                    p1:layout_marginRight="0.0dp" />
+                <TextView
+                    p1:text="@string/one"
+                    p1:textAppearance="?android:attr/textAppearanceLarge"
+                    p1:layout_column="1"
+                    p1:id="@+id/textView21"
+                    p1:layout_width="101.1dp" />
+                <TextView
+                    p1:text="@string/two"
+                    p1:textAppearance="?android:attr/textAppearanceLarge"
+                    p1:layout_column="2"
+                    p1:id="@+id/textView22" />
+            </TableRow>
+            <TableRow
+                p1:id="@+id/tableRow11">
+                <TextView
+                    p1:text="@string/Sunday"
+                    p1:layout_column="0"
+                    p1:id="@+id/sundayView2"
+                    p1:layout_width="70.7dp"
+                    p1:layout_marginRight="0.0dp"
+                    p1:textAppearance="?android:attr/textAppearanceMedium" />
+                <CheckBox
+                    p1:layout_column="1"
+                    p1:id="@+id/r1Sun" />
+                <CheckBox
+                    p1:layout_column="2"
+                    p1:id="@+id/r2Sun" />
+            </TableRow>
+            <TableRow
+                p1:id="@+id/tableRow12">
+                <TextView
+                    p1:text="@string/Monday"
+                    p1:layout_column="0"
+                    p1:id="@+id/mondayView2"
+                    p1:textAppearance="?android:attr/textAppearanceMedium" />
+                <CheckBox
+                    p1:layout_column="1"
+                    p1:id="@+id/r1Mon" />
+                <CheckBox
+                    p1:layout_column="2"
+                    p1:id="@+id/r2Mon" />
+            </TableRow>
+            <TableRow
+                p1:id="@+id/tableRow13">
+                <TextView
+                    p1:text="@string/Tuesday"
+                    p1:layout_column="0"
+                    p1:id="@+id/tuesdayView2"
+                    p1:textAppearance="?android:attr/textAppearanceMedium" />
+                <CheckBox
+                    p1:layout_column="1"
+                    p1:id="@+id/r1Tues" />
+                <CheckBox
+                    p1:layout_column="2"
+                    p1:id="@+id/r2Tues" />
+            </TableRow>
+            <TableRow
+                p1:id="@+id/tableRow14">
+                <TextView
+                    p1:text="@string/Wednesday"
+                    p1:layout_column="0"
+                    p1:id="@+id/wednesdayView2"
+                    p1:layout_width="107.6dp"
+                    p1:textAppearance="?android:attr/textAppearanceMedium" />
+                <CheckBox
+                    p1:layout_column="1"
+                    p1:id="@+id/r1Wed" />
+                <CheckBox
+                    p1:layout_column="2"
+                    p1:id="@+id/r2Wed" />
+            </TableRow>
+            <TableRow
+                p1:id="@+id/tableRow16">
+                <TextView
+                    p1:text="@string/Thursday"
+                    p1:layout_column="0"
+                    p1:id="@+id/thursdayView2"
+                    p1:textAppearance="?android:attr/textAppearanceMedium" />
+                <CheckBox
+                    p1:layout_column="1"
+                    p1:id="@+id/r1Thurs" />
+                <CheckBox
+                    p1:layout_column="2"
+                    p1:id="@+id/r2Thurs" />
+            </TableRow>
+            <TableRow
+                p1:id="@+id/tableRow17">
+                <TextView
+                    p1:text="@string/Friday"
+                    p1:layout_column="0"
+                    p1:id="@+id/fridayView2"
+                    p1:textAppearance="?android:attr/textAppearanceMedium" />
+                <CheckBox
+                    p1:layout_column="1"
+                    p1:id="@+id/r1Fri" />
+                <CheckBox
+                    p1:layout_column="2"
+                    p1:id="@+id/r2Fri" />
+            </TableRow>
+            <TableRow
+                p1:id="@+id/tableRow15">
+                <TextView
+                    p1:text="@string/Saturday"
+                    p1:layout_column="0"
+                    p1:id="@+id/saturdayView2"
+                    p1:textAppearance="?android:attr/textAppearanceMedium" />
+                <CheckBox
+                    p1:layout_column="1"
+                    p1:id="@+id/r1Sat" />
+                <CheckBox
+                    p1:layout_column="2"
+                    p1:id="@+id/r2Sat" />
+            </TableRow>
+        </TableLayout>
+        <LinearLayout
+            p1:orientation="horizontal"
+            p1:minWidth="25px"
+            p1:minHeight="25px"
+            p1:layout_width="match_parent"
+            p1:layout_height="37.5dp"
+            p1:id="@+id/linearLayout3">
+            <TextView
+                p1:text="@string/NumberOfUses"
+                p1:textAppearance="?android:attr/textAppearanceLarge"
+                p1:layout_width="wrap_content"
+                p1:layout_height="match_parent"
+                p1:id="@+id/usesView"
+                p1:gravity="bottom"
+                p1:layout_marginRight="7.3dp"
+                p1:layout_marginBottom="0.0dp" />
+            <EditText
+                p1:inputType="number"
+                p1:layout_width="118.2dp"
+                p1:layout_height="match_parent"
+                p1:id="@+id/numberOfUsesField" />
+        </LinearLayout>
+        <LinearLayout
+            p1:orientation="horizontal"
+            p1:minWidth="25px"
+            p1:minHeight="25px"
+            p1:layout_width="match_parent"
+            p1:layout_height="wrap_content"
+            p1:id="@+id/linearLayout6"
+            p1:layout_marginTop="5.4dp">
+            <TextView
+                p1:text="@string/EnablePassBack"
+                p1:textAppearance="?android:attr/textAppearanceLarge"
+                p1:layout_width="wrap_content"
+                p1:layout_height="match_parent"
+                p1:id="@+id/textView23"
+                p1:layout_marginTop="3.7dp"
+                p1:layout_marginRight="45.1dp"
+                p1:gravity="bottom" />
+            <CheckBox
+                p1:layout_width="wrap_content"
+                p1:layout_height="match_parent"
+                p1:id="@+id/usePassBack"
+                p1:gravity="bottom" />
+        </LinearLayout>
+        <LinearLayout
+            p1:orientation="horizontal"
+            p1:minWidth="25px"
+            p1:minHeight="25px"
+            p1:layout_width="match_parent"
+            p1:layout_height="34.6dp"
+            p1:id="@+id/linearLayout4"
+            p1:layout_marginTop="9.9dp">
+            <TextView
+                p1:text="@string/EnableDateRange"
+                p1:textAppearance="?android:attr/textAppearanceLarge"
+                p1:layout_width="214.1dp"
+                p1:layout_height="match_parent"
+                p1:id="@+id/enableView"
+                p1:gravity="bottom" />
+            <CheckBox
+                p1:layout_width="wrap_content"
+                p1:layout_height="match_parent"
+                p1:id="@+id/useDateRange" />
+        </LinearLayout>
+        <LinearLayout
+            p1:orientation="horizontal"
+            p1:minWidth="25px"
+            p1:minHeight="25px"
+            p1:layout_width="match_parent"
+            p1:layout_height="match_parent"
+            p1:id="@+id/linearLayout7"
+            p1:layout_marginTop="3.6dp"
+            p1:layout_marginLeft="17.1dp">
+            <TextView
+                p1:text="@string/DateStart"
+                p1:textAppearance="?android:attr/textAppearanceLarge"
+                p1:layout_width="134.5dp"
+                p1:layout_height="match_parent"
+                p1:id="@+id/dateStartView"
+                p1:enabled="false" />
+            <TextView
+                p1:text="Medium Text"
+                p1:textAppearance="?android:attr/textAppearanceMedium"
+                p1:layout_width="wrap_content"
+                p1:layout_height="match_parent"
+                p1:id="@+id/dateStart"
+                p1:gravity="bottom"
+                p1:enabled="false" />
+        </LinearLayout>
+        <LinearLayout
+            p1:orientation="horizontal"
+            p1:minWidth="25px"
+            p1:minHeight="25px"
+            p1:layout_width="match_parent"
+            p1:layout_height="wrap_content"
+            p1:id="@+id/linearLayout8"
+            p1:layout_marginLeft="17.2dp">
+            <TextView
+                p1:text="@string/DateEnd"
+                p1:textAppearance="?android:attr/textAppearanceLarge"
+                p1:layout_width="133.9dp"
+                p1:layout_height="match_parent"
+                p1:id="@+id/dateEndView"
+                p1:gravity="bottom"
+                p1:enabled="false" />
+            <TextView
+                p1:text="Medium Text"
+                p1:textAppearance="?android:attr/textAppearanceMedium"
+                p1:layout_width="wrap_content"
+                p1:layout_height="match_parent"
+                p1:id="@+id/dateEnd"
+                p1:gravity="bottom"
+                p1:enabled="false" />
+        </LinearLayout>
+        <LinearLayout
+            p1:orientation="horizontal"
+            p1:minWidth="25px"
+            p1:minHeight="25px"
+            p1:layout_width="match_parent"
+            p1:layout_height="wrap_content"
+            p1:id="@+id/linearLayout5"
+            p1:layout_marginTop="17.1dp"
+            p1:layout_marginBottom="13.5dp">
+            <Button
+                p1:text="@string/Cancel"
+                p1:layout_width="wrap_content"
+                p1:layout_height="match_parent"
+                p1:id="@+id/cancelAccessButton"
+                p1:layout_marginLeft="130.9dp"
+                p1:layout_marginRight="0.0dp" />
+            <Button
+                p1:text="@string/Done"
+                p1:layout_width="wrap_content"
+                p1:layout_height="match_parent"
+                p1:id="@+id/doneAccessButton"
+                p1:layout_marginLeft="9.0dp"
+                p1:layout_marginRight="0.0dp" />
+        </LinearLayout>
+    </LinearLayout>
+</ScrollView>
