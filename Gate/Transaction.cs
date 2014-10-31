@@ -14,19 +14,21 @@ namespace Gate
 {
     public class Transaction
     {
-        public string readerNumber { get; set; }
-        public string cardCode { get; set; }
-        public long dateTime { get; set; }
-        public string errorNumber { get; set; }
+        public int readerNumber { get; set; }
+        public int cardCode { get; set; }
+        public DateTime dateTime { get; set; }
+        public int errorNumber { get; set; }
+        public string cardHolder { get; set; }
 
         public Transaction() { }
 
-        public Transaction(string readerNumber, string cardCode, long dateTime, string errorCode)
+        public Transaction(int readerNumber, int cardCode, DateTime dateTime, int errorCode, string cardHolder)
         {
             this.readerNumber = readerNumber;
             this.cardCode = cardCode;
             this.dateTime = dateTime;
             this.errorNumber = errorCode;
+            this.cardHolder = cardHolder;
         }
     }
 }

@@ -40,7 +40,7 @@ namespace Gate
 
             this.Activity.StartActivity(typeof(DisplayCard));
         }
-        
+
         public override void OnResume()
         {
             base.OnResume();
@@ -58,7 +58,7 @@ namespace Gate
             var adapter = new ArrayAdapter<string>(this.Activity, Android.Resource.Layout.SimpleListItem1, nameList);
             listView.Adapter = adapter;
         }
-        
+
     }
 
     public class AccessLevelFragment : Fragment
@@ -107,7 +107,7 @@ namespace Gate
 
     public class TransactionFragment : Fragment
     {
-        List<Transaction> transactionList;
+        List<Transaction> transactionList = new List<Transaction>();
         ListView cardListView, timeListView;
 
         public override View OnCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
@@ -117,14 +117,13 @@ namespace Gate
             cardListView = view.FindViewById<ListView>(Resource.Id.listView1);
             timeListView = view.FindViewById<ListView>(Resource.Id.listView2);
 
-            
             cardListView.Scroll += delegate
             {
                 View v = cardListView.GetChildAt(0);
                 int top = (v == null) ? 0 : v.Top;
                 timeListView.SetSelectionFromTop(cardListView.FirstVisiblePosition, top);
             };
-             
+
 
             timeListView.Scroll += delegate
             {
@@ -133,12 +132,12 @@ namespace Gate
                 cardListView.SetSelectionFromTop(timeListView.FirstVisiblePosition, top);
             };
 
-            cardListView.ItemClick += OnListItemClick;
+            //cardListView.ItemClick += OnListItemClick;
 
             return view;
         }
 
-        //ADD THIS LATER
+        
         private void OnListItemClick(object sender, Android.Widget.AdapterView.ItemClickEventArgs e)
         {
             ISharedPreferences prefs = PreferenceManager.GetDefaultSharedPreferences(this.Activity);
@@ -148,6 +147,7 @@ namespace Gate
 
             this.Activity.StartActivity(typeof(DisplayTransaction));
         }
+         
 
         public void updateTransactions()
         {
@@ -158,13 +158,8 @@ namespace Gate
 
             foreach (Transaction transaction in transactionList)
             {
-                long ftime = (((1980L * 365L) + 114) * 86400L);
-                cardList.Add(transaction.cardCode);
-                DateTime time = DateTime.MinValue;
-                ftime += transaction.dateTime;
-                time = time.AddSeconds(ftime);
-                
-                dateList.Add(time.ToString("MM/dd/yy H:mm:ss"));
+                cardList.Add(transaction.cardCode.ToString());
+                dateList.Add(transaction.dateTime.ToString("MM/dd/yy H:mm:ss"));
             }
 
             cardList.Reverse();

@@ -48,6 +48,12 @@
     <Reference Include="mscorlib" />
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.EnterpriseServices" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.ServiceModel" />
+    <Reference Include="System.ServiceModel.Web" />
+    <Reference Include="System.Web.Services" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Xml" />
   </ItemGroup>
@@ -60,6 +66,7 @@
     <Compile Include="DisplayCard.cs" />
     <Compile Include="DisplayTransaction.cs" />
     <Compile Include="Fragments.cs" />
+    <Compile Include="Global.cs" />
     <Compile Include="MainActivity.cs" />
     <Compile Include="ReaderServices.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -68,6 +75,11 @@
     <Compile Include="Settings.cs" />
     <Compile Include="TCP.cs" />
     <Compile Include="Transaction.cs" />
+    <Compile Include="Web References\WebReference\Reference.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Reference.map</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\AboutResources.txt" />
@@ -93,6 +105,25 @@
     <AndroidResource Include="Resources\layout\Transaction.axml">
       <SubType>AndroidResource</SubType>
     </AndroidResource>
+    <None Include="Web References\WebReference\Card.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\WebReference\CardReader.wsdl" />
+    <None Include="Web References\WebReference\CardReader.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Web References\WebReference\CardReader0.wsdl" />
+    <None Include="Web References\WebReference\CardReader0.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Web References\WebReference\CardService.wsdl" />
+    <None Include="Web References\WebReference\Reference.map">
+      <Generator>MSDiscoCodeGenerator</Generator>
+      <LastGenOutput>Reference.cs</LastGenOutput>
+    </None>
+    <None Include="Web References\WebReference\Transaction.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\layout\Main.axml" />
@@ -105,8 +136,26 @@
   <ItemGroup>
     <Content Include="Properties\AndroidManifest.xml" />
     <AndroidResource Include="Resources\drawable\Icon.png" />
+    <None Include="Web References\WebReference\CardReader.disco" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <WebReferences Include="Web References\" />
+  </ItemGroup>
+  <ItemGroup>
+    <WebReferenceUrl Include="http://192.168.2.204:8000/DMTSolutions/CardReader">
+      <UrlBehavior>Dynamic</UrlBehavior>
+      <RelPath>Web References\WebReference\</RelPath>
+      <UpdateFromURL>http://192.168.2.204:8000/DMTSolutions/CardReader</UpdateFromURL>
+      <ServiceLocationURL>
+      </ServiceLocationURL>
+      <CachedDynamicPropName>
+      </CachedDynamicPropName>
+      <CachedAppSettingsObjectName>
+      </CachedAppSettingsObjectName>
+      <CachedSettingsPropName>
+      </CachedSettingsPropName>
+    </WebReferenceUrl>
+  </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
      Other similar extension points exist, see Microsoft.Common.targets.

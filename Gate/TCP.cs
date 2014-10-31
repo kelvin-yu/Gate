@@ -21,8 +21,6 @@ namespace Gate
     {
         static TcpClient tcpClient = null;
         static NetworkStream tcpStream = null;
-        static bool readStx = false;
-        static byte[] readData;
 
         static private void GetStream()
         {
@@ -30,7 +28,7 @@ namespace Gate
             tcpStream.ReadTimeout = 5000;
             tcpStream.WriteTimeout = 2000;
         }
-    
+
         static public bool isPhoneOnline(Activity a)
         {
             var cm = (ConnectivityManager)a.GetSystemService(Context.ConnectivityService);
@@ -53,7 +51,7 @@ namespace Gate
                     tcpClient = new TcpClient(ip, 1025);
                     ok = true;
                 }
-                catch(Exception e)
+                catch (Exception e)
                 {
                     Console.WriteLine(e.Message);
                 }
@@ -135,7 +133,7 @@ namespace Gate
         {
             return tcpClient == null;
         }
-       
+
         static public void Close()
         {
             if (tcpStream != null)

@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<wsdl:definitions xmlns:wsap="http://schemas.xmlsoap.org/ws/2004/08/addressing/policy" xmlns:wsa10="http://www.w3.org/2005/08/addressing" xmlns:tns="http://dmtserv.CardServices" xmlns:msc="http://schemas.microsoft.com/ws/2005/12/wsdl/contract" xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:wsx="http://schemas.xmlsoap.org/ws/2004/09/mex" xmlns:wsp="http://schemas.xmlsoap.org/ws/2004/09/policy" xmlns:wsam="http://www.w3.org/2007/05/addressing/metadata" xmlns:wsa="http://schemas.xmlsoap.org/ws/2004/08/addressing" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:wsaw="http://www.w3.org/2006/05/addressing/wsdl" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" xmlns:wsu="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd" xmlns:xsd="http://www.w3.org/2001/XMLSchema" targetNamespace="http://dmtserv.CardServices" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+  <wsdl:types>
+    <xsd:schema targetNamespace="http://dmtserv.CardServices/Imports">
+      <xsd:import schemaLocation="http://192.168.2.204:8000/DMTSolutions/CardReader?xsd=xsd0" namespace="http://dmtserv.CardServices" />
+      <xsd:import schemaLocation="http://192.168.2.204:8000/DMTSolutions/CardReader?xsd=xsd1" namespace="http://schemas.microsoft.com/2003/10/Serialization/" />
+    </xsd:schema>
+  </wsdl:types>
+  <wsdl:message name="ICardService_GetTransactionList_InputMessage">
+    <wsdl:part name="parameters" element="tns:GetTransactionList" />
+  </wsdl:message>
+  <wsdl:message name="ICardService_GetTransactionList_OutputMessage">
+    <wsdl:part name="parameters" element="tns:GetTransactionListResponse" />
+  </wsdl:message>
+  <wsdl:message name="ICardService_UpdateTransactionSQL_InputMessage">
+    <wsdl:part name="parameters" element="tns:UpdateTransactionSQL" />
+  </wsdl:message>
+  <wsdl:message name="ICardService_UpdateTransactionSQL_OutputMessage">
+    <wsdl:part name="parameters" element="tns:UpdateTransactionSQLResponse" />
+  </wsdl:message>
+  <wsdl:message name="ICardService_UpdateOneCardSql_InputMessage">
+    <wsdl:part name="parameters" element="tns:UpdateOneCardSql" />
+  </wsdl:message>
+  <wsdl:message name="ICardService_UpdateOneCardSql_OutputMessage">
+    <wsdl:part name="parameters" element="tns:UpdateOneCardSqlResponse" />
+  </wsdl:message>
+  <wsdl:message name="ICardService_GetCardList_InputMessage">
+    <wsdl:part name="parameters" element="tns:GetCardList" />
+  </wsdl:message>
+  <wsdl:message name="ICardService_GetCardList_OutputMessage">
+    <wsdl:part name="parameters" element="tns:GetCardListResponse" />
+  </wsdl:message>
+  <wsdl:portType name="ICardService">
+    <wsdl:operation name="GetTransactionList">
+      <wsdl:input wsaw:Action="GetTransactionList" message="tns:ICardService_GetTransactionList_InputMessage" />
+      <wsdl:output wsaw:Action="http://dmtserv.CardServices/ICardService/GetTransactionListResponse" message="tns:ICardService_GetTransactionList_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="UpdateTransactionSQL">
+      <wsdl:input wsaw:Action="UpdateTransactionSQL" message="tns:ICardService_UpdateTransactionSQL_InputMessage" />
+      <wsdl:output wsaw:Action="http://dmtserv.CardServices/ICardService/UpdateTransactionSQLResponse" message="tns:ICardService_UpdateTransactionSQL_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="UpdateOneCardSql">
+      <wsdl:input wsaw:Action="UpdateOneCardSql" message="tns:ICardService_UpdateOneCardSql_InputMessage" />
+      <wsdl:output wsaw:Action="http://dmtserv.CardServices/ICardService/UpdateOneCardSqlResponse" message="tns:ICardService_UpdateOneCardSql_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="GetCardList">
+      <wsdl:input wsaw:Action="GetCardList" message="tns:ICardService_GetCardList_InputMessage" />
+      <wsdl:output wsaw:Action="http://dmtserv.CardServices/ICardService/GetCardListResponse" message="tns:ICardService_GetCardList_OutputMessage" />
+    </wsdl:operation>
+  </wsdl:portType>
+</wsdl:definitions>

@@ -54,7 +54,15 @@ namespace Gate
 
             nameField.Text = cardList[cardIndex].name;
             numberField.Text = cardList[cardIndex].cardCode.ToString();
-            spinner.SetSelection(cardList[cardIndex].spinnerIndex);
+
+            for(int i = 0; i < accessNameList.Count; i++)
+            {
+                if (accessNameList[i] == cardList[cardIndex].accessLevel)
+                {
+                    spinner.SetSelection(i);
+                    break;
+                }
+            }
 
             spinner.Enabled = false;
 
@@ -76,7 +84,7 @@ namespace Gate
 
         public void addNewCard(List<Card> list)
         {
-            list.Add(new Card(nameField.Text, Convert.ToInt32(numberField.Text), spinner.SelectedItem.ToString(), spinner.SelectedItemPosition));
+            list.Add(new Card(nameField.Text, Convert.ToInt32(numberField.Text), spinner.SelectedItem.ToString()));
             ReaderServices.sendCard(list);
         }
 

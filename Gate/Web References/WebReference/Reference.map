@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<DiscoveryClientResultsFile xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Results>
+    <DiscoveryClientResult referenceType="System.Web.Services.Discovery.ContractReference" url="http://192.168.2.204:8000/DMTSolutions/CardReader?wsdl" filename="CardService.wsdl" />
+    <DiscoveryClientResult referenceType="System.Web.Services.Discovery.DiscoveryDocumentReference" url="http://192.168.2.204:8000/DMTSolutions/CardReader?disco" filename="CardReader.disco" />
+    <DiscoveryClientResult referenceType="System.Web.Services.Discovery.SchemaReference" url="http://192.168.2.204:8000/DMTSolutions/CardReader?xsd=xsd1" filename="CardReader.xsd" />
+    <DiscoveryClientResult referenceType="System.Web.Services.Discovery.ContractReference" url="http://192.168.2.204:8000/DMTSolutions/CardReader?wsdl=wsdl1" filename="CardReader.wsdl" />
+    <DiscoveryClientResult referenceType="System.Web.Services.Discovery.SchemaReference" url="http://192.168.2.204:8000/DMTSolutions/CardReader?xsd=xsd0" filename="CardReader0.xsd" />
+    <DiscoveryClientResult referenceType="System.Web.Services.Discovery.ContractReference" url="http://192.168.2.204:8000/DMTSolutions/CardReader?wsdl=wsdl0" filename="CardReader0.wsdl" />
+  </Results>
+</DiscoveryClientResultsFile>

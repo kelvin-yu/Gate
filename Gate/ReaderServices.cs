@@ -117,8 +117,12 @@ namespace Gate
         {
             while(TCP.isConnectable("192.168.2.180"))
             {
-                List<Transaction> transactionList = SerializeTools.deserializeTransactionList();
-                Console.WriteLine("Wake");
+                List<Card> sqlCardList = new List<Card>(Global.cs.GetCardList());
+                SerializeTools.serializeCardList(sqlCardList);
+
+                //Transaction Stuff
+                List<Transaction> sqlTransList = new List<Transaction>(Global.cs.GetTransactionList());
+                List<Transaction> newList = new List<Transaction>();
                 while (true)
                 {
                     string data = "";
@@ -132,16 +136,47 @@ namespace Gate
                     for (int trans = 0; trans < numOfTrans; trans++)
                     {
                         int offset = trans * 5;
-                        string readerNumber = split[offset + 2];
-                        string cardCode = split[offset + 3];
-                        long dateTime = Convert.ToInt64(split[offset + 4]);
-                        string errorCode = split[offset + 5];
-                        transactionList.Add(new Transaction(readerNumber, cardCode, dateTime, errorCode));
+                        int readerNumber = Convert.ToInt32(split[offset + 2]);
+                        int cardCode = Convert.ToInt32(split[offset + 3]);
+
+                        long ftime = (((1980L * 365L) + 114) * 86400L);
+                        DateTime dateTime = DateTime.MinValue;
+                        ftime += Convert.ToInt64(split[offset + 4]);
+                        dateTime = dateTime.AddSeconds(ftime);
+                        
+                        string cardHolder = "Not On File";
+                        foreach (Card card in sqlCardList)
+                        {
+                            if (card.cardCode == cardCode)
+                            {
+                                cardHolder = card.name;
+                                break;
+                            }
+                        }
+                        int errorCode = Convert.ToInt32(split[offset + 5]);
+                        newList.Add(new Transaction(readerNumber, cardCode, dateTime, errorCode, cardHolder));
+                        
                     }
                 }
-                SerializeTools.serializeTransaction(transactionList);
-                Thread.Sleep(5000);
+                sqlTransList.AddRange(newList);
+
+
+                SerializeTools.serializeTransaction(sqlTransList);
+                Thread.Sleep(10000);
             }
         }
+
+
+        /*
+         * 
+            Transaction[] recieve = Global.cs.GetTransactionList();
+            foreach (Transaction trans in recieve)
+            {
+                dateList.Add(trans.dateTime.ToString("MM/dd/yy H:mm:ss"));
+                cardList.Add(trans.cardCode.ToString());
+                transactionList.Add(trans);
+            }
+
+         */
     }
 }

@@ -21,7 +21,7 @@ namespace Gate
         protected override void OnCreate(Bundle bundle)
         {
             base.OnCreate(bundle);
-            
+
             ActionBar.NavigationMode = ActionBarNavigationMode.Tabs;
 
             SetContentView(Resource.Layout.Main);
@@ -30,7 +30,7 @@ namespace Gate
             {
                 ThreadPool.QueueUserWorkItem(o => ReaderServices.refreshTransactions());
             }
-            
+
             Card = new List<Card>();
 
             fragments = new Fragment[]
@@ -121,10 +121,9 @@ namespace Gate
                     return true;
                 default:
                     return base.OnOptionsItemSelected(item);
-                    
+
             }
         }
 
     }
 }
-
