@@ -13,6 +13,9 @@ using System.Xml.Serialization;
 using System.IO;
 using System.Threading;
 
+using Gate.WebReference;
+
+
 namespace Gate
 {
     [Activity(Label = "AddCard")]

@@ -58,10 +58,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AccessLevel.cs" />
     <Compile Include="AddAccessLevel.cs" />
     <Compile Include="AddCard.cs" />
-    <Compile Include="Card.cs" />
     <Compile Include="DisplayAccessLevel.cs" />
     <Compile Include="DisplayCard.cs" />
     <Compile Include="DisplayTransaction.cs" />
@@ -74,7 +72,6 @@
     <Compile Include="SerializeTools.cs" />
     <Compile Include="Settings.cs" />
     <Compile Include="TCP.cs" />
-    <Compile Include="Transaction.cs" />
     <Compile Include="Web References\WebReference\Reference.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>

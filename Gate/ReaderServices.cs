@@ -11,6 +11,9 @@ using Android.Views;
 using Android.Widget;
 using System.Threading;
 
+using Gate.WebReference;
+
+
 namespace Gate
 {
     static class ReaderServices

@@ -12,6 +12,9 @@ using Android.Widget;
 using System.IO;
 using System.Xml.Serialization;
 
+using Gate.WebReference;
+
+
 namespace Gate
 {
     public static class SerializeTools

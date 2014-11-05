@@ -12,6 +12,9 @@ using Android.Widget;
 using System.IO;
 using Android.Preferences;
 
+using Gate.WebReference;
+
+
 namespace Gate
 {
     [Activity(Label = "DisplayAccessLevel")]

@@ -11,6 +11,9 @@ using Android.Views;
 using Android.Widget;
 using Android.Preferences;
 
+using Gate.WebReference;
+
+
 namespace Gate
 {
     [Activity(Label = "DisplayCard")]

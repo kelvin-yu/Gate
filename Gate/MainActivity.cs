@@ -9,6 +9,9 @@ using System.Collections.Generic;
 using System.Threading;
 using System.ComponentModel;
 
+using Gate.WebReference;
+
+
 namespace Gate
 {
     [Activity(Label = "Gate", MainLauncher = true, Icon = "@drawable/icon")]

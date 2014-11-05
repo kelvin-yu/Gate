@@ -14,6 +14,9 @@ using System.Xml.Serialization;
 using System.IO;
 using Android.Preferences;
 
+using Gate.WebReference;
+
+
 namespace Gate
 {
     public class CardFragment : Fragment
