@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <xs:schema xmlns:tns="http://dmtserv.CardServices" elementFormDefault="qualified" targetNamespace="http://dmtserv.CardServices" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:import schemaLocation="http://192.168.2.204:8000/DMTSolutions/CardReader?xsd=xsd2" namespace="http://schemas.microsoft.com/2003/10/Serialization/Arrays" />
   <xs:element name="GetTransactionList">
     <xs:complexType>
       <xs:sequence />
@@ -42,7 +43,7 @@
       </xs:sequence>
     </xs:complexType>
   </xs:element>
-  <xs:element name="UpdateOneCardSql">
+  <xs:element name="UpdateOneCardSQL">
     <xs:complexType>
       <xs:sequence>
         <xs:element minOccurs="0" name="card" nillable="true" type="tns:Card" />
@@ -58,10 +59,10 @@
     </xs:sequence>
   </xs:complexType>
   <xs:element name="Card" nillable="true" type="tns:Card" />
-  <xs:element name="UpdateOneCardSqlResponse">
+  <xs:element name="UpdateOneCardSQLResponse">
     <xs:complexType>
       <xs:sequence>
-        <xs:element minOccurs="0" name="UpdateOneCardSqlResult" type="xs:boolean" />
+        <xs:element minOccurs="0" name="UpdateOneCardSQLResult" type="xs:boolean" />
       </xs:sequence>
     </xs:complexType>
   </xs:element>
@@ -83,4 +84,51 @@
     </xs:sequence>
   </xs:complexType>
   <xs:element name="ArrayOfCard" nillable="true" type="tns:ArrayOfCard" />
+  <xs:element name="UpdateAccessSQL">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="newAccess" nillable="true" type="tns:ArrayOfAccessLevel" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:complexType name="ArrayOfAccessLevel">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="AccessLevel" nillable="true" type="tns:AccessLevel" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfAccessLevel" nillable="true" type="tns:ArrayOfAccessLevel" />
+  <xs:complexType name="AccessLevel">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="dateEnd" type="xs:dateTime" />
+      <xs:element minOccurs="0" name="dateStart" type="xs:dateTime" />
+      <xs:element minOccurs="0" name="name" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="numberOfUses" type="xs:int" />
+      <xs:element minOccurs="0" name="useDateRange" type="xs:boolean" />
+      <xs:element minOccurs="0" name="usePassBack" type="xs:boolean" />
+      <xs:element xmlns:q1="http://schemas.microsoft.com/2003/10/Serialization/Arrays" minOccurs="0" name="weekReader1Access" nillable="true" type="q1:ArrayOfstring" />
+      <xs:element xmlns:q2="http://schemas.microsoft.com/2003/10/Serialization/Arrays" minOccurs="0" name="weekReader2Access" nillable="true" type="q2:ArrayOfstring" />
+      <xs:element xmlns:q3="http://schemas.microsoft.com/2003/10/Serialization/Arrays" minOccurs="0" name="weekTimeEnd" nillable="true" type="q3:ArrayOfdateTime" />
+      <xs:element xmlns:q4="http://schemas.microsoft.com/2003/10/Serialization/Arrays" minOccurs="0" name="weekTimeStart" nillable="true" type="q4:ArrayOfdateTime" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="AccessLevel" nillable="true" type="tns:AccessLevel" />
+  <xs:element name="UpdateAccessSQLResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="UpdateAccessSQLResult" type="xs:boolean" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="GetAccessLevelList">
+    <xs:complexType>
+      <xs:sequence />
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="GetAccessLevelListResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="GetAccessLevelListResult" nillable="true" type="tns:ArrayOfAccessLevel" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
 </xs:schema>

@@ -4,6 +4,7 @@
     <xsd:schema targetNamespace="http://dmtserv.CardServices/Imports">
       <xsd:import schemaLocation="http://192.168.2.204:8000/DMTSolutions/CardReader?xsd=xsd0" namespace="http://dmtserv.CardServices" />
       <xsd:import schemaLocation="http://192.168.2.204:8000/DMTSolutions/CardReader?xsd=xsd1" namespace="http://schemas.microsoft.com/2003/10/Serialization/" />
+      <xsd:import schemaLocation="http://192.168.2.204:8000/DMTSolutions/CardReader?xsd=xsd2" namespace="http://schemas.microsoft.com/2003/10/Serialization/Arrays" />
     </xsd:schema>
   </wsdl:types>
   <wsdl:message name="ICardService_GetTransactionList_InputMessage">
@@ -18,17 +19,29 @@
   <wsdl:message name="ICardService_UpdateTransactionSQL_OutputMessage">
     <wsdl:part name="parameters" element="tns:UpdateTransactionSQLResponse" />
   </wsdl:message>
-  <wsdl:message name="ICardService_UpdateOneCardSql_InputMessage">
-    <wsdl:part name="parameters" element="tns:UpdateOneCardSql" />
+  <wsdl:message name="ICardService_UpdateOneCardSQL_InputMessage">
+    <wsdl:part name="parameters" element="tns:UpdateOneCardSQL" />
   </wsdl:message>
-  <wsdl:message name="ICardService_UpdateOneCardSql_OutputMessage">
-    <wsdl:part name="parameters" element="tns:UpdateOneCardSqlResponse" />
+  <wsdl:message name="ICardService_UpdateOneCardSQL_OutputMessage">
+    <wsdl:part name="parameters" element="tns:UpdateOneCardSQLResponse" />
   </wsdl:message>
   <wsdl:message name="ICardService_GetCardList_InputMessage">
     <wsdl:part name="parameters" element="tns:GetCardList" />
   </wsdl:message>
   <wsdl:message name="ICardService_GetCardList_OutputMessage">
     <wsdl:part name="parameters" element="tns:GetCardListResponse" />
+  </wsdl:message>
+  <wsdl:message name="ICardService_UpdateAccessSQL_InputMessage">
+    <wsdl:part name="parameters" element="tns:UpdateAccessSQL" />
+  </wsdl:message>
+  <wsdl:message name="ICardService_UpdateAccessSQL_OutputMessage">
+    <wsdl:part name="parameters" element="tns:UpdateAccessSQLResponse" />
+  </wsdl:message>
+  <wsdl:message name="ICardService_GetAccessLevelList_InputMessage">
+    <wsdl:part name="parameters" element="tns:GetAccessLevelList" />
+  </wsdl:message>
+  <wsdl:message name="ICardService_GetAccessLevelList_OutputMessage">
+    <wsdl:part name="parameters" element="tns:GetAccessLevelListResponse" />
   </wsdl:message>
   <wsdl:portType name="ICardService">
     <wsdl:operation name="GetTransactionList">
@@ -39,13 +52,21 @@
       <wsdl:input wsaw:Action="UpdateTransactionSQL" message="tns:ICardService_UpdateTransactionSQL_InputMessage" />
       <wsdl:output wsaw:Action="http://dmtserv.CardServices/ICardService/UpdateTransactionSQLResponse" message="tns:ICardService_UpdateTransactionSQL_OutputMessage" />
     </wsdl:operation>
-    <wsdl:operation name="UpdateOneCardSql">
-      <wsdl:input wsaw:Action="UpdateOneCardSql" message="tns:ICardService_UpdateOneCardSql_InputMessage" />
-      <wsdl:output wsaw:Action="http://dmtserv.CardServices/ICardService/UpdateOneCardSqlResponse" message="tns:ICardService_UpdateOneCardSql_OutputMessage" />
+    <wsdl:operation name="UpdateOneCardSQL">
+      <wsdl:input wsaw:Action="UpdateOneCardSQL" message="tns:ICardService_UpdateOneCardSQL_InputMessage" />
+      <wsdl:output wsaw:Action="http://dmtserv.CardServices/ICardService/UpdateOneCardSQLResponse" message="tns:ICardService_UpdateOneCardSQL_OutputMessage" />
     </wsdl:operation>
     <wsdl:operation name="GetCardList">
       <wsdl:input wsaw:Action="GetCardList" message="tns:ICardService_GetCardList_InputMessage" />
       <wsdl:output wsaw:Action="http://dmtserv.CardServices/ICardService/GetCardListResponse" message="tns:ICardService_GetCardList_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="UpdateAccessSQL">
+      <wsdl:input wsaw:Action="UpdateAccessSQL" message="tns:ICardService_UpdateAccessSQL_InputMessage" />
+      <wsdl:output wsaw:Action="http://dmtserv.CardServices/ICardService/UpdateAccessSQLResponse" message="tns:ICardService_UpdateAccessSQL_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="GetAccessLevelList">
+      <wsdl:input wsaw:Action="GetAccessList" message="tns:ICardService_GetAccessLevelList_InputMessage" />
+      <wsdl:output wsaw:Action="http://dmtserv.CardServices/ICardService/GetAccessLevelListResponse" message="tns:ICardService_GetAccessLevelList_OutputMessage" />
     </wsdl:operation>
   </wsdl:portType>
 </wsdl:definitions>

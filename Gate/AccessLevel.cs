@@ -16,8 +16,8 @@ namespace Gate
     {
         public string name { get; set; }
 
-        public string[] weekTimeStart { get; set; }
-        public string[] weekTimeEnd { get; set; }
+        public DateTime[] weekTimeStart { get; set; }
+        public DateTime[] weekTimeEnd { get; set; }
 
         public string[] weekReader1Access { get; set; }
         public string[] weekReader2Access { get; set; }
@@ -26,13 +26,13 @@ namespace Gate
         public int numberOfUses { get; set; }
 
         public bool useDateRange { get; set; }
-        public string dateStart { get; set; }
-        public string dateEnd { get; set; }
+        public DateTime dateStart { get; set; }
+        public DateTime dateEnd { get; set; }
 
         public AccessLevel() { }
 
-        public AccessLevel(string name, string[] weekTimeStart, string[] weekTimeEnd, string[] weekReader1Access, string[] weekReader2Access,
-            bool usePassBack, int numberOfUses, bool useDateRange, string dateStart, string dateEnd)
+        public AccessLevel(string name, DateTime[] weekTimeStart, DateTime[] weekTimeEnd, string[] weekReader1Access, string[] weekReader2Access,
+            bool usePassBack, int numberOfUses, bool useDateRange, DateTime dateStart, DateTime dateEnd)
         {
             this.name = name;
             this.weekTimeStart = weekTimeStart;

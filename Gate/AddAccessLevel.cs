@@ -225,22 +225,26 @@ namespace Gate
         }
         public void addNewAccessLevel(List<AccessLevel> list)
         {
+            DateTime[] startTime = new DateTime[7] {
+                DateTime.ParseExact(sunStart.Text, "HH:mm", System.Globalization.CultureInfo.InvariantCulture), 
+                DateTime.ParseExact(monStart.Text, "HH:mm", System.Globalization.CultureInfo.InvariantCulture), 
+                DateTime.ParseExact(tuesStart.Text, "HH:mm", System.Globalization.CultureInfo.InvariantCulture), 
+                DateTime.ParseExact(wedStart.Text, "HH:mm", System.Globalization.CultureInfo.InvariantCulture), 
+                DateTime.ParseExact(thursStart.Text, "HH:mm", System.Globalization.CultureInfo.InvariantCulture), 
+                DateTime.ParseExact(friStart.Text, "HH:mm", System.Globalization.CultureInfo.InvariantCulture), 
+                DateTime.ParseExact(satStart.Text, "HH:mm", System.Globalization.CultureInfo.InvariantCulture)
+            };
 
-            string[] startTime = new string[7] {sunStart.Text, 
-                monStart.Text,
-                tuesStart.Text,
-                wedStart.Text,
-                thursStart.Text,
-                friStart.Text,
-                satStart.Text};
 
-            string[] endTime = new string[7] {sunEnd.Text, 
-                monEnd.Text,
-                tuesEnd.Text,
-                wedEnd.Text,
-                thursEnd.Text,
-                friEnd.Text,
-                satEnd.Text};
+            DateTime[] endTime = new DateTime[7] {
+                DateTime.ParseExact(sunEnd.Text, "HH:mm", System.Globalization.CultureInfo.InvariantCulture), 
+                DateTime.ParseExact(monEnd.Text, "HH:mm", System.Globalization.CultureInfo.InvariantCulture), 
+                DateTime.ParseExact(tuesEnd.Text, "HH:mm", System.Globalization.CultureInfo.InvariantCulture), 
+                DateTime.ParseExact(wedEnd.Text, "HH:mm", System.Globalization.CultureInfo.InvariantCulture), 
+                DateTime.ParseExact(thursEnd.Text, "HH:mm", System.Globalization.CultureInfo.InvariantCulture), 
+                DateTime.ParseExact(friEnd.Text, "HH:mm", System.Globalization.CultureInfo.InvariantCulture), 
+                DateTime.ParseExact(satEnd.Text, "HH:mm", System.Globalization.CultureInfo.InvariantCulture)
+            };
             
             string[] r1 = new string[7] {r1Sun.Checked ? "Y" : "N",
                 r1Mon.Checked ? "Y" : "N",
@@ -258,7 +262,10 @@ namespace Gate
                 r2Fri.Checked ? "Y" : "N",
                 r2Sat.Checked ? "Y" : "N",};
 
-            list.Add(new AccessLevel(name.Text, startTime, endTime, r1, r2, usePassBack.Checked, Convert.ToInt16(numberOfUses.Text), useDateRange.Checked, dateStart.Text, dateEnd.Text));
+            DateTime dStart = DateTime.ParseExact(dateStart.Text, "M/d/yyyy", System.Globalization.CultureInfo.InvariantCulture);
+            DateTime dEnd = DateTime.ParseExact(dateEnd.Text, "M/d/yyyy", System.Globalization.CultureInfo.InvariantCulture);
+
+            list.Add(new AccessLevel(name.Text, startTime, endTime, r1, r2, usePassBack.Checked, Convert.ToInt16(numberOfUses.Text), useDateRange.Checked, dStart, dEnd));
             ReaderServices.sendAccessLevel(list);
         }
 

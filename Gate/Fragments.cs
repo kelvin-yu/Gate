@@ -93,6 +93,7 @@ namespace Gate
 
             accessList = SerializeTools.deserializeAccessLevelList();
 
+            Console.WriteLine(accessList.Count);
             foreach (AccessLevel access in accessList)
             {
                 nameList.Add(access.name);
@@ -124,7 +125,6 @@ namespace Gate
                 timeListView.SetSelectionFromTop(cardListView.FirstVisiblePosition, top);
             };
 
-
             timeListView.Scroll += delegate
             {
                 View v = timeListView.GetChildAt(0);
@@ -132,7 +132,7 @@ namespace Gate
                 cardListView.SetSelectionFromTop(timeListView.FirstVisiblePosition, top);
             };
 
-            //cardListView.ItemClick += OnListItemClick;
+            cardListView.ItemClick += OnListItemClick;
 
             return view;
         }

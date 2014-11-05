@@ -84,7 +84,7 @@ namespace Gate
 
         public void addNewCard(List<Card> list)
         {
-            list.Add(new Card(nameField.Text, Convert.ToInt32(numberField.Text), spinner.SelectedItem.ToString()));
+            list.Add(new Card(nameField.Text, Convert.ToInt32(numberField.Text), spinner.SelectedItem.ToString(), DateTime.Now));
             ReaderServices.sendCard(list);
         }
 

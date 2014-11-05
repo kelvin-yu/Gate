@@ -55,7 +55,7 @@ namespace Gate
                 cardNameList.Add(card.name.ToLower());
 
             doneButton.Click += delegate
-            {
+            {          
                 if (!nameField.Text.Equals(String.Empty) && !numberField.Text.Equals(String.Empty) && spinner.SelectedItem != null && !cardNameList.Contains(nameField.Text))
                 {
                     if (!TCP.isTCPNull() & TCP.isConnectable("192.168.2.180"))
@@ -137,7 +137,7 @@ namespace Gate
 
         public void addNewCard(List<Card> list)
         {
-            list.Add(new Card(nameField.Text, Convert.ToInt32(numberField.Text), spinner.SelectedItem.ToString()));
+            list.Add(new Card(nameField.Text, Convert.ToInt32(numberField.Text), spinner.SelectedItem.ToString(), DateTime.Now)); 
             ReaderServices.sendCard(list);
         }
     }

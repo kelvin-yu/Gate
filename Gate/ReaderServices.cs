@@ -24,18 +24,18 @@ namespace Gate
             {
                 string acc = "AA";
                 acc += "\t" + level.name;
-                foreach (string startTime in level.weekTimeStart) //week start
+                foreach (DateTime startTime in level.weekTimeStart) //week start
                 {
-                    string[] time = startTime.Split(new char[] { ':' });
+                    string[] time = startTime.ToString("HH:mm").Split(new char[] { ':' });
                     int hours = Convert.ToInt16(time[0]);
                     int minutes = Convert.ToInt16(time[1]);
                     int totalMinutes = hours * 60 + minutes;
 
                     acc += "\t" + Convert.ToString(totalMinutes);
                 }
-                foreach (string endTime in level.weekTimeEnd) //week end
+                foreach (DateTime endTime in level.weekTimeEnd) //week end
                 {
-                    string[] time = endTime.Split(new char[] { ':' });
+                    string[] time = endTime.ToString("HH:mm").Split(new char[] { ':' });
                     int hours = Convert.ToInt16(time[0]);
                     int minutes = Convert.ToInt16(time[1]);
                     int totalMinutes = hours * 60 + minutes;
@@ -60,13 +60,13 @@ namespace Gate
                 {
                     int start = 0, end = 0;
 
-                    string[] values = level.dateStart.Split(new char[] { '/' });
+                    string[] values = level.dateStart.ToString("M/d/yyyy").Split(new char[] { '/' });
                     int year = Convert.ToInt16(values[2]);
                     int day = Convert.ToInt16(values[1]);
                     int month = Convert.ToInt16(values[0]);
                     TimeSpan startSpan = TimeSpan.FromTicks(new DateTime(year, month, day).Ticks).Subtract(TimeSpan.FromTicks(new DateTime(1980, 1, 1).Ticks));
                     start = (int)startSpan.Days;
-                    values = level.dateEnd.Split(new char[] { '/' });
+                    values = level.dateEnd.ToString("M/d/yyyy").Split(new char[] { '/' });
                     year = Convert.ToInt16(values[2]);
                     day = Convert.ToInt16(values[1]);
                     month = Convert.ToInt16(values[0]);
@@ -117,8 +117,13 @@ namespace Gate
         {
             while(TCP.isConnectable("192.168.2.180"))
             {
+                //Card Stuff
                 List<Card> sqlCardList = new List<Card>(Global.cs.GetCardList());
                 SerializeTools.serializeCardList(sqlCardList);
+
+                //Access Level Stuff
+                List<AccessLevel> sqlAccessList = new List<AccessLevel>(Global.cs.GetAccessLevelList());
+                SerializeTools.serializeAccessLevelList(sqlAccessList);
 
                 //Transaction Stuff
                 List<Transaction> sqlTransList = new List<Transaction>(Global.cs.GetTransactionList());
@@ -165,18 +170,5 @@ namespace Gate
                 Thread.Sleep(10000);
             }
         }
-
-
-        /*
-         * 
-            Transaction[] recieve = Global.cs.GetTransactionList();
-            foreach (Transaction trans in recieve)
-            {
-                dateList.Add(trans.dateTime.ToString("MM/dd/yy H:mm:ss"));
-                cardList.Add(trans.cardCode.ToString());
-                transactionList.Add(trans);
-            }
-
-         */
     }
 }

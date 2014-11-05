@@ -42,10 +42,7 @@ namespace Gate
 
             reader.Text = transactionList[transactionIndex].readerNumber.ToString();
             int errorCode = Convert.ToInt32(transactionList[transactionIndex].errorNumber);
-            if (errorCode == 0)
-                error.Text = "No Error";
-            else
-                error.Text = errorCode.ToString();
+            error.Text = Global.ErrorCode(errorCode);
         }
     }
 }

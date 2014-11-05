@@ -72,21 +72,23 @@ namespace Gate
 
             name.Text = accessLevel.name;
 
-            sunStart.Text = accessLevel.weekTimeStart[0];
-            monStart.Text = accessLevel.weekTimeStart[1];
-            tuesStart.Text = accessLevel.weekTimeStart[2];
-            wedStart.Text = accessLevel.weekTimeStart[3];
-            thursStart.Text = accessLevel.weekTimeStart[4];
-            friStart.Text = accessLevel.weekTimeStart[5];
-            satStart.Text = accessLevel.weekTimeStart[6];
+            Console.WriteLine(accessLevel.name);
 
-            sunEnd.Text = accessLevel.weekTimeEnd[0];
-            monEnd.Text = accessLevel.weekTimeEnd[1];
-            tuesEnd.Text = accessLevel.weekTimeEnd[2];
-            wedEnd.Text = accessLevel.weekTimeEnd[3];
-            thursEnd.Text = accessLevel.weekTimeEnd[4];
-            friEnd.Text = accessLevel.weekTimeEnd[5];
-            satEnd.Text = accessLevel.weekTimeEnd[6];
+            sunStart.Text = accessLevel.weekTimeStart[0].ToString("HH:mm");
+            monStart.Text = accessLevel.weekTimeStart[1].ToString("HH:mm");
+            tuesStart.Text = accessLevel.weekTimeStart[2].ToString("HH:mm");
+            wedStart.Text = accessLevel.weekTimeStart[3].ToString("HH:mm");
+            thursStart.Text = accessLevel.weekTimeStart[4].ToString("HH:mm");
+            friStart.Text = accessLevel.weekTimeStart[5].ToString("HH:mm");
+            satStart.Text = accessLevel.weekTimeStart[6].ToString("HH:mm");
+
+            sunEnd.Text = accessLevel.weekTimeEnd[0].ToString("HH:mm");
+            monEnd.Text = accessLevel.weekTimeEnd[1].ToString("HH:mm");
+            tuesEnd.Text = accessLevel.weekTimeEnd[2].ToString("HH:mm");
+            wedEnd.Text = accessLevel.weekTimeEnd[3].ToString("HH:mm");
+            thursEnd.Text = accessLevel.weekTimeEnd[4].ToString("HH:mm");
+            friEnd.Text = accessLevel.weekTimeEnd[5].ToString("HH:mm");
+            satEnd.Text = accessLevel.weekTimeEnd[6].ToString("HH:mm");
 
             r1Sun.Checked = accessLevel.weekReader1Access[0] == "Y";
             r1Mon.Checked = accessLevel.weekReader1Access[1] == "Y";
@@ -108,8 +110,8 @@ namespace Gate
             usePassBack.Checked = accessLevel.usePassBack;
             useDateRange.Checked = accessLevel.useDateRange;
 
-            dateStart.Text = accessLevel.dateStart;
-            dateEnd.Text = accessLevel.dateEnd;
+            dateStart.Text = accessLevel.dateStart.ToString("M/d/yyyy");
+            dateEnd.Text = accessLevel.dateEnd.ToString("M/d/yyyy");
         }
 
         private void InitiateViews()
@@ -254,22 +256,25 @@ namespace Gate
         }
         public void addNewAccessLevel(List<AccessLevel> list)
         {
+            DateTime[] startTime = new DateTime[7] {
+                DateTime.ParseExact(sunStart.Text, "HH:mm", System.Globalization.CultureInfo.InvariantCulture), 
+                DateTime.ParseExact(monStart.Text, "HH:mm", System.Globalization.CultureInfo.InvariantCulture), 
+                DateTime.ParseExact(tuesStart.Text, "HH:mm", System.Globalization.CultureInfo.InvariantCulture), 
+                DateTime.ParseExact(wedStart.Text, "HH:mm", System.Globalization.CultureInfo.InvariantCulture), 
+                DateTime.ParseExact(thursStart.Text, "HH:mm", System.Globalization.CultureInfo.InvariantCulture), 
+                DateTime.ParseExact(friStart.Text, "HH:mm", System.Globalization.CultureInfo.InvariantCulture), 
+                DateTime.ParseExact(satStart.Text, "HH:mm", System.Globalization.CultureInfo.InvariantCulture)
+            };
 
-            string[] startTime = new string[7] {sunStart.Text, 
-                monStart.Text,
-                tuesStart.Text,
-                wedStart.Text,
-                thursStart.Text,
-                friStart.Text,
-                satStart.Text};
-
-            string[] endTime = new string[7] {sunEnd.Text, 
-                monEnd.Text,
-                tuesEnd.Text,
-                wedEnd.Text,
-                thursEnd.Text,
-                friEnd.Text,
-                satEnd.Text};
+            DateTime[] endTime = new DateTime[7] {
+                DateTime.ParseExact(sunEnd.Text, "HH:mm", System.Globalization.CultureInfo.InvariantCulture), 
+                DateTime.ParseExact(monEnd.Text, "HH:mm", System.Globalization.CultureInfo.InvariantCulture), 
+                DateTime.ParseExact(tuesEnd.Text, "HH:mm", System.Globalization.CultureInfo.InvariantCulture), 
+                DateTime.ParseExact(wedEnd.Text, "HH:mm", System.Globalization.CultureInfo.InvariantCulture), 
+                DateTime.ParseExact(thursEnd.Text, "HH:mm", System.Globalization.CultureInfo.InvariantCulture), 
+                DateTime.ParseExact(friEnd.Text, "HH:mm", System.Globalization.CultureInfo.InvariantCulture), 
+                DateTime.ParseExact(satEnd.Text, "HH:mm", System.Globalization.CultureInfo.InvariantCulture)
+            };
 
             string[] r1 = new string[7] {r1Sun.Checked ? "Y" : "N",
                 r1Mon.Checked ? "Y" : "N",
@@ -287,7 +292,10 @@ namespace Gate
                 r2Fri.Checked ? "Y" : "N",
                 r2Sat.Checked ? "Y" : "N",};
 
-            list.Add(new AccessLevel(name.Text, startTime, endTime, r1, r2, usePassBack.Checked, Convert.ToInt16(numberOfUses.Text), useDateRange.Checked, dateStart.Text, dateEnd.Text));
+            DateTime dStart = DateTime.ParseExact(dateStart.Text, "M/d/yyyy", System.Globalization.CultureInfo.InvariantCulture);
+            DateTime dEnd = DateTime.ParseExact(dateEnd.Text, "M/d/yyyy", System.Globalization.CultureInfo.InvariantCulture);
+
+            list.Add(new AccessLevel(name.Text, startTime, endTime, r1, r2, usePassBack.Checked, Convert.ToInt16(numberOfUses.Text), useDateRange.Checked, dStart, dEnd));
             ReaderServices.sendAccessLevel(list);
         }
 

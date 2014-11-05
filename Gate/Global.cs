@@ -16,5 +16,30 @@ namespace Gate
     static class Global
     {
         public static CardService cs = new CardService();
+
+        public static string ErrorCode(int code)
+        {
+            switch (code)
+            {
+                case 1:
+                    return "Not on file";
+                case 2:
+                    return "Access time";
+                case 3:
+                    return "Access day";
+                case 4:
+                    return "Access error";
+                case 5:
+                    return "Invalid site";
+                case 7:
+                    return "Passback error";
+                case 8:
+                    return "Pass empty";
+                case 9:
+                    return "Expired";
+                default :
+                    return "OK";
+            }
+        }
     }
 }

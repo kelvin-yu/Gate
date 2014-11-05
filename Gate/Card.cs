@@ -18,14 +18,16 @@ namespace Gate
         public string name { get; set; }
         public int cardCode { get; set; }
         public string accessLevel { get; set; }
+        public DateTime dateAdded { get; set; }
 
         public Card() { }
 
-        public Card(string name, int cardCode, string accessLevel)
+        public Card(string name, int cardCode, string accessLevel, DateTime dateAdded)
         {
             this.name = name;
             this.cardCode = cardCode;
             this.accessLevel = accessLevel;
+            this.dateAdded = dateAdded;
         }
     }
 }

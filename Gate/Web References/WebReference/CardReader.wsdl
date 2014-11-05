@@ -22,8 +22,8 @@
         <soap:body use="literal" />
       </wsdl:output>
     </wsdl:operation>
-    <wsdl:operation name="UpdateOneCardSql">
-      <soap:operation soapAction="UpdateOneCardSql" style="document" />
+    <wsdl:operation name="UpdateOneCardSQL">
+      <soap:operation soapAction="UpdateOneCardSQL" style="document" />
       <wsdl:input>
         <soap:body use="literal" />
       </wsdl:input>
@@ -33,6 +33,24 @@
     </wsdl:operation>
     <wsdl:operation name="GetCardList">
       <soap:operation soapAction="GetCardList" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="UpdateAccessSQL">
+      <soap:operation soapAction="UpdateAccessSQL" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetAccessLevelList">
+      <soap:operation soapAction="GetAccessList" style="document" />
       <wsdl:input>
         <soap:body use="literal" />
       </wsdl:input>
