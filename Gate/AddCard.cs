@@ -28,6 +28,7 @@ namespace Gate
         Button cancelButton, doneButton;
         EditText nameField, numberField;
         Spinner spinner;
+        TextView dateAdded;
 
         protected override void OnCreate(Bundle bundle)
         {
@@ -39,6 +40,9 @@ namespace Gate
 
             nameField = FindViewById<EditText>(Resource.Id.cardNameField);
             numberField = FindViewById<EditText>(Resource.Id.cardNumberField);
+
+            dateAdded = FindViewById<TextView>(Resource.Id.dateAdded);
+            dateAdded.Text = DateTime.Now.ToString("MM/dd/yy HH:mm");
 
             accessLevelList = SerializeTools.deserializeAccessLevelList();
 
@@ -140,8 +144,10 @@ namespace Gate
 
         public void addNewCard(List<Card> list)
         {
+            bool result, resultSpecified; //make sure it true
             list.Add(new Card(nameField.Text, Convert.ToInt32(numberField.Text), spinner.SelectedItem.ToString(), DateTime.Now)); 
             ReaderServices.sendCard(list);
+            Global.cs.AddOneCardSQL(new Card(nameField.Text, Convert.ToInt32(numberField.Text), spinner.SelectedItem.ToString(), DateTime.Now), out result, out resultSpecified);
         }
     }
 }

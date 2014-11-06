@@ -22,7 +22,25 @@
         <soap:body use="literal" />
       </wsdl:output>
     </wsdl:operation>
-    <wsdl:operation name="UpdateOneCardSQL">
+    <wsdl:operation name="DeleteTransaction">
+      <soap:operation soapAction="DeleteTransaction" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="DeleteAllTransactions">
+      <soap:operation soapAction="DeleteAllTransactions" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="AddOneCardSQL">
       <soap:operation soapAction="UpdateOneCardSQL" style="document" />
       <wsdl:input>
         <soap:body use="literal" />
@@ -40,7 +58,25 @@
         <soap:body use="literal" />
       </wsdl:output>
     </wsdl:operation>
-    <wsdl:operation name="UpdateAccessSQL">
+    <wsdl:operation name="DeleteCard">
+      <soap:operation soapAction="DeleteCard" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="DeleteAllCards">
+      <soap:operation soapAction="DeleteAllCards" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="AddOneAccessSQL">
       <soap:operation soapAction="UpdateAccessSQL" style="document" />
       <wsdl:input>
         <soap:body use="literal" />
@@ -51,6 +87,24 @@
     </wsdl:operation>
     <wsdl:operation name="GetAccessLevelList">
       <soap:operation soapAction="GetAccessList" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="DeleteAccess">
+      <soap:operation soapAction="DeleteAccess" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="DeleteAllAccess">
+      <soap:operation soapAction="DeleteAllAccess" style="document" />
       <wsdl:input>
         <soap:body use="literal" />
       </wsdl:input>

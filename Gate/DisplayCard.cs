@@ -26,7 +26,7 @@ namespace Gate
         List<AccessLevel> accessLevelList;
         List<string> accessNameList = new List<string>();
         int cardIndex;
-
+        TextView dateAdded;
 
         protected override void OnCreate(Bundle bundle)
         {
@@ -38,6 +38,7 @@ namespace Gate
             nameField = FindViewById<EditText>(Resource.Id.cardNameField);
             numberField = FindViewById<EditText>(Resource.Id.cardNumberField);
             spinner = FindViewById<Spinner>(Resource.Id.accessLevelSpinner);
+            dateAdded = FindViewById<TextView>(Resource.Id.dateAdded);
 
             accessLevelList = SerializeTools.deserializeAccessLevelList();
 
@@ -57,6 +58,7 @@ namespace Gate
 
             nameField.Text = cardList[cardIndex].name;
             numberField.Text = cardList[cardIndex].cardCode.ToString();
+            dateAdded.Text = cardList[cardIndex].dateAdded.ToString("MM/dd/yy HH:mm");
 
             for(int i = 0; i < accessNameList.Count; i++)
             {
@@ -102,6 +104,8 @@ namespace Gate
             switch (item.ItemId)
             {
                 case 0:
+                    bool result, resultSpecified;
+                    Global.cs.DeleteCard(cardList[cardIndex].name, out result, out resultSpecified);
                     cardList.RemoveAt(cardIndex);
                     SerializeTools.serializeCardList(cardList);
                     ReaderServices.sendCard(cardList);

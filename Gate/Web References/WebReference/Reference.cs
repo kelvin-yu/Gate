@@ -33,13 +33,25 @@ namespace Gate.WebReference {
         
         private System.Threading.SendOrPostCallback UpdateTransactionSQLOperationCompleted;
         
-        private System.Threading.SendOrPostCallback UpdateOneCardSQLOperationCompleted;
+        private System.Threading.SendOrPostCallback DeleteTransactionOperationCompleted;
+        
+        private System.Threading.SendOrPostCallback DeleteAllTransactionsOperationCompleted;
+        
+        private System.Threading.SendOrPostCallback AddOneCardSQLOperationCompleted;
         
         private System.Threading.SendOrPostCallback GetCardListOperationCompleted;
         
-        private System.Threading.SendOrPostCallback UpdateAccessSQLOperationCompleted;
+        private System.Threading.SendOrPostCallback DeleteCardOperationCompleted;
+        
+        private System.Threading.SendOrPostCallback DeleteAllCardsOperationCompleted;
+        
+        private System.Threading.SendOrPostCallback AddOneAccessSQLOperationCompleted;
         
         private System.Threading.SendOrPostCallback GetAccessLevelListOperationCompleted;
+        
+        private System.Threading.SendOrPostCallback DeleteAccessOperationCompleted;
+        
+        private System.Threading.SendOrPostCallback DeleteAllAccessOperationCompleted;
         
         private bool useDefaultCredentialsSetExplicitly;
         
@@ -86,16 +98,34 @@ namespace Gate.WebReference {
         public event UpdateTransactionSQLCompletedEventHandler UpdateTransactionSQLCompleted;
         
         /// <remarks/>
-        public event UpdateOneCardSQLCompletedEventHandler UpdateOneCardSQLCompleted;
+        public event DeleteTransactionCompletedEventHandler DeleteTransactionCompleted;
+        
+        /// <remarks/>
+        public event DeleteAllTransactionsCompletedEventHandler DeleteAllTransactionsCompleted;
+        
+        /// <remarks/>
+        public event AddOneCardSQLCompletedEventHandler AddOneCardSQLCompleted;
         
         /// <remarks/>
         public event GetCardListCompletedEventHandler GetCardListCompleted;
         
         /// <remarks/>
-        public event UpdateAccessSQLCompletedEventHandler UpdateAccessSQLCompleted;
+        public event DeleteCardCompletedEventHandler DeleteCardCompleted;
+        
+        /// <remarks/>
+        public event DeleteAllCardsCompletedEventHandler DeleteAllCardsCompleted;
+        
+        /// <remarks/>
+        public event AddOneAccessSQLCompletedEventHandler AddOneAccessSQLCompleted;
         
         /// <remarks/>
         public event GetAccessLevelListCompletedEventHandler GetAccessLevelListCompleted;
+        
+        /// <remarks/>
+        public event DeleteAccessCompletedEventHandler DeleteAccessCompleted;
+        
+        /// <remarks/>
+        public event DeleteAllAccessCompletedEventHandler DeleteAllAccessCompleted;
         
         /// <remarks/>
         [System.Web.Services.Protocols.SoapDocumentMethodAttribute("GetTransactionList", RequestNamespace="http://dmtserv.CardServices", ResponseNamespace="http://dmtserv.CardServices", Use=System.Web.Services.Description.SoapBindingUse.Literal, ParameterStyle=System.Web.Services.Protocols.SoapParameterStyle.Wrapped)]
@@ -156,32 +186,92 @@ namespace Gate.WebReference {
         }
         
         /// <remarks/>
-        [System.Web.Services.Protocols.SoapDocumentMethodAttribute("UpdateOneCardSQL", RequestNamespace="http://dmtserv.CardServices", ResponseNamespace="http://dmtserv.CardServices", Use=System.Web.Services.Description.SoapBindingUse.Literal, ParameterStyle=System.Web.Services.Protocols.SoapParameterStyle.Wrapped)]
-        public void UpdateOneCardSQL([System.Xml.Serialization.XmlElementAttribute(IsNullable=true)] Card card, out bool UpdateOneCardSQLResult, [System.Xml.Serialization.XmlIgnoreAttribute()] out bool UpdateOneCardSQLResultSpecified) {
-            object[] results = this.Invoke("UpdateOneCardSQL", new object[] {
-                        card});
-            UpdateOneCardSQLResult = ((bool)(results[0]));
-            UpdateOneCardSQLResultSpecified = ((bool)(results[1]));
+        [System.Web.Services.Protocols.SoapDocumentMethodAttribute("DeleteTransaction", RequestNamespace="http://dmtserv.CardServices", ResponseNamespace="http://dmtserv.CardServices", Use=System.Web.Services.Description.SoapBindingUse.Literal, ParameterStyle=System.Web.Services.Protocols.SoapParameterStyle.Wrapped)]
+        public void DeleteTransaction(System.DateTime tTime, [System.Xml.Serialization.XmlIgnoreAttribute()] bool tTimeSpecified, out bool DeleteTransactionResult, [System.Xml.Serialization.XmlIgnoreAttribute()] out bool DeleteTransactionResultSpecified) {
+            object[] results = this.Invoke("DeleteTransaction", new object[] {
+                        tTime,
+                        tTimeSpecified});
+            DeleteTransactionResult = ((bool)(results[0]));
+            DeleteTransactionResultSpecified = ((bool)(results[1]));
         }
         
         /// <remarks/>
-        public void UpdateOneCardSQLAsync(Card card) {
-            this.UpdateOneCardSQLAsync(card, null);
+        public void DeleteTransactionAsync(System.DateTime tTime, bool tTimeSpecified) {
+            this.DeleteTransactionAsync(tTime, tTimeSpecified, null);
         }
         
         /// <remarks/>
-        public void UpdateOneCardSQLAsync(Card card, object userState) {
-            if ((this.UpdateOneCardSQLOperationCompleted == null)) {
-                this.UpdateOneCardSQLOperationCompleted = new System.Threading.SendOrPostCallback(this.OnUpdateOneCardSQLOperationCompleted);
+        public void DeleteTransactionAsync(System.DateTime tTime, bool tTimeSpecified, object userState) {
+            if ((this.DeleteTransactionOperationCompleted == null)) {
+                this.DeleteTransactionOperationCompleted = new System.Threading.SendOrPostCallback(this.OnDeleteTransactionOperationCompleted);
             }
-            this.InvokeAsync("UpdateOneCardSQL", new object[] {
-                        card}, this.UpdateOneCardSQLOperationCompleted, userState);
+            this.InvokeAsync("DeleteTransaction", new object[] {
+                        tTime,
+                        tTimeSpecified}, this.DeleteTransactionOperationCompleted, userState);
         }
         
-        private void OnUpdateOneCardSQLOperationCompleted(object arg) {
-            if ((this.UpdateOneCardSQLCompleted != null)) {
+        private void OnDeleteTransactionOperationCompleted(object arg) {
+            if ((this.DeleteTransactionCompleted != null)) {
                 System.Web.Services.Protocols.InvokeCompletedEventArgs invokeArgs = ((System.Web.Services.Protocols.InvokeCompletedEventArgs)(arg));
-                this.UpdateOneCardSQLCompleted(this, new UpdateOneCardSQLCompletedEventArgs(invokeArgs.Results, invokeArgs.Error, invokeArgs.Cancelled, invokeArgs.UserState));
+                this.DeleteTransactionCompleted(this, new DeleteTransactionCompletedEventArgs(invokeArgs.Results, invokeArgs.Error, invokeArgs.Cancelled, invokeArgs.UserState));
+            }
+        }
+        
+        /// <remarks/>
+        [System.Web.Services.Protocols.SoapDocumentMethodAttribute("DeleteAllTransactions", RequestNamespace="http://dmtserv.CardServices", ResponseNamespace="http://dmtserv.CardServices", Use=System.Web.Services.Description.SoapBindingUse.Literal, ParameterStyle=System.Web.Services.Protocols.SoapParameterStyle.Wrapped)]
+        public void DeleteAllTransactions(out bool DeleteAllTransactionsResult, [System.Xml.Serialization.XmlIgnoreAttribute()] out bool DeleteAllTransactionsResultSpecified) {
+            object[] results = this.Invoke("DeleteAllTransactions", new object[0]);
+            DeleteAllTransactionsResult = ((bool)(results[0]));
+            DeleteAllTransactionsResultSpecified = ((bool)(results[1]));
+        }
+        
+        /// <remarks/>
+        public void DeleteAllTransactionsAsync() {
+            this.DeleteAllTransactionsAsync(null);
+        }
+        
+        /// <remarks/>
+        public void DeleteAllTransactionsAsync(object userState) {
+            if ((this.DeleteAllTransactionsOperationCompleted == null)) {
+                this.DeleteAllTransactionsOperationCompleted = new System.Threading.SendOrPostCallback(this.OnDeleteAllTransactionsOperationCompleted);
+            }
+            this.InvokeAsync("DeleteAllTransactions", new object[0], this.DeleteAllTransactionsOperationCompleted, userState);
+        }
+        
+        private void OnDeleteAllTransactionsOperationCompleted(object arg) {
+            if ((this.DeleteAllTransactionsCompleted != null)) {
+                System.Web.Services.Protocols.InvokeCompletedEventArgs invokeArgs = ((System.Web.Services.Protocols.InvokeCompletedEventArgs)(arg));
+                this.DeleteAllTransactionsCompleted(this, new DeleteAllTransactionsCompletedEventArgs(invokeArgs.Results, invokeArgs.Error, invokeArgs.Cancelled, invokeArgs.UserState));
+            }
+        }
+        
+        /// <remarks/>
+        [System.Web.Services.Protocols.SoapDocumentMethodAttribute("UpdateOneCardSQL", RequestNamespace="http://dmtserv.CardServices", ResponseNamespace="http://dmtserv.CardServices", Use=System.Web.Services.Description.SoapBindingUse.Literal, ParameterStyle=System.Web.Services.Protocols.SoapParameterStyle.Wrapped)]
+        public void AddOneCardSQL([System.Xml.Serialization.XmlElementAttribute(IsNullable=true)] Card card, out bool AddOneCardSQLResult, [System.Xml.Serialization.XmlIgnoreAttribute()] out bool AddOneCardSQLResultSpecified) {
+            object[] results = this.Invoke("AddOneCardSQL", new object[] {
+                        card});
+            AddOneCardSQLResult = ((bool)(results[0]));
+            AddOneCardSQLResultSpecified = ((bool)(results[1]));
+        }
+        
+        /// <remarks/>
+        public void AddOneCardSQLAsync(Card card) {
+            this.AddOneCardSQLAsync(card, null);
+        }
+        
+        /// <remarks/>
+        public void AddOneCardSQLAsync(Card card, object userState) {
+            if ((this.AddOneCardSQLOperationCompleted == null)) {
+                this.AddOneCardSQLOperationCompleted = new System.Threading.SendOrPostCallback(this.OnAddOneCardSQLOperationCompleted);
+            }
+            this.InvokeAsync("AddOneCardSQL", new object[] {
+                        card}, this.AddOneCardSQLOperationCompleted, userState);
+        }
+        
+        private void OnAddOneCardSQLOperationCompleted(object arg) {
+            if ((this.AddOneCardSQLCompleted != null)) {
+                System.Web.Services.Protocols.InvokeCompletedEventArgs invokeArgs = ((System.Web.Services.Protocols.InvokeCompletedEventArgs)(arg));
+                this.AddOneCardSQLCompleted(this, new AddOneCardSQLCompletedEventArgs(invokeArgs.Results, invokeArgs.Error, invokeArgs.Cancelled, invokeArgs.UserState));
             }
         }
         
@@ -214,32 +304,90 @@ namespace Gate.WebReference {
         }
         
         /// <remarks/>
-        [System.Web.Services.Protocols.SoapDocumentMethodAttribute("UpdateAccessSQL", RequestNamespace="http://dmtserv.CardServices", ResponseNamespace="http://dmtserv.CardServices", Use=System.Web.Services.Description.SoapBindingUse.Literal, ParameterStyle=System.Web.Services.Protocols.SoapParameterStyle.Wrapped)]
-        public void UpdateAccessSQL([System.Xml.Serialization.XmlArrayAttribute(IsNullable=true)] AccessLevel[] newAccess, out bool UpdateAccessSQLResult, [System.Xml.Serialization.XmlIgnoreAttribute()] out bool UpdateAccessSQLResultSpecified) {
-            object[] results = this.Invoke("UpdateAccessSQL", new object[] {
-                        newAccess});
-            UpdateAccessSQLResult = ((bool)(results[0]));
-            UpdateAccessSQLResultSpecified = ((bool)(results[1]));
+        [System.Web.Services.Protocols.SoapDocumentMethodAttribute("DeleteCard", RequestNamespace="http://dmtserv.CardServices", ResponseNamespace="http://dmtserv.CardServices", Use=System.Web.Services.Description.SoapBindingUse.Literal, ParameterStyle=System.Web.Services.Protocols.SoapParameterStyle.Wrapped)]
+        public void DeleteCard([System.Xml.Serialization.XmlElementAttribute(IsNullable=true)] string cName, out bool DeleteCardResult, [System.Xml.Serialization.XmlIgnoreAttribute()] out bool DeleteCardResultSpecified) {
+            object[] results = this.Invoke("DeleteCard", new object[] {
+                        cName});
+            DeleteCardResult = ((bool)(results[0]));
+            DeleteCardResultSpecified = ((bool)(results[1]));
         }
         
         /// <remarks/>
-        public void UpdateAccessSQLAsync(AccessLevel[] newAccess) {
-            this.UpdateAccessSQLAsync(newAccess, null);
+        public void DeleteCardAsync(string cName) {
+            this.DeleteCardAsync(cName, null);
         }
         
         /// <remarks/>
-        public void UpdateAccessSQLAsync(AccessLevel[] newAccess, object userState) {
-            if ((this.UpdateAccessSQLOperationCompleted == null)) {
-                this.UpdateAccessSQLOperationCompleted = new System.Threading.SendOrPostCallback(this.OnUpdateAccessSQLOperationCompleted);
+        public void DeleteCardAsync(string cName, object userState) {
+            if ((this.DeleteCardOperationCompleted == null)) {
+                this.DeleteCardOperationCompleted = new System.Threading.SendOrPostCallback(this.OnDeleteCardOperationCompleted);
             }
-            this.InvokeAsync("UpdateAccessSQL", new object[] {
-                        newAccess}, this.UpdateAccessSQLOperationCompleted, userState);
+            this.InvokeAsync("DeleteCard", new object[] {
+                        cName}, this.DeleteCardOperationCompleted, userState);
         }
         
-        private void OnUpdateAccessSQLOperationCompleted(object arg) {
-            if ((this.UpdateAccessSQLCompleted != null)) {
+        private void OnDeleteCardOperationCompleted(object arg) {
+            if ((this.DeleteCardCompleted != null)) {
                 System.Web.Services.Protocols.InvokeCompletedEventArgs invokeArgs = ((System.Web.Services.Protocols.InvokeCompletedEventArgs)(arg));
-                this.UpdateAccessSQLCompleted(this, new UpdateAccessSQLCompletedEventArgs(invokeArgs.Results, invokeArgs.Error, invokeArgs.Cancelled, invokeArgs.UserState));
+                this.DeleteCardCompleted(this, new DeleteCardCompletedEventArgs(invokeArgs.Results, invokeArgs.Error, invokeArgs.Cancelled, invokeArgs.UserState));
+            }
+        }
+        
+        /// <remarks/>
+        [System.Web.Services.Protocols.SoapDocumentMethodAttribute("DeleteAllCards", RequestNamespace="http://dmtserv.CardServices", ResponseNamespace="http://dmtserv.CardServices", Use=System.Web.Services.Description.SoapBindingUse.Literal, ParameterStyle=System.Web.Services.Protocols.SoapParameterStyle.Wrapped)]
+        public void DeleteAllCards(out bool DeleteAllCardsResult, [System.Xml.Serialization.XmlIgnoreAttribute()] out bool DeleteAllCardsResultSpecified) {
+            object[] results = this.Invoke("DeleteAllCards", new object[0]);
+            DeleteAllCardsResult = ((bool)(results[0]));
+            DeleteAllCardsResultSpecified = ((bool)(results[1]));
+        }
+        
+        /// <remarks/>
+        public void DeleteAllCardsAsync() {
+            this.DeleteAllCardsAsync(null);
+        }
+        
+        /// <remarks/>
+        public void DeleteAllCardsAsync(object userState) {
+            if ((this.DeleteAllCardsOperationCompleted == null)) {
+                this.DeleteAllCardsOperationCompleted = new System.Threading.SendOrPostCallback(this.OnDeleteAllCardsOperationCompleted);
+            }
+            this.InvokeAsync("DeleteAllCards", new object[0], this.DeleteAllCardsOperationCompleted, userState);
+        }
+        
+        private void OnDeleteAllCardsOperationCompleted(object arg) {
+            if ((this.DeleteAllCardsCompleted != null)) {
+                System.Web.Services.Protocols.InvokeCompletedEventArgs invokeArgs = ((System.Web.Services.Protocols.InvokeCompletedEventArgs)(arg));
+                this.DeleteAllCardsCompleted(this, new DeleteAllCardsCompletedEventArgs(invokeArgs.Results, invokeArgs.Error, invokeArgs.Cancelled, invokeArgs.UserState));
+            }
+        }
+        
+        /// <remarks/>
+        [System.Web.Services.Protocols.SoapDocumentMethodAttribute("UpdateAccessSQL", RequestNamespace="http://dmtserv.CardServices", ResponseNamespace="http://dmtserv.CardServices", Use=System.Web.Services.Description.SoapBindingUse.Literal, ParameterStyle=System.Web.Services.Protocols.SoapParameterStyle.Wrapped)]
+        public void AddOneAccessSQL([System.Xml.Serialization.XmlElementAttribute(IsNullable=true)] AccessLevel access, out bool AddOneAccessSQLResult, [System.Xml.Serialization.XmlIgnoreAttribute()] out bool AddOneAccessSQLResultSpecified) {
+            object[] results = this.Invoke("AddOneAccessSQL", new object[] {
+                        access});
+            AddOneAccessSQLResult = ((bool)(results[0]));
+            AddOneAccessSQLResultSpecified = ((bool)(results[1]));
+        }
+        
+        /// <remarks/>
+        public void AddOneAccessSQLAsync(AccessLevel access) {
+            this.AddOneAccessSQLAsync(access, null);
+        }
+        
+        /// <remarks/>
+        public void AddOneAccessSQLAsync(AccessLevel access, object userState) {
+            if ((this.AddOneAccessSQLOperationCompleted == null)) {
+                this.AddOneAccessSQLOperationCompleted = new System.Threading.SendOrPostCallback(this.OnAddOneAccessSQLOperationCompleted);
+            }
+            this.InvokeAsync("AddOneAccessSQL", new object[] {
+                        access}, this.AddOneAccessSQLOperationCompleted, userState);
+        }
+        
+        private void OnAddOneAccessSQLOperationCompleted(object arg) {
+            if ((this.AddOneAccessSQLCompleted != null)) {
+                System.Web.Services.Protocols.InvokeCompletedEventArgs invokeArgs = ((System.Web.Services.Protocols.InvokeCompletedEventArgs)(arg));
+                this.AddOneAccessSQLCompleted(this, new AddOneAccessSQLCompletedEventArgs(invokeArgs.Results, invokeArgs.Error, invokeArgs.Cancelled, invokeArgs.UserState));
             }
         }
         
@@ -272,6 +420,64 @@ namespace Gate.WebReference {
         }
         
         /// <remarks/>
+        [System.Web.Services.Protocols.SoapDocumentMethodAttribute("DeleteAccess", RequestNamespace="http://dmtserv.CardServices", ResponseNamespace="http://dmtserv.CardServices", Use=System.Web.Services.Description.SoapBindingUse.Literal, ParameterStyle=System.Web.Services.Protocols.SoapParameterStyle.Wrapped)]
+        public void DeleteAccess([System.Xml.Serialization.XmlElementAttribute(IsNullable=true)] string aName, out bool DeleteAccessResult, [System.Xml.Serialization.XmlIgnoreAttribute()] out bool DeleteAccessResultSpecified) {
+            object[] results = this.Invoke("DeleteAccess", new object[] {
+                        aName});
+            DeleteAccessResult = ((bool)(results[0]));
+            DeleteAccessResultSpecified = ((bool)(results[1]));
+        }
+        
+        /// <remarks/>
+        public void DeleteAccessAsync(string aName) {
+            this.DeleteAccessAsync(aName, null);
+        }
+        
+        /// <remarks/>
+        public void DeleteAccessAsync(string aName, object userState) {
+            if ((this.DeleteAccessOperationCompleted == null)) {
+                this.DeleteAccessOperationCompleted = new System.Threading.SendOrPostCallback(this.OnDeleteAccessOperationCompleted);
+            }
+            this.InvokeAsync("DeleteAccess", new object[] {
+                        aName}, this.DeleteAccessOperationCompleted, userState);
+        }
+        
+        private void OnDeleteAccessOperationCompleted(object arg) {
+            if ((this.DeleteAccessCompleted != null)) {
+                System.Web.Services.Protocols.InvokeCompletedEventArgs invokeArgs = ((System.Web.Services.Protocols.InvokeCompletedEventArgs)(arg));
+                this.DeleteAccessCompleted(this, new DeleteAccessCompletedEventArgs(invokeArgs.Results, invokeArgs.Error, invokeArgs.Cancelled, invokeArgs.UserState));
+            }
+        }
+        
+        /// <remarks/>
+        [System.Web.Services.Protocols.SoapDocumentMethodAttribute("DeleteAllAccess", RequestNamespace="http://dmtserv.CardServices", ResponseNamespace="http://dmtserv.CardServices", Use=System.Web.Services.Description.SoapBindingUse.Literal, ParameterStyle=System.Web.Services.Protocols.SoapParameterStyle.Wrapped)]
+        public void DeleteAllAccess(out bool DeleteAllAccessResult, [System.Xml.Serialization.XmlIgnoreAttribute()] out bool DeleteAllAccessResultSpecified) {
+            object[] results = this.Invoke("DeleteAllAccess", new object[0]);
+            DeleteAllAccessResult = ((bool)(results[0]));
+            DeleteAllAccessResultSpecified = ((bool)(results[1]));
+        }
+        
+        /// <remarks/>
+        public void DeleteAllAccessAsync() {
+            this.DeleteAllAccessAsync(null);
+        }
+        
+        /// <remarks/>
+        public void DeleteAllAccessAsync(object userState) {
+            if ((this.DeleteAllAccessOperationCompleted == null)) {
+                this.DeleteAllAccessOperationCompleted = new System.Threading.SendOrPostCallback(this.OnDeleteAllAccessOperationCompleted);
+            }
+            this.InvokeAsync("DeleteAllAccess", new object[0], this.DeleteAllAccessOperationCompleted, userState);
+        }
+        
+        private void OnDeleteAllAccessOperationCompleted(object arg) {
+            if ((this.DeleteAllAccessCompleted != null)) {
+                System.Web.Services.Protocols.InvokeCompletedEventArgs invokeArgs = ((System.Web.Services.Protocols.InvokeCompletedEventArgs)(arg));
+                this.DeleteAllAccessCompleted(this, new DeleteAllAccessCompletedEventArgs(invokeArgs.Results, invokeArgs.Error, invokeArgs.Cancelled, invokeArgs.UserState));
+            }
+        }
+        
+        /// <remarks/>
         public new void CancelAsync(object userState) {
             base.CancelAsync(userState);
         }
@@ -289,23 +495,24 @@ namespace Gate.WebReference {
             return false;
         }
     }
-    
+
     /// <remarks/>
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.0.30319.34234")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://dmtserv.CardServices")]
-    public partial class Transaction {
-        
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace = "http://dmtserv.CardServices")]
+    public partial class Transaction
+    {
+
         private int cardCodeField;
-        
+
         private string cardHolderField;
-        
+
         private System.DateTime dateTimeField;
-        
+
         private int errorNumberField;
-        
+
         private int readerNumberField;
 
         public Transaction() { }
@@ -320,84 +527,100 @@ namespace Gate.WebReference {
         }
 
         /// <remarks/>
-        public int cardCode {
-            get {
+        public int cardCode
+        {
+            get
+            {
                 return this.cardCodeField;
             }
-            set {
+            set
+            {
                 this.cardCodeField = value;
             }
         }
-        
+
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(IsNullable=true)]
-        public string cardHolder {
-            get {
+        [System.Xml.Serialization.XmlElementAttribute(IsNullable = true)]
+        public string cardHolder
+        {
+            get
+            {
                 return this.cardHolderField;
             }
-            set {
+            set
+            {
                 this.cardHolderField = value;
             }
         }
-        
+
         /// <remarks/>
-        public System.DateTime dateTime {
-            get {
+        public System.DateTime dateTime
+        {
+            get
+            {
                 return this.dateTimeField;
             }
-            set {
+            set
+            {
                 this.dateTimeField = value;
             }
         }
-        
+
         /// <remarks/>
-        public int errorNumber {
-            get {
+        public int errorNumber
+        {
+            get
+            {
                 return this.errorNumberField;
             }
-            set {
+            set
+            {
                 this.errorNumberField = value;
             }
         }
-        
+
         /// <remarks/>
-        public int readerNumber {
-            get {
+        public int readerNumber
+        {
+            get
+            {
                 return this.readerNumberField;
             }
-            set {
+            set
+            {
                 this.readerNumberField = value;
             }
         }
-      
+
     }
-    
+
     /// <remarks/>
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.0.30319.34234")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://dmtserv.CardServices")]
-    public partial class AccessLevel {
-        
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace = "http://dmtserv.CardServices")]
+    public partial class AccessLevel
+    {
+
         private System.DateTime dateEndField;
-        
+
         private System.DateTime dateStartField;
-        
+
         private string nameField;
-        
+
         private int numberOfUsesField;
-        
+
         private bool useDateRangeField;
-        
+
         private bool usePassBackField;
-        
+
         private string[] weekReader1AccessField;
-        
+
         private string[] weekReader2AccessField;
-        
+
         private System.DateTime[] weekTimeEndField;
-        
+
         private System.DateTime[] weekTimeStartField;
 
         public AccessLevel() { }
@@ -416,128 +639,159 @@ namespace Gate.WebReference {
             this.dateStart = dateStart;
             this.dateEnd = dateEnd;
         }
-        
+
         /// <remarks/>
-        public System.DateTime dateEnd {
-            get {
+        public System.DateTime dateEnd
+        {
+            get
+            {
                 return this.dateEndField;
             }
-            set {
+            set
+            {
                 this.dateEndField = value;
             }
         }
-     
-        
+
+
         /// <remarks/>
-        public System.DateTime dateStart {
-            get {
+        public System.DateTime dateStart
+        {
+            get
+            {
                 return this.dateStartField;
             }
-            set {
+            set
+            {
                 this.dateStartField = value;
             }
         }
-        
+
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(IsNullable=true)]
-        public string name {
-            get {
+        [System.Xml.Serialization.XmlElementAttribute(IsNullable = true)]
+        public string name
+        {
+            get
+            {
                 return this.nameField;
             }
-            set {
+            set
+            {
                 this.nameField = value;
             }
         }
-        
+
         /// <remarks/>
-        public int numberOfUses {
-            get {
+        public int numberOfUses
+        {
+            get
+            {
                 return this.numberOfUsesField;
             }
-            set {
+            set
+            {
                 this.numberOfUsesField = value;
             }
         }
-         
+
         /// <remarks/>
-        public bool useDateRange {
-            get {
+        public bool useDateRange
+        {
+            get
+            {
                 return this.useDateRangeField;
             }
-            set {
+            set
+            {
                 this.useDateRangeField = value;
             }
         }
-        
+
         /// <remarks/>
-        public bool usePassBack {
-            get {
+        public bool usePassBack
+        {
+            get
+            {
                 return this.usePassBackField;
             }
-            set {
+            set
+            {
                 this.usePassBackField = value;
             }
         }
-        
+
         /// <remarks/>
-        [System.Xml.Serialization.XmlArrayAttribute(IsNullable=true)]
-        [System.Xml.Serialization.XmlArrayItemAttribute(Namespace="http://schemas.microsoft.com/2003/10/Serialization/Arrays")]
-        public string[] weekReader1Access {
-            get {
+        [System.Xml.Serialization.XmlArrayAttribute(IsNullable = true)]
+        [System.Xml.Serialization.XmlArrayItemAttribute(Namespace = "http://schemas.microsoft.com/2003/10/Serialization/Arrays")]
+        public string[] weekReader1Access
+        {
+            get
+            {
                 return this.weekReader1AccessField;
             }
-            set {
+            set
+            {
                 this.weekReader1AccessField = value;
             }
         }
-        
+
         /// <remarks/>
-        [System.Xml.Serialization.XmlArrayAttribute(IsNullable=true)]
-        [System.Xml.Serialization.XmlArrayItemAttribute(Namespace="http://schemas.microsoft.com/2003/10/Serialization/Arrays")]
-        public string[] weekReader2Access {
-            get {
+        [System.Xml.Serialization.XmlArrayAttribute(IsNullable = true)]
+        [System.Xml.Serialization.XmlArrayItemAttribute(Namespace = "http://schemas.microsoft.com/2003/10/Serialization/Arrays")]
+        public string[] weekReader2Access
+        {
+            get
+            {
                 return this.weekReader2AccessField;
             }
-            set {
+            set
+            {
                 this.weekReader2AccessField = value;
             }
         }
-        
+
         /// <remarks/>
-        [System.Xml.Serialization.XmlArrayAttribute(IsNullable=true)]
-        [System.Xml.Serialization.XmlArrayItemAttribute(Namespace="http://schemas.microsoft.com/2003/10/Serialization/Arrays", IsNullable=false)]
-        public System.DateTime[] weekTimeEnd {
-            get {
+        [System.Xml.Serialization.XmlArrayAttribute(IsNullable = true)]
+        [System.Xml.Serialization.XmlArrayItemAttribute(Namespace = "http://schemas.microsoft.com/2003/10/Serialization/Arrays", IsNullable = false)]
+        public System.DateTime[] weekTimeEnd
+        {
+            get
+            {
                 return this.weekTimeEndField;
             }
-            set {
+            set
+            {
                 this.weekTimeEndField = value;
             }
         }
-        
+
         /// <remarks/>
-        [System.Xml.Serialization.XmlArrayAttribute(IsNullable=true)]
-        [System.Xml.Serialization.XmlArrayItemAttribute(Namespace="http://schemas.microsoft.com/2003/10/Serialization/Arrays", IsNullable=false)]
-        public System.DateTime[] weekTimeStart {
-            get {
+        [System.Xml.Serialization.XmlArrayAttribute(IsNullable = true)]
+        [System.Xml.Serialization.XmlArrayItemAttribute(Namespace = "http://schemas.microsoft.com/2003/10/Serialization/Arrays", IsNullable = false)]
+        public System.DateTime[] weekTimeStart
+        {
+            get
+            {
                 return this.weekTimeStartField;
             }
-            set {
+            set
+            {
                 this.weekTimeStartField = value;
             }
         }
     }
-    
+
     /// <remarks/>
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.0.30319.34234")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://dmtserv.CardServices")]
-    public partial class Card {
-        
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace = "http://dmtserv.CardServices")]
+    public partial class Card
+    {
+
         private string accessLevelField;
-        
+
         private int cardCodeField;
 
         private System.DateTime dateAddedField;
@@ -555,43 +809,55 @@ namespace Gate.WebReference {
         }
 
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(IsNullable=true)]
-        public string accessLevel {
-            get {
+        [System.Xml.Serialization.XmlElementAttribute(IsNullable = true)]
+        public string accessLevel
+        {
+            get
+            {
                 return this.accessLevelField;
             }
-            set {
+            set
+            {
                 this.accessLevelField = value;
             }
         }
-        
+
         /// <remarks/>
-        public int cardCode {
-            get {
+        public int cardCode
+        {
+            get
+            {
                 return this.cardCodeField;
             }
-            set {
+            set
+            {
                 this.cardCodeField = value;
             }
         }
-        
+
         /// <remarks/>
-        public System.DateTime dateAdded {
-            get {
+        public System.DateTime dateAdded
+        {
+            get
+            {
                 return this.dateAddedField;
             }
-            set {
+            set
+            {
                 this.dateAddedField = value;
             }
         }
-        
+
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(IsNullable=true)]
-        public string name {
-            get {
+        [System.Xml.Serialization.XmlElementAttribute(IsNullable = true)]
+        public string name
+        {
+            get
+            {
                 return this.nameField;
             }
-            set {
+            set
+            {
                 this.nameField = value;
             }
         }
@@ -659,23 +925,23 @@ namespace Gate.WebReference {
     
     /// <remarks/>
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.0.30319.18408")]
-    public delegate void UpdateOneCardSQLCompletedEventHandler(object sender, UpdateOneCardSQLCompletedEventArgs e);
+    public delegate void DeleteTransactionCompletedEventHandler(object sender, DeleteTransactionCompletedEventArgs e);
     
     /// <remarks/>
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.0.30319.18408")]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    public partial class UpdateOneCardSQLCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
+    public partial class DeleteTransactionCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
         
         private object[] results;
         
-        internal UpdateOneCardSQLCompletedEventArgs(object[] results, System.Exception exception, bool cancelled, object userState) : 
+        internal DeleteTransactionCompletedEventArgs(object[] results, System.Exception exception, bool cancelled, object userState) : 
                 base(exception, cancelled, userState) {
             this.results = results;
         }
         
         /// <remarks/>
-        public bool UpdateOneCardSQLResult {
+        public bool DeleteTransactionResult {
             get {
                 this.RaiseExceptionIfNecessary();
                 return ((bool)(this.results[0]));
@@ -683,7 +949,75 @@ namespace Gate.WebReference {
         }
         
         /// <remarks/>
-        public bool UpdateOneCardSQLResultSpecified {
+        public bool DeleteTransactionResultSpecified {
+            get {
+                this.RaiseExceptionIfNecessary();
+                return ((bool)(this.results[1]));
+            }
+        }
+    }
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.0.30319.18408")]
+    public delegate void DeleteAllTransactionsCompletedEventHandler(object sender, DeleteAllTransactionsCompletedEventArgs e);
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.0.30319.18408")]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.ComponentModel.DesignerCategoryAttribute("code")]
+    public partial class DeleteAllTransactionsCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
+        
+        private object[] results;
+        
+        internal DeleteAllTransactionsCompletedEventArgs(object[] results, System.Exception exception, bool cancelled, object userState) : 
+                base(exception, cancelled, userState) {
+            this.results = results;
+        }
+        
+        /// <remarks/>
+        public bool DeleteAllTransactionsResult {
+            get {
+                this.RaiseExceptionIfNecessary();
+                return ((bool)(this.results[0]));
+            }
+        }
+        
+        /// <remarks/>
+        public bool DeleteAllTransactionsResultSpecified {
+            get {
+                this.RaiseExceptionIfNecessary();
+                return ((bool)(this.results[1]));
+            }
+        }
+    }
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.0.30319.18408")]
+    public delegate void AddOneCardSQLCompletedEventHandler(object sender, AddOneCardSQLCompletedEventArgs e);
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.0.30319.18408")]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.ComponentModel.DesignerCategoryAttribute("code")]
+    public partial class AddOneCardSQLCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
+        
+        private object[] results;
+        
+        internal AddOneCardSQLCompletedEventArgs(object[] results, System.Exception exception, bool cancelled, object userState) : 
+                base(exception, cancelled, userState) {
+            this.results = results;
+        }
+        
+        /// <remarks/>
+        public bool AddOneCardSQLResult {
+            get {
+                this.RaiseExceptionIfNecessary();
+                return ((bool)(this.results[0]));
+            }
+        }
+        
+        /// <remarks/>
+        public bool AddOneCardSQLResultSpecified {
             get {
                 this.RaiseExceptionIfNecessary();
                 return ((bool)(this.results[1]));
@@ -719,23 +1053,23 @@ namespace Gate.WebReference {
     
     /// <remarks/>
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.0.30319.18408")]
-    public delegate void UpdateAccessSQLCompletedEventHandler(object sender, UpdateAccessSQLCompletedEventArgs e);
+    public delegate void DeleteCardCompletedEventHandler(object sender, DeleteCardCompletedEventArgs e);
     
     /// <remarks/>
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.0.30319.18408")]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    public partial class UpdateAccessSQLCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
+    public partial class DeleteCardCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
         
         private object[] results;
         
-        internal UpdateAccessSQLCompletedEventArgs(object[] results, System.Exception exception, bool cancelled, object userState) : 
+        internal DeleteCardCompletedEventArgs(object[] results, System.Exception exception, bool cancelled, object userState) : 
                 base(exception, cancelled, userState) {
             this.results = results;
         }
         
         /// <remarks/>
-        public bool UpdateAccessSQLResult {
+        public bool DeleteCardResult {
             get {
                 this.RaiseExceptionIfNecessary();
                 return ((bool)(this.results[0]));
@@ -743,7 +1077,75 @@ namespace Gate.WebReference {
         }
         
         /// <remarks/>
-        public bool UpdateAccessSQLResultSpecified {
+        public bool DeleteCardResultSpecified {
+            get {
+                this.RaiseExceptionIfNecessary();
+                return ((bool)(this.results[1]));
+            }
+        }
+    }
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.0.30319.18408")]
+    public delegate void DeleteAllCardsCompletedEventHandler(object sender, DeleteAllCardsCompletedEventArgs e);
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.0.30319.18408")]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.ComponentModel.DesignerCategoryAttribute("code")]
+    public partial class DeleteAllCardsCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
+        
+        private object[] results;
+        
+        internal DeleteAllCardsCompletedEventArgs(object[] results, System.Exception exception, bool cancelled, object userState) : 
+                base(exception, cancelled, userState) {
+            this.results = results;
+        }
+        
+        /// <remarks/>
+        public bool DeleteAllCardsResult {
+            get {
+                this.RaiseExceptionIfNecessary();
+                return ((bool)(this.results[0]));
+            }
+        }
+        
+        /// <remarks/>
+        public bool DeleteAllCardsResultSpecified {
+            get {
+                this.RaiseExceptionIfNecessary();
+                return ((bool)(this.results[1]));
+            }
+        }
+    }
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.0.30319.18408")]
+    public delegate void AddOneAccessSQLCompletedEventHandler(object sender, AddOneAccessSQLCompletedEventArgs e);
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.0.30319.18408")]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.ComponentModel.DesignerCategoryAttribute("code")]
+    public partial class AddOneAccessSQLCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
+        
+        private object[] results;
+        
+        internal AddOneAccessSQLCompletedEventArgs(object[] results, System.Exception exception, bool cancelled, object userState) : 
+                base(exception, cancelled, userState) {
+            this.results = results;
+        }
+        
+        /// <remarks/>
+        public bool AddOneAccessSQLResult {
+            get {
+                this.RaiseExceptionIfNecessary();
+                return ((bool)(this.results[0]));
+            }
+        }
+        
+        /// <remarks/>
+        public bool AddOneAccessSQLResultSpecified {
             get {
                 this.RaiseExceptionIfNecessary();
                 return ((bool)(this.results[1]));
@@ -773,6 +1175,74 @@ namespace Gate.WebReference {
             get {
                 this.RaiseExceptionIfNecessary();
                 return ((AccessLevel[])(this.results[0]));
+            }
+        }
+    }
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.0.30319.18408")]
+    public delegate void DeleteAccessCompletedEventHandler(object sender, DeleteAccessCompletedEventArgs e);
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.0.30319.18408")]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.ComponentModel.DesignerCategoryAttribute("code")]
+    public partial class DeleteAccessCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
+        
+        private object[] results;
+        
+        internal DeleteAccessCompletedEventArgs(object[] results, System.Exception exception, bool cancelled, object userState) : 
+                base(exception, cancelled, userState) {
+            this.results = results;
+        }
+        
+        /// <remarks/>
+        public bool DeleteAccessResult {
+            get {
+                this.RaiseExceptionIfNecessary();
+                return ((bool)(this.results[0]));
+            }
+        }
+        
+        /// <remarks/>
+        public bool DeleteAccessResultSpecified {
+            get {
+                this.RaiseExceptionIfNecessary();
+                return ((bool)(this.results[1]));
+            }
+        }
+    }
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.0.30319.18408")]
+    public delegate void DeleteAllAccessCompletedEventHandler(object sender, DeleteAllAccessCompletedEventArgs e);
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.0.30319.18408")]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.ComponentModel.DesignerCategoryAttribute("code")]
+    public partial class DeleteAllAccessCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
+        
+        private object[] results;
+        
+        internal DeleteAllAccessCompletedEventArgs(object[] results, System.Exception exception, bool cancelled, object userState) : 
+                base(exception, cancelled, userState) {
+            this.results = results;
+        }
+        
+        /// <remarks/>
+        public bool DeleteAllAccessResult {
+            get {
+                this.RaiseExceptionIfNecessary();
+                return ((bool)(this.results[0]));
+            }
+        }
+        
+        /// <remarks/>
+        public bool DeleteAllAccessResultSpecified {
+            get {
+                this.RaiseExceptionIfNecessary();
+                return ((bool)(this.results[1]));
             }
         }
     }

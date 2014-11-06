@@ -93,9 +93,6 @@
     <AndroidResource Include="Resources\layout\Settings.axml">
       <SubType>AndroidResource</SubType>
     </AndroidResource>
-    <AndroidResource Include="Resources\layout\DisplayCard.axml">
-      <SubType>AndroidResource</SubType>
-    </AndroidResource>
     <AndroidResource Include="Resources\layout\ListDisplay2.axml">
       <SubType>AndroidResource</SubType>
     </AndroidResource>

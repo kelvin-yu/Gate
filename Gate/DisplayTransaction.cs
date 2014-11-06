@@ -36,7 +36,7 @@ namespace Gate
             transactionList = SerializeTools.deserializeTransactionList();
 
             ISharedPreferences prefs = PreferenceManager.GetDefaultSharedPreferences(this);
-            transactionIndex = prefs.GetInt("cardclick", -1);
+            transactionIndex = prefs.GetInt("transactionclick", -1);
 
             card.Text = transactionList[transactionIndex].cardCode.ToString();
 

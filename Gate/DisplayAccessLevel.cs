@@ -320,17 +320,21 @@ namespace Gate
                     alertDialog.SetMessage("Deleting this access level with delete all cards associated with this access level!");
                     alertDialog.SetButton("OK", (s, ev) =>
                     {
+                        bool result, resultSpecified;
                         for (int i = 0; i < cardList.Count; i++)
                         {
                             if (cardList[i].accessLevel == accessLevelList[levelIndex].name)
                             {
+                                Global.cs.DeleteCard(cardList[i].name, out result, out resultSpecified);
                                 cardList.RemoveAt(i--);
                             }
                         }
                         SerializeTools.serializeCardList(cardList);
                         ReaderServices.sendCard(cardList);
 
+                        Global.cs.DeleteAccess(accessLevelList[levelIndex].name, out result, out resultSpecified);
                         accessLevelList.RemoveAt(levelIndex);
+
                         SerializeTools.serializeAccessLevelList(accessLevelList);
                         ReaderServices.sendAccessLevel(accessLevelList);
                         Finish();

@@ -145,7 +145,7 @@ namespace Gate
         {
             ISharedPreferences prefs = PreferenceManager.GetDefaultSharedPreferences(this.Activity);
             ISharedPreferencesEditor editor = prefs.Edit();
-            editor.PutInt("transactionclick", e.Position);
+            editor.PutInt("transactionclick", transactionList.Count - 1 - e.Position);
             editor.Apply();
 
             this.Activity.StartActivity(typeof(DisplayTransaction));

@@ -131,6 +131,7 @@ namespace Gate
 
         static public bool isTCPNull()
         {
+            Console.WriteLine(tcpClient == null);
             return tcpClient == null;
         }
 

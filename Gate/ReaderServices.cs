@@ -167,8 +167,8 @@ namespace Gate
                     }
                 }
                 sqlTransList.AddRange(newList);
-
-
+                bool result, resultSpecified;
+                Global.cs.UpdateTransactionSQL(newList.ToArray(), out result, out resultSpecified);
                 SerializeTools.serializeTransaction(sqlTransList);
                 Thread.Sleep(10000);
             }

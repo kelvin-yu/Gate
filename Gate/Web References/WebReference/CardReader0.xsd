@@ -43,7 +43,33 @@
       </xs:sequence>
     </xs:complexType>
   </xs:element>
-  <xs:element name="UpdateOneCardSQL">
+  <xs:element name="DeleteTransaction">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="tTime" type="xs:dateTime" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="DeleteTransactionResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="DeleteTransactionResult" type="xs:boolean" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="DeleteAllTransactions">
+    <xs:complexType>
+      <xs:sequence />
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="DeleteAllTransactionsResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="DeleteAllTransactionsResult" type="xs:boolean" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="AddOneCardSQL">
     <xs:complexType>
       <xs:sequence>
         <xs:element minOccurs="0" name="card" nillable="true" type="tns:Card" />
@@ -59,10 +85,10 @@
     </xs:sequence>
   </xs:complexType>
   <xs:element name="Card" nillable="true" type="tns:Card" />
-  <xs:element name="UpdateOneCardSQLResponse">
+  <xs:element name="AddOneCardSQLResponse">
     <xs:complexType>
       <xs:sequence>
-        <xs:element minOccurs="0" name="UpdateOneCardSQLResult" type="xs:boolean" />
+        <xs:element minOccurs="0" name="AddOneCardSQLResult" type="xs:boolean" />
       </xs:sequence>
     </xs:complexType>
   </xs:element>
@@ -84,19 +110,39 @@
     </xs:sequence>
   </xs:complexType>
   <xs:element name="ArrayOfCard" nillable="true" type="tns:ArrayOfCard" />
-  <xs:element name="UpdateAccessSQL">
+  <xs:element name="DeleteCard">
     <xs:complexType>
       <xs:sequence>
-        <xs:element minOccurs="0" name="newAccess" nillable="true" type="tns:ArrayOfAccessLevel" />
+        <xs:element minOccurs="0" name="cName" nillable="true" type="xs:string" />
       </xs:sequence>
     </xs:complexType>
   </xs:element>
-  <xs:complexType name="ArrayOfAccessLevel">
-    <xs:sequence>
-      <xs:element minOccurs="0" maxOccurs="unbounded" name="AccessLevel" nillable="true" type="tns:AccessLevel" />
-    </xs:sequence>
-  </xs:complexType>
-  <xs:element name="ArrayOfAccessLevel" nillable="true" type="tns:ArrayOfAccessLevel" />
+  <xs:element name="DeleteCardResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="DeleteCardResult" type="xs:boolean" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="DeleteAllCards">
+    <xs:complexType>
+      <xs:sequence />
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="DeleteAllCardsResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="DeleteAllCardsResult" type="xs:boolean" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="AddOneAccessSQL">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="access" nillable="true" type="tns:AccessLevel" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
   <xs:complexType name="AccessLevel">
     <xs:sequence>
       <xs:element minOccurs="0" name="dateEnd" type="xs:dateTime" />
@@ -112,10 +158,10 @@
     </xs:sequence>
   </xs:complexType>
   <xs:element name="AccessLevel" nillable="true" type="tns:AccessLevel" />
-  <xs:element name="UpdateAccessSQLResponse">
+  <xs:element name="AddOneAccessSQLResponse">
     <xs:complexType>
       <xs:sequence>
-        <xs:element minOccurs="0" name="UpdateAccessSQLResult" type="xs:boolean" />
+        <xs:element minOccurs="0" name="AddOneAccessSQLResult" type="xs:boolean" />
       </xs:sequence>
     </xs:complexType>
   </xs:element>
@@ -128,6 +174,38 @@
     <xs:complexType>
       <xs:sequence>
         <xs:element minOccurs="0" name="GetAccessLevelListResult" nillable="true" type="tns:ArrayOfAccessLevel" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:complexType name="ArrayOfAccessLevel">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="AccessLevel" nillable="true" type="tns:AccessLevel" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfAccessLevel" nillable="true" type="tns:ArrayOfAccessLevel" />
+  <xs:element name="DeleteAccess">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="aName" nillable="true" type="xs:string" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="DeleteAccessResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="DeleteAccessResult" type="xs:boolean" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="DeleteAllAccess">
+    <xs:complexType>
+      <xs:sequence />
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="DeleteAllAccessResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="DeleteAllAccessResult" type="xs:boolean" />
       </xs:sequence>
     </xs:complexType>
   </xs:element>

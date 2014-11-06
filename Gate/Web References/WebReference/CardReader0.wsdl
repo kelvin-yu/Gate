@@ -19,11 +19,23 @@
   <wsdl:message name="ICardService_UpdateTransactionSQL_OutputMessage">
     <wsdl:part name="parameters" element="tns:UpdateTransactionSQLResponse" />
   </wsdl:message>
-  <wsdl:message name="ICardService_UpdateOneCardSQL_InputMessage">
-    <wsdl:part name="parameters" element="tns:UpdateOneCardSQL" />
+  <wsdl:message name="ICardService_DeleteTransaction_InputMessage">
+    <wsdl:part name="parameters" element="tns:DeleteTransaction" />
   </wsdl:message>
-  <wsdl:message name="ICardService_UpdateOneCardSQL_OutputMessage">
-    <wsdl:part name="parameters" element="tns:UpdateOneCardSQLResponse" />
+  <wsdl:message name="ICardService_DeleteTransaction_OutputMessage">
+    <wsdl:part name="parameters" element="tns:DeleteTransactionResponse" />
+  </wsdl:message>
+  <wsdl:message name="ICardService_DeleteAllTransactions_InputMessage">
+    <wsdl:part name="parameters" element="tns:DeleteAllTransactions" />
+  </wsdl:message>
+  <wsdl:message name="ICardService_DeleteAllTransactions_OutputMessage">
+    <wsdl:part name="parameters" element="tns:DeleteAllTransactionsResponse" />
+  </wsdl:message>
+  <wsdl:message name="ICardService_AddOneCardSQL_InputMessage">
+    <wsdl:part name="parameters" element="tns:AddOneCardSQL" />
+  </wsdl:message>
+  <wsdl:message name="ICardService_AddOneCardSQL_OutputMessage">
+    <wsdl:part name="parameters" element="tns:AddOneCardSQLResponse" />
   </wsdl:message>
   <wsdl:message name="ICardService_GetCardList_InputMessage">
     <wsdl:part name="parameters" element="tns:GetCardList" />
@@ -31,17 +43,41 @@
   <wsdl:message name="ICardService_GetCardList_OutputMessage">
     <wsdl:part name="parameters" element="tns:GetCardListResponse" />
   </wsdl:message>
-  <wsdl:message name="ICardService_UpdateAccessSQL_InputMessage">
-    <wsdl:part name="parameters" element="tns:UpdateAccessSQL" />
+  <wsdl:message name="ICardService_DeleteCard_InputMessage">
+    <wsdl:part name="parameters" element="tns:DeleteCard" />
   </wsdl:message>
-  <wsdl:message name="ICardService_UpdateAccessSQL_OutputMessage">
-    <wsdl:part name="parameters" element="tns:UpdateAccessSQLResponse" />
+  <wsdl:message name="ICardService_DeleteCard_OutputMessage">
+    <wsdl:part name="parameters" element="tns:DeleteCardResponse" />
+  </wsdl:message>
+  <wsdl:message name="ICardService_DeleteAllCards_InputMessage">
+    <wsdl:part name="parameters" element="tns:DeleteAllCards" />
+  </wsdl:message>
+  <wsdl:message name="ICardService_DeleteAllCards_OutputMessage">
+    <wsdl:part name="parameters" element="tns:DeleteAllCardsResponse" />
+  </wsdl:message>
+  <wsdl:message name="ICardService_AddOneAccessSQL_InputMessage">
+    <wsdl:part name="parameters" element="tns:AddOneAccessSQL" />
+  </wsdl:message>
+  <wsdl:message name="ICardService_AddOneAccessSQL_OutputMessage">
+    <wsdl:part name="parameters" element="tns:AddOneAccessSQLResponse" />
   </wsdl:message>
   <wsdl:message name="ICardService_GetAccessLevelList_InputMessage">
     <wsdl:part name="parameters" element="tns:GetAccessLevelList" />
   </wsdl:message>
   <wsdl:message name="ICardService_GetAccessLevelList_OutputMessage">
     <wsdl:part name="parameters" element="tns:GetAccessLevelListResponse" />
+  </wsdl:message>
+  <wsdl:message name="ICardService_DeleteAccess_InputMessage">
+    <wsdl:part name="parameters" element="tns:DeleteAccess" />
+  </wsdl:message>
+  <wsdl:message name="ICardService_DeleteAccess_OutputMessage">
+    <wsdl:part name="parameters" element="tns:DeleteAccessResponse" />
+  </wsdl:message>
+  <wsdl:message name="ICardService_DeleteAllAccess_InputMessage">
+    <wsdl:part name="parameters" element="tns:DeleteAllAccess" />
+  </wsdl:message>
+  <wsdl:message name="ICardService_DeleteAllAccess_OutputMessage">
+    <wsdl:part name="parameters" element="tns:DeleteAllAccessResponse" />
   </wsdl:message>
   <wsdl:portType name="ICardService">
     <wsdl:operation name="GetTransactionList">
@@ -52,21 +88,45 @@
       <wsdl:input wsaw:Action="UpdateTransactionSQL" message="tns:ICardService_UpdateTransactionSQL_InputMessage" />
       <wsdl:output wsaw:Action="http://dmtserv.CardServices/ICardService/UpdateTransactionSQLResponse" message="tns:ICardService_UpdateTransactionSQL_OutputMessage" />
     </wsdl:operation>
-    <wsdl:operation name="UpdateOneCardSQL">
-      <wsdl:input wsaw:Action="UpdateOneCardSQL" message="tns:ICardService_UpdateOneCardSQL_InputMessage" />
-      <wsdl:output wsaw:Action="http://dmtserv.CardServices/ICardService/UpdateOneCardSQLResponse" message="tns:ICardService_UpdateOneCardSQL_OutputMessage" />
+    <wsdl:operation name="DeleteTransaction">
+      <wsdl:input wsaw:Action="DeleteTransaction" message="tns:ICardService_DeleteTransaction_InputMessage" />
+      <wsdl:output wsaw:Action="http://dmtserv.CardServices/ICardService/DeleteTransactionResponse" message="tns:ICardService_DeleteTransaction_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="DeleteAllTransactions">
+      <wsdl:input wsaw:Action="DeleteAllTransactions" message="tns:ICardService_DeleteAllTransactions_InputMessage" />
+      <wsdl:output wsaw:Action="http://dmtserv.CardServices/ICardService/DeleteAllTransactionsResponse" message="tns:ICardService_DeleteAllTransactions_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="AddOneCardSQL">
+      <wsdl:input wsaw:Action="UpdateOneCardSQL" message="tns:ICardService_AddOneCardSQL_InputMessage" />
+      <wsdl:output wsaw:Action="http://dmtserv.CardServices/ICardService/AddOneCardSQLResponse" message="tns:ICardService_AddOneCardSQL_OutputMessage" />
     </wsdl:operation>
     <wsdl:operation name="GetCardList">
       <wsdl:input wsaw:Action="GetCardList" message="tns:ICardService_GetCardList_InputMessage" />
       <wsdl:output wsaw:Action="http://dmtserv.CardServices/ICardService/GetCardListResponse" message="tns:ICardService_GetCardList_OutputMessage" />
     </wsdl:operation>
-    <wsdl:operation name="UpdateAccessSQL">
-      <wsdl:input wsaw:Action="UpdateAccessSQL" message="tns:ICardService_UpdateAccessSQL_InputMessage" />
-      <wsdl:output wsaw:Action="http://dmtserv.CardServices/ICardService/UpdateAccessSQLResponse" message="tns:ICardService_UpdateAccessSQL_OutputMessage" />
+    <wsdl:operation name="DeleteCard">
+      <wsdl:input wsaw:Action="DeleteCard" message="tns:ICardService_DeleteCard_InputMessage" />
+      <wsdl:output wsaw:Action="http://dmtserv.CardServices/ICardService/DeleteCardResponse" message="tns:ICardService_DeleteCard_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="DeleteAllCards">
+      <wsdl:input wsaw:Action="DeleteAllCards" message="tns:ICardService_DeleteAllCards_InputMessage" />
+      <wsdl:output wsaw:Action="http://dmtserv.CardServices/ICardService/DeleteAllCardsResponse" message="tns:ICardService_DeleteAllCards_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="AddOneAccessSQL">
+      <wsdl:input wsaw:Action="UpdateAccessSQL" message="tns:ICardService_AddOneAccessSQL_InputMessage" />
+      <wsdl:output wsaw:Action="http://dmtserv.CardServices/ICardService/AddOneAccessSQLResponse" message="tns:ICardService_AddOneAccessSQL_OutputMessage" />
     </wsdl:operation>
     <wsdl:operation name="GetAccessLevelList">
       <wsdl:input wsaw:Action="GetAccessList" message="tns:ICardService_GetAccessLevelList_InputMessage" />
       <wsdl:output wsaw:Action="http://dmtserv.CardServices/ICardService/GetAccessLevelListResponse" message="tns:ICardService_GetAccessLevelList_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="DeleteAccess">
+      <wsdl:input wsaw:Action="DeleteAccess" message="tns:ICardService_DeleteAccess_InputMessage" />
+      <wsdl:output wsaw:Action="http://dmtserv.CardServices/ICardService/DeleteAccessResponse" message="tns:ICardService_DeleteAccess_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="DeleteAllAccess">
+      <wsdl:input wsaw:Action="DeleteAllAccess" message="tns:ICardService_DeleteAllAccess_InputMessage" />
+      <wsdl:output wsaw:Action="http://dmtserv.CardServices/ICardService/DeleteAllAccessResponse" message="tns:ICardService_DeleteAllAccess_OutputMessage" />
     </wsdl:operation>
   </wsdl:portType>
 </wsdl:definitions>

@@ -37,20 +37,26 @@ namespace Gate
             };
 
             deleteCards.Click += delegate
-            { 
+            {
+                bool result, resultSpecified;
                 ReaderServices.deleteAllCards();
                 deleteCardXml();
+                Global.cs.DeleteAllCards(out result, out resultSpecified);
             };
 
             deleteAccessLevels.Click += delegate 
-            { 
+            {
+                bool result, resultSpecified;
                 ReaderServices.deleteAllAccessLevels();
                 deleteAccessXml();
+                Global.cs.DeleteAllAccess(out result, out resultSpecified);
             };
 
             deleteTransactions.Click += delegate
             {
+                bool result, resultSpecified;
                 deleteTransactionXml();
+                Global.cs.DeleteAllTransactions(out result, out resultSpecified);
             };
 
         }

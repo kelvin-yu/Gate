@@ -75,8 +75,8 @@ namespace Gate
 			// aapt resource value: 0x7f050057
 			public const int cancelAccessButton = 2131034199;
 			
-			// aapt resource value: 0x7f05005f
-			public const int cancelCardButton = 2131034207;
+			// aapt resource value: 0x7f050061
+			public const int cancelCardButton = 2131034209;
 			
 			// aapt resource value: 0x7f05005b
 			public const int cardField = 2131034203;
@@ -89,6 +89,9 @@ namespace Gate
 			
 			// aapt resource value: 0x7f05005c
 			public const int cardNumberField = 2131034204;
+			
+			// aapt resource value: 0x7f050060
+			public const int dateAdded = 2131034208;
 			
 			// aapt resource value: 0x7f050055
 			public const int dateEnd = 2131034197;
@@ -108,32 +111,23 @@ namespace Gate
 			// aapt resource value: 0x7f050028
 			public const int dayHeader2 = 2131034152;
 			
-			// aapt resource value: 0x7f05006f
-			public const int deleteAccessLevels = 2131034223;
+			// aapt resource value: 0x7f05006a
+			public const int deleteAccessLevels = 2131034218;
 			
-			// aapt resource value: 0x7f05006d
-			public const int deleteAll = 2131034221;
+			// aapt resource value: 0x7f050068
+			public const int deleteAll = 2131034216;
 			
-			// aapt resource value: 0x7f05006e
-			public const int deleteCards = 2131034222;
+			// aapt resource value: 0x7f050069
+			public const int deleteCards = 2131034217;
 			
-			// aapt resource value: 0x7f050070
-			public const int deleteTransactions = 2131034224;
-			
-			// aapt resource value: 0x7f050065
-			public const int displayCardLevel = 2131034213;
-			
-			// aapt resource value: 0x7f050061
-			public const int displayCardName = 2131034209;
-			
-			// aapt resource value: 0x7f050063
-			public const int displayCardNumber = 2131034211;
+			// aapt resource value: 0x7f05006b
+			public const int deleteTransactions = 2131034219;
 			
 			// aapt resource value: 0x7f050058
 			public const int doneAccessButton = 2131034200;
 			
-			// aapt resource value: 0x7f050060
-			public const int doneCardButton = 2131034208;
+			// aapt resource value: 0x7f050062
+			public const int doneCardButton = 2131034210;
 			
 			// aapt resource value: 0x7f05004e
 			public const int enableView = 2131034190;
@@ -162,8 +156,8 @@ namespace Gate
 			// aapt resource value: 0x7f050019
 			public const int endTimeWednesday = 2131034137;
 			
-			// aapt resource value: 0x7f05006c
-			public const int frameLayout1 = 2131034220;
+			// aapt resource value: 0x7f050067
+			public const int frameLayout1 = 2131034215;
 			
 			// aapt resource value: 0x7f05001f
 			public const int fridayView1 = 2131034143;
@@ -195,14 +189,14 @@ namespace Gate
 			// aapt resource value: 0x7f050053
 			public const int linearLayout8 = 2131034195;
 			
-			// aapt resource value: 0x7f050067
-			public const int listView = 2131034215;
+			// aapt resource value: 0x7f050063
+			public const int listView = 2131034211;
 			
-			// aapt resource value: 0x7f05006a
-			public const int listView1 = 2131034218;
+			// aapt resource value: 0x7f050065
+			public const int listView1 = 2131034213;
 			
-			// aapt resource value: 0x7f05006b
-			public const int listView2 = 2131034219;
+			// aapt resource value: 0x7f050066
+			public const int listView2 = 2131034214;
 			
 			// aapt resource value: 0x7f05000f
 			public const int mondayView1 = 2131034127;
@@ -348,11 +342,11 @@ namespace Gate
 			// aapt resource value: 0x7f050027
 			public const int tableRow9 = 2131034151;
 			
-			// aapt resource value: 0x7f050068
-			public const int textView1 = 2131034216;
+			// aapt resource value: 0x7f05005f
+			public const int textView1 = 2131034207;
 			
-			// aapt resource value: 0x7f050069
-			public const int textView2 = 2131034217;
+			// aapt resource value: 0x7f050064
+			public const int textView2 = 2131034212;
 			
 			// aapt resource value: 0x7f050029
 			public const int textView21 = 2131034153;
@@ -363,17 +357,11 @@ namespace Gate
 			// aapt resource value: 0x7f05004b
 			public const int textView23 = 2131034187;
 			
-			// aapt resource value: 0x7f050073
-			public const int textView3 = 2131034227;
+			// aapt resource value: 0x7f05006e
+			public const int textView3 = 2131034222;
 			
-			// aapt resource value: 0x7f050062
-			public const int textView4 = 2131034210;
-			
-			// aapt resource value: 0x7f050064
-			public const int textView5 = 2131034212;
-			
-			// aapt resource value: 0x7f050066
-			public const int textView6 = 2131034214;
+			// aapt resource value: 0x7f050070
+			public const int textView4 = 2131034224;
 			
 			// aapt resource value: 0x7f05001b
 			public const int thursdayView1 = 2131034139;
@@ -381,17 +369,17 @@ namespace Gate
 			// aapt resource value: 0x7f05003c
 			public const int thursdayView2 = 2131034172;
 			
+			// aapt resource value: 0x7f05006c
+			public const int transactionCard = 2131034220;
+			
 			// aapt resource value: 0x7f050071
-			public const int transactionCard = 2131034225;
+			public const int transactionError = 2131034225;
 			
-			// aapt resource value: 0x7f050075
-			public const int transactionError = 2131034229;
+			// aapt resource value: 0x7f05006f
+			public const int transactionReader = 2131034223;
 			
-			// aapt resource value: 0x7f050074
-			public const int transactionReader = 2131034228;
-			
-			// aapt resource value: 0x7f050072
-			public const int transactionTime = 2131034226;
+			// aapt resource value: 0x7f05006d
+			public const int transactionTime = 2131034221;
 			
 			// aapt resource value: 0x7f050013
 			public const int tuesdayView1 = 2131034131;
@@ -434,22 +422,19 @@ namespace Gate
 			public const int AddCard = 2130903041;
 			
 			// aapt resource value: 0x7f030002
-			public const int DisplayCard = 2130903042;
+			public const int ListDisplay = 2130903042;
 			
 			// aapt resource value: 0x7f030003
-			public const int ListDisplay = 2130903043;
+			public const int ListDisplay2 = 2130903043;
 			
 			// aapt resource value: 0x7f030004
-			public const int ListDisplay2 = 2130903044;
+			public const int Main = 2130903044;
 			
 			// aapt resource value: 0x7f030005
-			public const int Main = 2130903045;
+			public const int Settings = 2130903045;
 			
 			// aapt resource value: 0x7f030006
-			public const int Settings = 2130903046;
-			
-			// aapt resource value: 0x7f030007
-			public const int Transaction = 2130903047;
+			public const int Transaction = 2130903046;
 			
 			static Layout()
 			{
@@ -475,6 +460,9 @@ namespace Gate
 			
 			// aapt resource value: 0x7f040002
 			public const int CardNumber = 2130968578;
+			
+			// aapt resource value: 0x7f040022
+			public const int DateAdded = 2130968610;
 			
 			// aapt resource value: 0x7f04001c
 			public const int DateEnd = 2130968604;
