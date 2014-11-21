@@ -48,7 +48,7 @@ namespace Gate
             }
             return new List<AccessLevel>();
         }
-
+        
         public static List<Transaction> deserializeTransactionList()
         {
             string documentsPath = Android.OS.Environment.ExternalStorageDirectory + "/Gate";
@@ -119,6 +119,86 @@ namespace Gate
                 writer.Serialize(strm, transactionList);
                 strm.Close();
             }
+        }
+
+        public static void deleteAllXml()
+        {
+            deleteAccessAndCardXml();
+            deleteTransactionXml();
+        }
+
+        public static void deleteCardXml()
+        {
+            string documentsPath = Android.OS.Environment.ExternalStorageDirectory + "/Gate";
+            var cardPath = Path.Combine(documentsPath, "card.xml");
+            File.Delete(cardPath);
+        }
+
+        public static void deleteAccessAndCardXml()
+        {
+            string documentsPath = Android.OS.Environment.ExternalStorageDirectory + "/Gate";
+            var accessLevelPath = Path.Combine(documentsPath, "accesslevel.xml");
+            File.Delete(accessLevelPath);
+            var cardPath = Path.Combine(documentsPath, "card.xml");
+            File.Delete(cardPath);
+        }
+
+        public static void deleteTransactionXml()
+        {
+            string documentsPath = Android.OS.Environment.ExternalStorageDirectory + "/Gate";
+            var transactionPath = Path.Combine(documentsPath, "transaction.xml");
+            File.Delete(transactionPath);
+        }
+
+        public static List<Card> sortCard(List<Card> sort, string sortby)
+        {
+            switch (sortby)
+            {
+                case "Oldest to Newest":
+                    sort = sort.OrderBy(o => o.dateAdded).ToList();
+                    break;
+                case "Newest to Oldest":
+                    sort = sort.OrderByDescending(o => o.dateAdded).ToList();
+                    break;
+                case "Name":
+                    sort = sort.OrderBy(o => o.name).ToList();
+                    break;
+                case "Access Level":
+                    sort = sort.OrderBy(o => o.accessLevel).ToList();
+                    break;
+                case "Card Code":
+                    sort = sort.OrderBy(o => o.cardCode).ToList();
+                    break;
+            }
+            return sort;
+        }
+
+        public static List<AccessLevel> sortAccess(List<AccessLevel> sort, string sortby)
+        {
+            switch (sortby)
+            {
+                case "Name":
+                    sort = sort.OrderBy(o => o.name).ToList();
+                    break;
+            }
+            return sort;
+        }
+
+        public static List<Transaction> sortTransaction(List<Transaction> sort, string sortby)
+        {
+            switch (sortby)
+            {
+                case "Oldest to Newest":
+                    sort = sort.OrderBy(o => o.dateTime).ToList();
+                    break;
+                case "Newest to Oldest":
+                    sort = sort.OrderByDescending(o => o.dateTime).ToList();
+                    break;
+                case "Card Code":
+                    sort = sort.OrderBy(o => o.cardCode).ToList();
+                    break;
+            }
+            return sort;
         }
     }
 }

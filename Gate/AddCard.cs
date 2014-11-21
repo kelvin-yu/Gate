@@ -14,6 +14,7 @@ using System.IO;
 using System.Threading;
 
 using Gate.WebReference;
+using Android.Preferences;
 
 
 namespace Gate
@@ -35,118 +36,102 @@ namespace Gate
             base.OnCreate(bundle);
             SetContentView(Resource.Layout.AddCard);
 
+            accessLevelList = SerializeTools.deserializeAccessLevelList();
+            cardList = SerializeTools.deserializeCardList();
+
+            InitiateViews();
+            InitiateListeners();
+
+            foreach (Card card in cardList)
+                cardNameList.Add(card.name.ToLower());
+        }
+
+        public void InitiateViews()
+        {
             cancelButton = FindViewById<Button>(Resource.Id.cancelCardButton);
             doneButton = FindViewById<Button>(Resource.Id.doneCardButton);
-
             nameField = FindViewById<EditText>(Resource.Id.cardNameField);
             numberField = FindViewById<EditText>(Resource.Id.cardNumberField);
-
             dateAdded = FindViewById<TextView>(Resource.Id.dateAdded);
+
             dateAdded.Text = DateTime.Now.ToString("MM/dd/yy HH:mm");
 
-            accessLevelList = SerializeTools.deserializeAccessLevelList();
-
             for (int i = 0; i < accessLevelList.Count; i++)
-            {
                 accessNameList.Add(accessLevelList[i].name);
-            }
 
             var adapter = new ArrayAdapter<string>(this, Android.Resource.Layout.SimpleSpinnerItem, accessNameList);
             adapter.SetDropDownViewResource(Android.Resource.Layout.SimpleSpinnerDropDownItem);
             spinner = FindViewById<Spinner>(Resource.Id.accessLevelSpinner);
             spinner.Adapter = adapter;
+        }
 
-            cardList = SerializeTools.deserializeCardList();
-
-            foreach (Card card in cardList)
-                cardNameList.Add(card.name.ToLower());
-
+        public void InitiateListeners()
+        {
             doneButton.Click += delegate
-            {          
+            {
+                ISharedPreferences prefs = PreferenceManager.GetDefaultSharedPreferences(this);
+                if (prefs.GetBoolean("working", true))
+                    Thread.Sleep(1000);
                 if (!nameField.Text.Equals(String.Empty) && !numberField.Text.Equals(String.Empty) && spinner.SelectedItem != null && !cardNameList.Contains(nameField.Text))
                 {
-                    if (!TCP.isTCPNull() & TCP.isConnectable("192.168.2.180"))
+                    if (!TCP.isTCPNull() & TCP.isConnectable(TCP.ip))
                     {
-                        addNewCard(cardList);
-                        SerializeTools.serializeCardList(cardList);
-                        Finish();
+                        bool SQLStatus = true;
+                        try
+                        {
+                            Global.cs.Hello();
+                        }
+                        catch
+                        {
+                            SQLStatus = false;
+                            CreateOkDialog("No Connection", "No connection to database!");
+                        }
+                        if (SQLStatus)
+                        {
+                            AddNewCard();
+                            Finish();
+                        }
                     }
                     else
-                    {
-                        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-                        AlertDialog alertDialog = builder.Create();
-                        alertDialog.SetTitle("Connection Lost");
-                        alertDialog.SetIcon(Android.Resource.Drawable.IcDialogAlert);
-                        alertDialog.SetMessage("Connection to reader lost! Attempt to reconnect in settings");
-                        alertDialog.SetButton("Cancel", (s, ev) =>
-                        {
-                        });
-                        alertDialog.SetButton2("Reconnect", (s, ev) =>
-                        {
-                            TCP.CloseTCPClient();
-                            ThreadPool.QueueUserWorkItem(o => TCP.Connect("192.168.2.180", this));
-                        });
-                        alertDialog.Show();
-                    }
+                        CreateOkDialog("No Connection", "No connection to reader!");
                 }
                 else if (nameField.Text.Equals(string.Empty))
-                {
-                    AlertDialog.Builder builder = new AlertDialog.Builder(this);
-                    AlertDialog alertDialog = builder.Create();
-                    alertDialog.SetTitle("Name");
-                    alertDialog.SetIcon(Android.Resource.Drawable.IcDialogAlert);
-                    alertDialog.SetMessage("You must set a name!");
-                    alertDialog.SetButton("OK", (s, ev) =>
-                    {
-                    });
-                    alertDialog.Show();
-                }
+                    CreateOkDialog("Name", "You must set a name!");
                 else if (spinner.SelectedItem == null)
-                {
-                    AlertDialog.Builder builder = new AlertDialog.Builder(this);
-                    AlertDialog alertDialog = builder.Create();
-                    alertDialog.SetTitle("Access Level");
-                    alertDialog.SetIcon(Android.Resource.Drawable.IcDialogAlert);
-                    alertDialog.SetMessage("No access levels found!");
-                    alertDialog.SetButton("OK", (s, ev) =>
-                    {
-                    });
-                    alertDialog.Show();
-                }
+                    CreateOkDialog("Access Level", "No access levels found!");
                 else if (numberField.Text.Equals(String.Empty))
-                {
-                    AlertDialog.Builder builder = new AlertDialog.Builder(this);
-                    AlertDialog alertDialog = builder.Create();
-                    alertDialog.SetTitle("Card Number");
-                    alertDialog.SetIcon(Android.Resource.Drawable.IcDialogAlert);
-                    alertDialog.SetMessage("You must set a card number!");
-                    alertDialog.SetButton("OK", (s, ev) =>
-                    {
-                    });
-                    alertDialog.Show();
-                }
+                    CreateOkDialog("Card Number", "You must set a card number!");
                 else
-                {
-                    AlertDialog.Builder builder = new AlertDialog.Builder(this);
-                    AlertDialog alertDialog = builder.Create();
-                    alertDialog.SetTitle("Card Name");
-                    alertDialog.SetIcon(Android.Resource.Drawable.IcDialogAlert);
-                    alertDialog.SetMessage("Card already exists!");
-                    alertDialog.SetButton("OK", (s, ev) =>
-                    {
-                    });
-                    alertDialog.Show();
-                }
+                    CreateOkDialog("Card Name", "Card already exists!");
             };
 
             cancelButton.Click += delegate { Finish(); };
         }
 
-        public void addNewCard(List<Card> list)
+        public void CreateOkDialog(string title, string message)
         {
-            bool result, resultSpecified; //make sure it true
-            list.Add(new Card(nameField.Text, Convert.ToInt32(numberField.Text), spinner.SelectedItem.ToString(), DateTime.Now)); 
-            ReaderServices.sendCard(list);
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            AlertDialog alertDialog = builder.Create();
+            alertDialog.SetTitle(title);
+            alertDialog.SetIcon(Android.Resource.Drawable.IcDialogAlert);
+            alertDialog.SetMessage(message);
+            alertDialog.SetButton("OK", (s, ev) =>
+            {
+            });
+            alertDialog.Show();
+        }
+
+        public void AddNewCard()
+        {
+            ISharedPreferences prefs = PreferenceManager.GetDefaultSharedPreferences(this);
+            //local
+            cardList.Add(new Card(nameField.Text, Convert.ToInt32(numberField.Text), spinner.SelectedItem.ToString(), DateTime.Now));
+            cardList = SerializeTools.sortCard(cardList, prefs.GetString("card_sort", "Name"));
+            SerializeTools.serializeCardList(cardList);
+            //reader
+            ReaderServices.sendCard(cardList);
+            //sql
+            bool result, resultSpecified;
             Global.cs.AddOneCardSQL(new Card(nameField.Text, Convert.ToInt32(numberField.Text), spinner.SelectedItem.ToString(), DateTime.Now), out result, out resultSpecified);
         }
     }

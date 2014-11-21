@@ -29,6 +29,8 @@ namespace Gate.WebReference {
     [System.Web.Services.WebServiceBindingAttribute(Name="BasicHttpBinding_ICardService", Namespace="http://tempuri.org/")]
     public partial class CardService : System.Web.Services.Protocols.SoapHttpClientProtocol {
         
+        private System.Threading.SendOrPostCallback HelloOperationCompleted;
+        
         private System.Threading.SendOrPostCallback GetTransactionListOperationCompleted;
         
         private System.Threading.SendOrPostCallback UpdateTransactionSQLOperationCompleted;
@@ -51,13 +53,15 @@ namespace Gate.WebReference {
         
         private System.Threading.SendOrPostCallback DeleteAccessOperationCompleted;
         
-        private System.Threading.SendOrPostCallback DeleteAllAccessOperationCompleted;
+        private System.Threading.SendOrPostCallback DeleteAllAccessAndCardsOperationCompleted;
+        
+        private System.Threading.SendOrPostCallback ModifyValuesOperationCompleted;
         
         private bool useDefaultCredentialsSetExplicitly;
         
         /// <remarks/>
         public CardService() {
-            this.Url = "http://192.168.2.204:8000/DMTSolutions/CardReader";
+            this.Url = "http://192.168.2.238:8000/DMTSolutions/CardReader";
             if ((this.IsLocalFileSystemWebService(this.Url) == true)) {
                 this.UseDefaultCredentials = true;
                 this.useDefaultCredentialsSetExplicitly = false;
@@ -90,6 +94,9 @@ namespace Gate.WebReference {
                 this.useDefaultCredentialsSetExplicitly = true;
             }
         }
+        
+        /// <remarks/>
+        public event HelloCompletedEventHandler HelloCompleted;
         
         /// <remarks/>
         public event GetTransactionListCompletedEventHandler GetTransactionListCompleted;
@@ -125,7 +132,38 @@ namespace Gate.WebReference {
         public event DeleteAccessCompletedEventHandler DeleteAccessCompleted;
         
         /// <remarks/>
-        public event DeleteAllAccessCompletedEventHandler DeleteAllAccessCompleted;
+        public event DeleteAllAccessAndCardsCompletedEventHandler DeleteAllAccessAndCardsCompleted;
+        
+        /// <remarks/>
+        public event ModifyValuesCompletedEventHandler ModifyValuesCompleted;
+        
+        /// <remarks/>
+        [System.Web.Services.Protocols.SoapDocumentMethodAttribute("Hello", RequestNamespace="http://dmtserv.CardServices", ResponseNamespace="http://dmtserv.CardServices", Use=System.Web.Services.Description.SoapBindingUse.Literal, ParameterStyle=System.Web.Services.Protocols.SoapParameterStyle.Wrapped)]
+        [return: System.Xml.Serialization.XmlElementAttribute(IsNullable=true)]
+        public string Hello() {
+            object[] results = this.Invoke("Hello", new object[0]);
+            return ((string)(results[0]));
+        }
+        
+        /// <remarks/>
+        public void HelloAsync() {
+            this.HelloAsync(null);
+        }
+        
+        /// <remarks/>
+        public void HelloAsync(object userState) {
+            if ((this.HelloOperationCompleted == null)) {
+                this.HelloOperationCompleted = new System.Threading.SendOrPostCallback(this.OnHelloOperationCompleted);
+            }
+            this.InvokeAsync("Hello", new object[0], this.HelloOperationCompleted, userState);
+        }
+        
+        private void OnHelloOperationCompleted(object arg) {
+            if ((this.HelloCompleted != null)) {
+                System.Web.Services.Protocols.InvokeCompletedEventArgs invokeArgs = ((System.Web.Services.Protocols.InvokeCompletedEventArgs)(arg));
+                this.HelloCompleted(this, new HelloCompletedEventArgs(invokeArgs.Results, invokeArgs.Error, invokeArgs.Cancelled, invokeArgs.UserState));
+            }
+        }
         
         /// <remarks/>
         [System.Web.Services.Protocols.SoapDocumentMethodAttribute("GetTransactionList", RequestNamespace="http://dmtserv.CardServices", ResponseNamespace="http://dmtserv.CardServices", Use=System.Web.Services.Description.SoapBindingUse.Literal, ParameterStyle=System.Web.Services.Protocols.SoapParameterStyle.Wrapped)]
@@ -450,30 +488,66 @@ namespace Gate.WebReference {
         }
         
         /// <remarks/>
-        [System.Web.Services.Protocols.SoapDocumentMethodAttribute("DeleteAllAccess", RequestNamespace="http://dmtserv.CardServices", ResponseNamespace="http://dmtserv.CardServices", Use=System.Web.Services.Description.SoapBindingUse.Literal, ParameterStyle=System.Web.Services.Protocols.SoapParameterStyle.Wrapped)]
-        public void DeleteAllAccess(out bool DeleteAllAccessResult, [System.Xml.Serialization.XmlIgnoreAttribute()] out bool DeleteAllAccessResultSpecified) {
-            object[] results = this.Invoke("DeleteAllAccess", new object[0]);
-            DeleteAllAccessResult = ((bool)(results[0]));
-            DeleteAllAccessResultSpecified = ((bool)(results[1]));
+        [System.Web.Services.Protocols.SoapDocumentMethodAttribute("DeleteAllAccessAndCards", RequestNamespace="http://dmtserv.CardServices", ResponseNamespace="http://dmtserv.CardServices", Use=System.Web.Services.Description.SoapBindingUse.Literal, ParameterStyle=System.Web.Services.Protocols.SoapParameterStyle.Wrapped)]
+        public void DeleteAllAccessAndCards(out bool DeleteAllAccessAndCardsResult, [System.Xml.Serialization.XmlIgnoreAttribute()] out bool DeleteAllAccessAndCardsResultSpecified) {
+            object[] results = this.Invoke("DeleteAllAccessAndCards", new object[0]);
+            DeleteAllAccessAndCardsResult = ((bool)(results[0]));
+            DeleteAllAccessAndCardsResultSpecified = ((bool)(results[1]));
         }
         
         /// <remarks/>
-        public void DeleteAllAccessAsync() {
-            this.DeleteAllAccessAsync(null);
+        public void DeleteAllAccessAndCardsAsync() {
+            this.DeleteAllAccessAndCardsAsync(null);
         }
         
         /// <remarks/>
-        public void DeleteAllAccessAsync(object userState) {
-            if ((this.DeleteAllAccessOperationCompleted == null)) {
-                this.DeleteAllAccessOperationCompleted = new System.Threading.SendOrPostCallback(this.OnDeleteAllAccessOperationCompleted);
+        public void DeleteAllAccessAndCardsAsync(object userState) {
+            if ((this.DeleteAllAccessAndCardsOperationCompleted == null)) {
+                this.DeleteAllAccessAndCardsOperationCompleted = new System.Threading.SendOrPostCallback(this.OnDeleteAllAccessAndCardsOperationCompleted);
             }
-            this.InvokeAsync("DeleteAllAccess", new object[0], this.DeleteAllAccessOperationCompleted, userState);
+            this.InvokeAsync("DeleteAllAccessAndCards", new object[0], this.DeleteAllAccessAndCardsOperationCompleted, userState);
         }
         
-        private void OnDeleteAllAccessOperationCompleted(object arg) {
-            if ((this.DeleteAllAccessCompleted != null)) {
+        private void OnDeleteAllAccessAndCardsOperationCompleted(object arg) {
+            if ((this.DeleteAllAccessAndCardsCompleted != null)) {
                 System.Web.Services.Protocols.InvokeCompletedEventArgs invokeArgs = ((System.Web.Services.Protocols.InvokeCompletedEventArgs)(arg));
-                this.DeleteAllAccessCompleted(this, new DeleteAllAccessCompletedEventArgs(invokeArgs.Results, invokeArgs.Error, invokeArgs.Cancelled, invokeArgs.UserState));
+                this.DeleteAllAccessAndCardsCompleted(this, new DeleteAllAccessAndCardsCompletedEventArgs(invokeArgs.Results, invokeArgs.Error, invokeArgs.Cancelled, invokeArgs.UserState));
+            }
+        }
+        
+        /// <remarks/>
+        [System.Web.Services.Protocols.SoapDocumentMethodAttribute("ModifyValues", RequestNamespace="http://dmtserv.CardServices", ResponseNamespace="http://dmtserv.CardServices", Use=System.Web.Services.Description.SoapBindingUse.Literal, ParameterStyle=System.Web.Services.Protocols.SoapParameterStyle.Wrapped)]
+        public void ModifyValues([System.Xml.Serialization.XmlElementAttribute(IsNullable=true)] string table, [System.Xml.Serialization.XmlElementAttribute(IsNullable=true)] string column, [System.Xml.Serialization.XmlElementAttribute(IsNullable=true)] object oldv, [System.Xml.Serialization.XmlElementAttribute(IsNullable=true)] object newv, out bool ModifyValuesResult, [System.Xml.Serialization.XmlIgnoreAttribute()] out bool ModifyValuesResultSpecified) {
+            object[] results = this.Invoke("ModifyValues", new object[] {
+                        table,
+                        column,
+                        oldv,
+                        newv});
+            ModifyValuesResult = ((bool)(results[0]));
+            ModifyValuesResultSpecified = ((bool)(results[1]));
+        }
+        
+        /// <remarks/>
+        public void ModifyValuesAsync(string table, string column, object oldv, object newv) {
+            this.ModifyValuesAsync(table, column, oldv, newv, null);
+        }
+        
+        /// <remarks/>
+        public void ModifyValuesAsync(string table, string column, object oldv, object newv, object userState) {
+            if ((this.ModifyValuesOperationCompleted == null)) {
+                this.ModifyValuesOperationCompleted = new System.Threading.SendOrPostCallback(this.OnModifyValuesOperationCompleted);
+            }
+            this.InvokeAsync("ModifyValues", new object[] {
+                        table,
+                        column,
+                        oldv,
+                        newv}, this.ModifyValuesOperationCompleted, userState);
+        }
+        
+        private void OnModifyValuesOperationCompleted(object arg) {
+            if ((this.ModifyValuesCompleted != null)) {
+                System.Web.Services.Protocols.InvokeCompletedEventArgs invokeArgs = ((System.Web.Services.Protocols.InvokeCompletedEventArgs)(arg));
+                this.ModifyValuesCompleted(this, new ModifyValuesCompletedEventArgs(invokeArgs.Results, invokeArgs.Error, invokeArgs.Cancelled, invokeArgs.UserState));
             }
         }
         
@@ -865,6 +939,32 @@ namespace Gate.WebReference {
     
     /// <remarks/>
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.0.30319.18408")]
+    public delegate void HelloCompletedEventHandler(object sender, HelloCompletedEventArgs e);
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.0.30319.18408")]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.ComponentModel.DesignerCategoryAttribute("code")]
+    public partial class HelloCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
+        
+        private object[] results;
+        
+        internal HelloCompletedEventArgs(object[] results, System.Exception exception, bool cancelled, object userState) : 
+                base(exception, cancelled, userState) {
+            this.results = results;
+        }
+        
+        /// <remarks/>
+        public string Result {
+            get {
+                this.RaiseExceptionIfNecessary();
+                return ((string)(this.results[0]));
+            }
+        }
+    }
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.0.30319.18408")]
     public delegate void GetTransactionListCompletedEventHandler(object sender, GetTransactionListCompletedEventArgs e);
     
     /// <remarks/>
@@ -1215,23 +1315,23 @@ namespace Gate.WebReference {
     
     /// <remarks/>
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.0.30319.18408")]
-    public delegate void DeleteAllAccessCompletedEventHandler(object sender, DeleteAllAccessCompletedEventArgs e);
+    public delegate void DeleteAllAccessAndCardsCompletedEventHandler(object sender, DeleteAllAccessAndCardsCompletedEventArgs e);
     
     /// <remarks/>
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.0.30319.18408")]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    public partial class DeleteAllAccessCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
+    public partial class DeleteAllAccessAndCardsCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
         
         private object[] results;
         
-        internal DeleteAllAccessCompletedEventArgs(object[] results, System.Exception exception, bool cancelled, object userState) : 
+        internal DeleteAllAccessAndCardsCompletedEventArgs(object[] results, System.Exception exception, bool cancelled, object userState) : 
                 base(exception, cancelled, userState) {
             this.results = results;
         }
         
         /// <remarks/>
-        public bool DeleteAllAccessResult {
+        public bool DeleteAllAccessAndCardsResult {
             get {
                 this.RaiseExceptionIfNecessary();
                 return ((bool)(this.results[0]));
@@ -1239,7 +1339,41 @@ namespace Gate.WebReference {
         }
         
         /// <remarks/>
-        public bool DeleteAllAccessResultSpecified {
+        public bool DeleteAllAccessAndCardsResultSpecified {
+            get {
+                this.RaiseExceptionIfNecessary();
+                return ((bool)(this.results[1]));
+            }
+        }
+    }
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.0.30319.18408")]
+    public delegate void ModifyValuesCompletedEventHandler(object sender, ModifyValuesCompletedEventArgs e);
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.0.30319.18408")]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.ComponentModel.DesignerCategoryAttribute("code")]
+    public partial class ModifyValuesCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
+        
+        private object[] results;
+        
+        internal ModifyValuesCompletedEventArgs(object[] results, System.Exception exception, bool cancelled, object userState) : 
+                base(exception, cancelled, userState) {
+            this.results = results;
+        }
+        
+        /// <remarks/>
+        public bool ModifyValuesResult {
+            get {
+                this.RaiseExceptionIfNecessary();
+                return ((bool)(this.results[0]));
+            }
+        }
+        
+        /// <remarks/>
+        public bool ModifyValuesResultSpecified {
             get {
                 this.RaiseExceptionIfNecessary();
                 return ((bool)(this.results[1]));

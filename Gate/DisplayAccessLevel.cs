@@ -13,6 +13,7 @@ using System.IO;
 using Android.Preferences;
 
 using Gate.WebReference;
+using System.Threading;
 
 
 namespace Gate
@@ -26,7 +27,9 @@ namespace Gate
         CheckBox usePassBack, useDateRange;
         TextView dateStart, dateEnd, dateStartView, dateEndView;
         Button doneButton, cancelButton;
+
         List<AccessLevel> accessLevelList;
+        List<string> accessNameList = new List<string>();
         List<Card> cardList;
         int levelIndex;
 
@@ -51,70 +54,17 @@ namespace Gate
         protected override void OnCreate(Bundle bundle)
         {
             base.OnCreate(bundle);
-
             SetContentView(Resource.Layout.AddAccessLevel);
-
             Window.SetSoftInputMode(SoftInput.StateAlwaysHidden);
+
+            accessLevelList = SerializeTools.deserializeAccessLevelList();
+            cardList = SerializeTools.deserializeCardList();
 
             InitiateViews();
             InitiateListeners();
 
-            dateStart.Text = DateTime.Now.ToString("M/d/yyyy");
-            dateEnd.Text = DateTime.Now.ToString("M/d/yyyy");
-
-            string documentsPath = Android.OS.Environment.ExternalStorageDirectory + "/Gate";
-            var accessLevelPath = Path.Combine(documentsPath, "accesslevel.xml");
-
-            //Get the access level data from xml
-            accessLevelList = SerializeTools.deserializeAccessLevelList();
-            cardList = SerializeTools.deserializeCardList();
-
-            ISharedPreferences prefs = PreferenceManager.GetDefaultSharedPreferences(this);
-            levelIndex = prefs.GetInt("accesslevelclick", -1);
-            AccessLevel accessLevel = accessLevelList[levelIndex];
-
-            name.Text = accessLevel.name;
-
-            Console.WriteLine(accessLevel.name);
-
-            sunStart.Text = accessLevel.weekTimeStart[0].ToString("HH:mm");
-            monStart.Text = accessLevel.weekTimeStart[1].ToString("HH:mm");
-            tuesStart.Text = accessLevel.weekTimeStart[2].ToString("HH:mm");
-            wedStart.Text = accessLevel.weekTimeStart[3].ToString("HH:mm");
-            thursStart.Text = accessLevel.weekTimeStart[4].ToString("HH:mm");
-            friStart.Text = accessLevel.weekTimeStart[5].ToString("HH:mm");
-            satStart.Text = accessLevel.weekTimeStart[6].ToString("HH:mm");
-
-            sunEnd.Text = accessLevel.weekTimeEnd[0].ToString("HH:mm");
-            monEnd.Text = accessLevel.weekTimeEnd[1].ToString("HH:mm");
-            tuesEnd.Text = accessLevel.weekTimeEnd[2].ToString("HH:mm");
-            wedEnd.Text = accessLevel.weekTimeEnd[3].ToString("HH:mm");
-            thursEnd.Text = accessLevel.weekTimeEnd[4].ToString("HH:mm");
-            friEnd.Text = accessLevel.weekTimeEnd[5].ToString("HH:mm");
-            satEnd.Text = accessLevel.weekTimeEnd[6].ToString("HH:mm");
-
-            r1Sun.Checked = accessLevel.weekReader1Access[0] == "Y";
-            r1Mon.Checked = accessLevel.weekReader1Access[1] == "Y";
-            r1Tues.Checked = accessLevel.weekReader1Access[2] == "Y";
-            r1Wed.Checked = accessLevel.weekReader1Access[3] == "Y";
-            r1Thurs.Checked = accessLevel.weekReader1Access[4] == "Y";
-            r1Fri.Checked = accessLevel.weekReader1Access[5] == "Y"; 
-            r1Sat.Checked = accessLevel.weekReader1Access[6] == "Y";
-
-            r2Sun.Checked = accessLevel.weekReader2Access[0] == "Y";
-            r2Mon.Checked = accessLevel.weekReader2Access[1] == "Y";
-            r2Tues.Checked = accessLevel.weekReader2Access[2] == "Y";
-            r2Wed.Checked = accessLevel.weekReader2Access[3] == "Y";
-            r2Thurs.Checked = accessLevel.weekReader2Access[4] == "Y";
-            r2Fri.Checked = accessLevel.weekReader2Access[5] == "Y";
-            r2Sat.Checked = accessLevel.weekReader2Access[6] == "Y";
-
-            numberOfUses.Text = accessLevel.numberOfUses.ToString();
-            usePassBack.Checked = accessLevel.usePassBack;
-            useDateRange.Checked = accessLevel.useDateRange;
-
-            dateStart.Text = accessLevel.dateStart.ToString("M/d/yyyy");
-            dateEnd.Text = accessLevel.dateEnd.ToString("M/d/yyyy");
+            foreach (AccessLevel access in accessLevelList)
+                accessNameList.Add(access.name.ToLower());
         }
 
         private void InitiateViews()
@@ -164,6 +114,54 @@ namespace Gate
             dateEndView = FindViewById<TextView>(Resource.Id.dateEndView);
             dateStart = FindViewById<TextView>(Resource.Id.dateStart);
             dateEnd = FindViewById<TextView>(Resource.Id.dateEnd);
+            /////////////////////////////////////////////////////
+            dateStart.Text = DateTime.Now.ToString("M/d/yyyy");
+            dateEnd.Text = DateTime.Now.ToString("M/d/yyyy");
+
+            ISharedPreferences prefs = PreferenceManager.GetDefaultSharedPreferences(this);
+            levelIndex = prefs.GetInt("accesslevelclick", -1);
+            AccessLevel currentAccessLevel = accessLevelList[levelIndex];
+
+            name.Text = currentAccessLevel.name;
+
+            sunStart.Text = currentAccessLevel.weekTimeStart[0].ToString("HH:mm");
+            monStart.Text = currentAccessLevel.weekTimeStart[1].ToString("HH:mm");
+            tuesStart.Text = currentAccessLevel.weekTimeStart[2].ToString("HH:mm");
+            wedStart.Text = currentAccessLevel.weekTimeStart[3].ToString("HH:mm");
+            thursStart.Text = currentAccessLevel.weekTimeStart[4].ToString("HH:mm");
+            friStart.Text = currentAccessLevel.weekTimeStart[5].ToString("HH:mm");
+            satStart.Text = currentAccessLevel.weekTimeStart[6].ToString("HH:mm");
+
+            sunEnd.Text = currentAccessLevel.weekTimeEnd[0].ToString("HH:mm");
+            monEnd.Text = currentAccessLevel.weekTimeEnd[1].ToString("HH:mm");
+            tuesEnd.Text = currentAccessLevel.weekTimeEnd[2].ToString("HH:mm");
+            wedEnd.Text = currentAccessLevel.weekTimeEnd[3].ToString("HH:mm");
+            thursEnd.Text = currentAccessLevel.weekTimeEnd[4].ToString("HH:mm");
+            friEnd.Text = currentAccessLevel.weekTimeEnd[5].ToString("HH:mm");
+            satEnd.Text = currentAccessLevel.weekTimeEnd[6].ToString("HH:mm");
+
+            r1Sun.Checked = currentAccessLevel.weekReader1Access[0] == "Y";
+            r1Mon.Checked = currentAccessLevel.weekReader1Access[1] == "Y";
+            r1Tues.Checked = currentAccessLevel.weekReader1Access[2] == "Y";
+            r1Wed.Checked = currentAccessLevel.weekReader1Access[3] == "Y";
+            r1Thurs.Checked = currentAccessLevel.weekReader1Access[4] == "Y";
+            r1Fri.Checked = currentAccessLevel.weekReader1Access[5] == "Y";
+            r1Sat.Checked = currentAccessLevel.weekReader1Access[6] == "Y";
+
+            r2Sun.Checked = currentAccessLevel.weekReader2Access[0] == "Y";
+            r2Mon.Checked = currentAccessLevel.weekReader2Access[1] == "Y";
+            r2Tues.Checked = currentAccessLevel.weekReader2Access[2] == "Y";
+            r2Wed.Checked = currentAccessLevel.weekReader2Access[3] == "Y";
+            r2Thurs.Checked = currentAccessLevel.weekReader2Access[4] == "Y";
+            r2Fri.Checked = currentAccessLevel.weekReader2Access[5] == "Y";
+            r2Sat.Checked = currentAccessLevel.weekReader2Access[6] == "Y";
+
+            numberOfUses.Text = currentAccessLevel.numberOfUses.ToString();
+            usePassBack.Checked = currentAccessLevel.usePassBack;
+            useDateRange.Checked = currentAccessLevel.useDateRange;
+
+            dateStart.Text = currentAccessLevel.dateStart.ToString("M/d/yyyy");
+            dateEnd.Text = currentAccessLevel.dateEnd.ToString("M/d/yyyy");
         }
         private void InitiateListeners()
         {
@@ -206,58 +204,43 @@ namespace Gate
 
             doneButton.Click += delegate
             {
-                if (!name.Text.Equals(String.Empty) && !numberOfUses.Text.Equals(String.Empty))
+                ISharedPreferences prefs = PreferenceManager.GetDefaultSharedPreferences(this);
+                if (prefs.GetBoolean("working", true))
+                    Thread.Sleep(1000);
+                if (!name.Text.Equals(String.Empty) && !numberOfUses.Text.Equals(String.Empty) && (!accessNameList.Contains(name.Text) || name.Text.Equals(accessLevelList[levelIndex].name)))
                 {
-                    if (!TCP.isTCPNull() && TCP.isConnected())
+                    if (!TCP.isTCPNull() & TCP.isConnectable(TCP.ip))
                     {
-                        if(!name.Text.Equals(accessLevelList[levelIndex].name))
+                        bool SQLStatus = true;
+                        try
                         {
-                            foreach (Card card in cardList)
-                            {
-                                if (card.accessLevel.Equals(accessLevelList[levelIndex].name))
-                                {
-                                    card.accessLevel = name.Text;
-                                }
-                            }
-                            SerializeTools.serializeCardList(cardList);
+                            Global.cs.Hello();
                         }
-                        accessLevelList.RemoveAt(levelIndex);
-                        addNewAccessLevel(accessLevelList);
-                        SerializeTools.serializeAccessLevelList(accessLevelList);
-                        Finish();
+                        catch
+                        {
+                            SQLStatus = false;
+                            CreateOkDialog("No Connection", "No connection to database!");
+                        }
+                        if (SQLStatus)
+                        {
+                            UpdateAccessLevel();
+                            Finish();
+                        }
                     }
                     else
-                        Toast.MakeText(this, "No connection to reader", ToastLength.Long);
+                        CreateOkDialog("No Connection", "No connection to reader!");
                 }
                 else if (name.Text.Equals(string.Empty))
-                {
-                    AlertDialog.Builder builder = new AlertDialog.Builder(this);
-                    AlertDialog alertDialog = builder.Create();
-                    alertDialog.SetTitle("Name");
-                    alertDialog.SetIcon(Android.Resource.Drawable.IcDialogAlert);
-                    alertDialog.SetMessage("You must set a name!");
-                    alertDialog.SetButton("OK", (s, ev) =>
-                    {
-                    });
-                    alertDialog.Show();
-                }
+                    CreateOkDialog("Name", "You must set a name!");
+                else if (numberOfUses.Text.Equals(String.Empty))
+                    CreateOkDialog("Number of Uses", "You must set a number of uses!");
                 else
-                {
-                    AlertDialog.Builder builder = new AlertDialog.Builder(this);
-                    AlertDialog alertDialog = builder.Create();
-                    alertDialog.SetTitle("Number Of Uses");
-                    alertDialog.SetIcon(Android.Resource.Drawable.IcDialogAlert);
-                    alertDialog.SetMessage("You must set a number of uses!");
-                    alertDialog.SetButton("OK", (s, ev) =>
-                    {
-                    });
-                    alertDialog.Show();
-                }
+                    CreateOkDialog("Access Level Name", "Access level already exists!");
 
             };
             cancelButton.Click += delegate { Finish(); };
         }
-        public void addNewAccessLevel(List<AccessLevel> list)
+        public void UpdateAccessLevel()
         {
             DateTime[] startTime = new DateTime[7] {
                 DateTime.ParseExact(sunStart.Text, "HH:mm", System.Globalization.CultureInfo.InvariantCulture), 
@@ -298,8 +281,30 @@ namespace Gate
             DateTime dStart = DateTime.ParseExact(dateStart.Text, "M/d/yyyy", System.Globalization.CultureInfo.InvariantCulture);
             DateTime dEnd = DateTime.ParseExact(dateEnd.Text, "M/d/yyyy", System.Globalization.CultureInfo.InvariantCulture);
 
-            list.Add(new AccessLevel(name.Text, startTime, endTime, r1, r2, usePassBack.Checked, Convert.ToInt16(numberOfUses.Text), useDateRange.Checked, dStart, dEnd));
-            ReaderServices.sendAccessLevel(list);
+            if (!name.Text.Equals(accessLevelList[levelIndex].name)) //if the name has been modified, modify for all cards
+            {
+                foreach (Card card in cardList)
+                {
+                    if (card.accessLevel.Equals(accessLevelList[levelIndex].name))
+                    {
+                        card.accessLevel = name.Text;
+                        bool result, resultSpecified;
+                        Global.cs.ModifyValues("cards", "access_level", card.accessLevel, accessLevelList[levelIndex].name, out result, out resultSpecified);
+                    }
+                }
+                SerializeTools.serializeCardList(cardList);
+            }
+            string oldName = accessLevelList[levelIndex].name;
+            //Add to local
+            accessLevelList.RemoveAt(levelIndex);
+            accessLevelList.Add(new AccessLevel(name.Text, startTime, endTime, r1, r2, usePassBack.Checked, Convert.ToInt16(numberOfUses.Text), useDateRange.Checked, dStart, dEnd));
+            SerializeTools.serializeAccessLevelList(accessLevelList);
+            //Send to reader
+            ReaderServices.sendAccessLevel(accessLevelList);
+            //Add to SQL
+            bool result2, resultSpecified2;
+            Global.cs.DeleteAccess(oldName, out result2, out resultSpecified2);
+            Global.cs.AddOneAccessSQL(new AccessLevel(name.Text, startTime, endTime, r1, r2, usePassBack.Checked, Convert.ToInt16(numberOfUses.Text), useDateRange.Checked, dStart, dEnd), out result2, out resultSpecified2);
         }
 
         public override bool OnCreateOptionsMenu(IMenu menu)
@@ -321,7 +326,7 @@ namespace Gate
                     alertDialog.SetButton("OK", (s, ev) =>
                     {
                         bool result, resultSpecified;
-                        for (int i = 0; i < cardList.Count; i++)
+                        for (int i = 0; i < cardList.Count; i++) // Deleting all cards associated with access level
                         {
                             if (cardList[i].accessLevel == accessLevelList[levelIndex].name)
                             {
@@ -329,14 +334,16 @@ namespace Gate
                                 cardList.RemoveAt(i--);
                             }
                         }
+                        //Writing to local
                         SerializeTools.serializeCardList(cardList);
+                        SerializeTools.serializeAccessLevelList(accessLevelList);
+                        //to reader
                         ReaderServices.sendCard(cardList);
-
+                        ReaderServices.sendAccessLevel(accessLevelList);
+                        //to SQL
                         Global.cs.DeleteAccess(accessLevelList[levelIndex].name, out result, out resultSpecified);
                         accessLevelList.RemoveAt(levelIndex);
 
-                        SerializeTools.serializeAccessLevelList(accessLevelList);
-                        ReaderServices.sendAccessLevel(accessLevelList);
                         Finish();
                     });
                     alertDialog.SetButton2("Cancel", (s, ev) =>
@@ -347,6 +354,19 @@ namespace Gate
                 default:
                     return base.OnOptionsItemSelected(item);
             }
+        }
+
+        public void CreateOkDialog(string title, string message)
+        {
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            AlertDialog alertDialog = builder.Create();
+            alertDialog.SetTitle(title);
+            alertDialog.SetIcon(Android.Resource.Drawable.IcDialogAlert);
+            alertDialog.SetMessage(message);
+            alertDialog.SetButton("OK", (s, ev) =>
+            {
+            });
+            alertDialog.Show();
         }
 
         public override bool OnKeyDown(Keycode keyCode, KeyEvent e)
@@ -361,7 +381,7 @@ namespace Gate
         protected override Dialog OnCreateDialog(int id)
         {
             if (id == TIME_DIALOG_ID_SUNS)
-                return new TimePickerDialog(this, TimePickerCallbackSUNS, hour, minute, true); ;
+                return new TimePickerDialog(this, TimePickerCallbackSUNS, hour, minute, true);
             if (id == TIME_DIALOG_ID_MONS)
                 return new TimePickerDialog(this, TimePickerCallbackMONS, hour, minute, true);
             if (id == TIME_DIALOG_ID_TUESS)

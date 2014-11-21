@@ -19,6 +19,9 @@ using Gate.WebReference;
 
 namespace Gate
 {
+    /// <summary>
+    /// Cards
+    /// </summary>
     public class CardFragment : Fragment
     {
         List<Card> cardList;
@@ -56,14 +59,15 @@ namespace Gate
             {
                 nameList.Add(card.name);
             }
-            nameList.Sort();
 
             var adapter = new ArrayAdapter<string>(this.Activity, Android.Resource.Layout.SimpleListItem1, nameList);
             listView.Adapter = adapter;
         }
 
     }
-
+    /// <summary>
+    /// Access Levels
+    /// </summary>
     public class AccessLevelFragment : Fragment
     {
         List<AccessLevel> accessList;
@@ -102,13 +106,13 @@ namespace Gate
                 nameList.Add(access.name);
             }
 
-            nameList.Sort();
-
             var adapter = new ArrayAdapter<string>(this.Activity, Android.Resource.Layout.SimpleListItem1, nameList);
             listView.Adapter = adapter;
         }
     }
-
+    /// <summary>
+    /// Transactions
+    /// </summary>
     public class TransactionFragment : Fragment
     {
         List<Transaction> transactionList = new List<Transaction>();
@@ -145,7 +149,7 @@ namespace Gate
         {
             ISharedPreferences prefs = PreferenceManager.GetDefaultSharedPreferences(this.Activity);
             ISharedPreferencesEditor editor = prefs.Edit();
-            editor.PutInt("transactionclick", transactionList.Count - 1 - e.Position);
+            editor.PutInt("transactionclick", e.Position);
             editor.Apply();
 
             this.Activity.StartActivity(typeof(DisplayTransaction));
@@ -154,6 +158,8 @@ namespace Gate
 
         public void updateTransactions()
         {
+            ReaderServices.UpdateInfo(this.Activity);
+
             List<string> cardList = new List<string>();
             List<string> dateList = new List<string>();
 
@@ -164,9 +170,6 @@ namespace Gate
                 cardList.Add(transaction.cardCode.ToString());
                 dateList.Add(transaction.dateTime.ToString("MM/dd/yy H:mm:ss"));
             }
-
-            cardList.Reverse();
-            dateList.Reverse();
 
             var adapter = new ArrayAdapter<string>(this.Activity, Android.Resource.Layout.SimpleListItem1, cardList);
             var adapter2 = new ArrayAdapter<string>(this.Activity, Android.Resource.Layout.SimpleListItem1, dateList);
@@ -181,7 +184,9 @@ namespace Gate
             updateTransactions();
         }
     }
-
+    /// <summary>
+    /// Reader Control
+    /// </summary>
     public class ReaderFragment : Fragment
     {
         ListView listView;

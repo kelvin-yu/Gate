@@ -35,4 +35,8 @@
   <string name="ErrorCode">Error Code:</string>
   <string name="ReaderNumber">Reader Number:</string>
   <string name="DateAdded">Date Added:</string>
+  <string name="SearchType">Search Type:</string>
+  <string name="SearchBy">Search By:</string>
+  <string name="Parameter">Parameter:</string>
+  <string name="CardHolder">Card Holder</string>
 </resources>

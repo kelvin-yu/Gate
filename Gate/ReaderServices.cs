@@ -12,6 +12,8 @@ using Android.Widget;
 using System.Threading;
 
 using Gate.WebReference;
+using Android.Preferences;
+using System.Diagnostics;
 
 
 namespace Gate
@@ -100,14 +102,12 @@ namespace Gate
 
         public static void deleteAllAccessLevels()
         {
-            Console.WriteLine(TCP.Write("DA", out data));
-            Console.WriteLine("deleted all access levels");
+           TCP.Write("DA", out data);
         }
 
         public static void deleteAllCards()
         {
             TCP.Write("DC", out data);
-            Console.WriteLine("deleted all cards");
         }
 
         public static void deleteAll()
@@ -116,61 +116,105 @@ namespace Gate
             deleteAllCards();
         }
 
-        public static void refreshTransactions()
+        public static void CreateOkDialog(string title, string message, Activity a)
         {
-            while(TCP.isConnectable("192.168.2.180"))
+            AlertDialog.Builder builder = new AlertDialog.Builder(a);
+            AlertDialog alertDialog = builder.Create();
+            alertDialog.SetTitle(title);
+            alertDialog.SetIcon(Android.Resource.Drawable.IcDialogAlert);
+            alertDialog.SetMessage(message);
+            alertDialog.SetButton("OK", (s, ev) =>
             {
-                //Card Stuff
-                List<Card> sqlCardList = new List<Card>(Global.cs.GetCardList());
-                SerializeTools.serializeCardList(sqlCardList);
+            });
+            alertDialog.Show();
+        }
 
-                //Access Level Stuff
-                List<AccessLevel> sqlAccessList = new List<AccessLevel>(Global.cs.GetAccessLevelList());
-                SerializeTools.serializeAccessLevelList(sqlAccessList);
+        public static void UpdateInfo(Activity a)
+        {
+            ISharedPreferences prefs = PreferenceManager.GetDefaultSharedPreferences(a);
+            if(TCP.isConnectable(TCP.ip))
+            {
+                Console.WriteLine("Happened");
+                //Stopwatch watch = new Stopwatch();
+                //watch.Start();
+                ISharedPreferencesEditor editor = prefs.Edit();
+                editor.PutBoolean("working", true); //Make sure nothing is happening when loading up new data
+                editor.Apply();
 
-                //Transaction Stuff
-                List<Transaction> sqlTransList = new List<Transaction>(Global.cs.GetTransactionList());
-                List<Transaction> newList = new List<Transaction>();
-                while (true)
+                bool SQLStatus = true;
+                try
                 {
-                    string data = "";
-                    TCP.Write("t", out data);
-                    if (data.Length < 5)
-                        break;
-                    if (data.Substring(0, 1) != "t")
-                        break;
-                    string[] split = data.Split(new char[] { '\t' });
-                    int numOfTrans = Convert.ToInt32(split[1]);
-                    for (int trans = 0; trans < numOfTrans; trans++)
-                    {
-                        int offset = trans * 5;
-                        int readerNumber = Convert.ToInt32(split[offset + 2]);
-                        int cardCode = Convert.ToInt32(split[offset + 3]);
-
-                        long ftime = (((1980L * 365L) + 114) * 86400L);
-                        DateTime dateTime = DateTime.MinValue;
-                        ftime += Convert.ToInt64(split[offset + 4]);
-                        dateTime = dateTime.AddSeconds(ftime);
-                        
-                        string cardHolder = "Not On File";
-                        foreach (Card card in sqlCardList)
-                        {
-                            if (card.cardCode == cardCode)
-                            {
-                                cardHolder = card.name;
-                                break;
-                            }
-                        }
-                        int errorCode = Convert.ToInt32(split[offset + 5]);
-                        newList.Add(new Transaction(readerNumber, cardCode, dateTime, errorCode, cardHolder));
-                        
-                    }
+                    Global.cs.Hello();
                 }
-                sqlTransList.AddRange(newList);
-                bool result, resultSpecified;
-                Global.cs.UpdateTransactionSQL(newList.ToArray(), out result, out resultSpecified);
-                SerializeTools.serializeTransaction(sqlTransList);
-                Thread.Sleep(10000);
+                catch(Exception e)
+                {
+                    Console.WriteLine(e.Message);
+                    SQLStatus = false;
+                    a.RunOnUiThread(() => CreateOkDialog("No Connection", "No connection to database!", a));
+                }
+                if (SQLStatus)
+                {
+                    //Card Stuff
+                    string cardSort = prefs.GetString("card_sort", "Name");
+                    List<Card> sqlCardList = new List<Card>(Global.cs.GetCardList());
+                    sqlCardList = SerializeTools.sortCard(sqlCardList, prefs.GetString("card_sort", "Name"));
+                    SerializeTools.serializeCardList(sqlCardList);
+
+                    //Access Level Stuff
+                    string accessSort = prefs.GetString("access_sort", "Name");
+                    List<AccessLevel> sqlAccessList = new List<AccessLevel>(Global.cs.GetAccessLevelList());
+                    sqlAccessList = SerializeTools.sortAccess(sqlAccessList, prefs.GetString("access_sort", "Name"));
+                    SerializeTools.serializeAccessLevelList(sqlAccessList);
+
+                    //Transaction Stuff
+                    List<Transaction> sqlTransList = new List<Transaction>(Global.cs.GetTransactionList());
+                    List<Transaction> newList = new List<Transaction>();
+                    while (true)
+                    {
+                        string data = "";
+                        TCP.Write("t", out data);
+                        if (data.Length < 5)
+                            break;
+                        if (data.Substring(0, 1) != "t")
+                            break;
+                        string[] split = data.Split(new char[] { '\t' });
+                        int numOfTrans = Convert.ToInt32(split[1]);
+                        for (int trans = 0; trans < numOfTrans; trans++)
+                        {
+                            int offset = trans * 5;
+                            int readerNumber = Convert.ToInt32(split[offset + 2]);
+                            int cardCode = Convert.ToInt32(split[offset + 3]);
+
+                            long ftime = (((1980L * 365L) + 114) * 86400L);
+                            DateTime dateTime = DateTime.MinValue;
+                            ftime += Convert.ToInt64(split[offset + 4]);
+                            dateTime = dateTime.AddSeconds(ftime);
+
+                            string cardHolder = "Not On File";
+                            foreach (Card card in sqlCardList)
+                            {
+                                if (card.cardCode == cardCode)
+                                {
+                                    cardHolder = card.name;
+                                    break;
+                                }
+                            }
+                            int errorCode = Convert.ToInt32(split[offset + 5]);
+                            newList.Add(new Transaction(readerNumber, cardCode, dateTime, errorCode, cardHolder));
+                        }
+                    }
+                    sqlTransList.AddRange(newList);
+                    bool result, resultSpecified;
+                    Global.cs.UpdateTransactionSQL(newList.ToArray(), out result, out resultSpecified);
+                    string transactionSort = prefs.GetString("transaction_sort", "Newest to Oldest");
+                    sqlTransList = SerializeTools.sortTransaction(sqlTransList, prefs.GetString("transaction_sort", "Newest to Oldest"));
+                    SerializeTools.serializeTransaction(sqlTransList);
+                }
+
+                editor.PutBoolean("working", false); //Make sure nothing is happening when loading up new data
+                editor.Apply();
+                //watch.Stop();
+                //Console.WriteLine("Elapsed miliseconds" + watch.Elapsed.Milliseconds.ToString());
             }
         }
     }

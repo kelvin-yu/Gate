@@ -14,6 +14,7 @@ using System.Xml.Serialization;
 using System.Threading;
 
 using Gate.WebReference;
+using Android.Preferences;
 
 
 namespace Gate
@@ -27,6 +28,7 @@ namespace Gate
         CheckBox usePassBack, useDateRange;
         TextView dateStart, dateEnd, dateStartView, dateEndView;
         Button doneButton, cancelButton;
+
         List<AccessLevel> accessLevelList;
         List<string> accessNameList = new List<string>();
 
@@ -51,22 +53,14 @@ namespace Gate
         protected override void OnCreate(Bundle bundle)
         {
             base.OnCreate(bundle);
-
             SetContentView(Resource.Layout.AddAccessLevel);
-
             Window.SetSoftInputMode(SoftInput.StateAlwaysHidden);
-        
+
+            accessLevelList = SerializeTools.deserializeAccessLevelList();
+
             InitiateViews();
             InitiateListeners();
 
-            dateStart.Text = DateTime.Now.ToString("M/d/yyyy");
-            dateEnd.Text = DateTime.Now.ToString("M/d/yyyy");
-
-            string documentsPath = Android.OS.Environment.ExternalStorageDirectory + "/Gate";
-            var accessLevelPath = Path.Combine(documentsPath, "accesslevel.xml");
-
-            //Get the access level data from xml
-            accessLevelList = SerializeTools.deserializeAccessLevelList();
             foreach (AccessLevel acc in accessLevelList)
                 accessNameList.Add(acc.name.ToLower());
         }
@@ -118,6 +112,9 @@ namespace Gate
             dateEndView = FindViewById<TextView>(Resource.Id.dateEndView);
             dateStart = FindViewById<TextView>(Resource.Id.dateStart);
             dateEnd = FindViewById<TextView>(Resource.Id.dateEnd);
+
+            dateStart.Text = DateTime.Now.ToString("M/d/yyyy");
+            dateEnd.Text = DateTime.Now.ToString("M/d/yyyy");
         }
         private void InitiateListeners()
         {
@@ -160,73 +157,43 @@ namespace Gate
 
             doneButton.Click += delegate
             {
+                ISharedPreferences prefs = PreferenceManager.GetDefaultSharedPreferences(this);
+                if (prefs.GetBoolean("working", true))
+                    Thread.Sleep(1000);
                 if (!name.Text.Equals(String.Empty) && !numberOfUses.Text.Equals(String.Empty) && !accessNameList.Contains(name.Text))
                 {
-                    if (!TCP.isTCPNull() & TCP.isConnectable("192.168.2.180"))
+                    if (!TCP.isTCPNull() & TCP.isConnectable(TCP.ip))
                     {
-                        addNewAccessLevel(accessLevelList);
-                        SerializeTools.serializeAccessLevelList(accessLevelList);
-                        Finish();
+                        bool SQLStatus = true;
+                        try
+                        {
+                            Global.cs.Hello();
+                        }
+                        catch
+                        {
+                            SQLStatus = false;
+                            CreateOkDialog("No Connection", "No connection to database!");
+                        }
+                        if (SQLStatus)
+                        {
+                            AddNewAccessLevel();
+                            Finish();
+                        }
                     }
                     else
-                    {
-                        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-                        AlertDialog alertDialog = builder.Create();
-                        alertDialog.SetTitle("Connection Lost");
-                        alertDialog.SetIcon(Android.Resource.Drawable.IcDialogAlert);
-                        alertDialog.SetMessage("Connection to reader lost! Attempt to reconnect in settings");
-                        alertDialog.SetButton("OK", (s, ev) =>
-                        {
-                        });
-                        alertDialog.SetButton2("Reconnect", (s, ev) =>
-                        {
-                            TCP.CloseTCPClient();
-                            ThreadPool.QueueUserWorkItem(o => TCP.Connect("192.168.2.180", this));
-                        });
-                        alertDialog.Show();
-                    }
+                        CreateOkDialog("No Connection", "No connection to reader!");
                 }
                 else if (name.Text.Equals(string.Empty))
-                {
-                    AlertDialog.Builder builder = new AlertDialog.Builder(this);
-                    AlertDialog alertDialog = builder.Create();
-                    alertDialog.SetTitle("Name");
-                    alertDialog.SetIcon(Android.Resource.Drawable.IcDialogAlert);
-                    alertDialog.SetMessage("You must set a name!");
-                    alertDialog.SetButton("OK", (s, ev) =>
-                    {
-                    });
-                    alertDialog.Show();
-                }
+                    CreateOkDialog("Name", "You must set a name!");
                 else if (numberOfUses.Text.Equals(String.Empty))
-                {
-                    AlertDialog.Builder builder = new AlertDialog.Builder(this);
-                    AlertDialog alertDialog = builder.Create();
-                    alertDialog.SetTitle("Number Of Uses");
-                    alertDialog.SetIcon(Android.Resource.Drawable.IcDialogAlert);
-                    alertDialog.SetMessage("You must set a number of uses!");
-                    alertDialog.SetButton("OK", (s, ev) =>
-                    {
-                    });
-                    alertDialog.Show();
-                }
+                    CreateOkDialog("Number of Uses", "You must set a number of uses!");
                 else
-                {
-                    AlertDialog.Builder builder = new AlertDialog.Builder(this);
-                    AlertDialog alertDialog = builder.Create();
-                    alertDialog.SetTitle("Access Level Name");
-                    alertDialog.SetIcon(Android.Resource.Drawable.IcDialogAlert);
-                    alertDialog.SetMessage("Access level already exists!");
-                    alertDialog.SetButton("OK", (s, ev) =>
-                    {
-                    });
-                    alertDialog.Show();
-                }
+                    CreateOkDialog("Access Level Name", "Access level already exists!");
 
             };
             cancelButton.Click += delegate { Finish(); };
         }
-        public void addNewAccessLevel(List<AccessLevel> list)
+        public void AddNewAccessLevel()
         {
             DateTime[] startTime = new DateTime[7] {
                 DateTime.ParseExact(sunStart.Text, "HH:mm", System.Globalization.CultureInfo.InvariantCulture), 
@@ -255,7 +222,7 @@ namespace Gate
                 r1Wed.Checked ? "Y" : "N",
                 r1Thurs.Checked ? "Y" : "N",
                 r1Fri.Checked ? "Y" : "N",
-                r1Sat.Checked ? "Y" : "N",};
+                r1Sat.Checked ? "Y" : "N"};
 
             string[] r2 = new string[7] {r2Sun.Checked ? "Y" : "N",
                 r2Mon.Checked ? "Y" : "N",
@@ -263,15 +230,34 @@ namespace Gate
                 r2Wed.Checked ? "Y" : "N",
                 r2Thurs.Checked ? "Y" : "N",
                 r2Fri.Checked ? "Y" : "N",
-                r2Sat.Checked ? "Y" : "N",};
+                r2Sat.Checked ? "Y" : "N"};
 
             DateTime dStart = DateTime.ParseExact(dateStart.Text, "M/d/yyyy", System.Globalization.CultureInfo.InvariantCulture);
             DateTime dEnd = DateTime.ParseExact(dateEnd.Text, "M/d/yyyy", System.Globalization.CultureInfo.InvariantCulture);
-            
-            list.Add(new AccessLevel(name.Text, startTime, endTime, r1, r2, usePassBack.Checked, Convert.ToInt16(numberOfUses.Text), useDateRange.Checked, dStart, dEnd));
-            ReaderServices.sendAccessLevel(list);
-            bool result, resultSpecified; // make sure both are true 
+
+            ISharedPreferences prefs = PreferenceManager.GetDefaultSharedPreferences(this);
+            //Adding to local storage
+            accessLevelList.Add(new AccessLevel(name.Text, startTime, endTime, r1, r2, usePassBack.Checked, Convert.ToInt16(numberOfUses.Text), useDateRange.Checked, dStart, dEnd));
+            accessLevelList = SerializeTools.sortAccess(accessLevelList, prefs.GetString("access_sort", "Name"));
+            SerializeTools.serializeAccessLevelList(accessLevelList);
+            //Sending the updated list to the reader
+            ReaderServices.sendAccessLevel(accessLevelList);
+            //Adding to sql
+            bool result, resultSpecified;
             Global.cs.AddOneAccessSQL(new AccessLevel(name.Text, startTime, endTime, r1, r2, usePassBack.Checked, Convert.ToInt16(numberOfUses.Text), useDateRange.Checked, dStart, dEnd), out result, out resultSpecified);
+        }
+
+        public void CreateOkDialog(string title, string message)
+        {
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            AlertDialog alertDialog = builder.Create();
+            alertDialog.SetTitle(title);
+            alertDialog.SetIcon(Android.Resource.Drawable.IcDialogAlert);
+            alertDialog.SetMessage(message);
+            alertDialog.SetButton("OK", (s, ev) =>
+            {
+            });
+            alertDialog.Show();
         }
 
         public override bool OnKeyDown(Keycode keyCode, KeyEvent e)

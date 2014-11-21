@@ -9,84 +9,90 @@ using Android.OS;
 using Android.Runtime;
 using Android.Views;
 using Android.Widget;
-using System.IO;
+using Android.Preferences;
 using System.Threading;
 
 namespace Gate
 {
     [Activity(Label = "Settings")]
-    public class Settings : Activity
+    public class Settings : PreferenceActivity
     {
-        Button deleteAll, deleteCards, deleteAccessLevels, deleteTransactions;
-
+        Preference deleteAll, deleteCards, deleteAccessLevelsAndCards, deleteTransactions;
+        ListPreference cardSort, accessSort, transSort;
         protected override void OnCreate(Bundle bundle)
         {
             base.OnCreate(bundle);
+            AddPreferencesFromResource(Resource.Layout.prefs);
 
-            SetContentView(Resource.Layout.Settings);
+            deleteAll = FindPreference("delete_all");
+            deleteCards = FindPreference("delete_all_c");
+            deleteAccessLevelsAndCards = FindPreference("delete_all_a_c");
+            deleteTransactions = FindPreference("delete_all_t");
+            cardSort = (ListPreference) FindPreference("card_sort");
+            accessSort = (ListPreference) FindPreference("access_sort");
+            transSort = (ListPreference) FindPreference("transaction_sort");
 
-            deleteAll = FindViewById<Button>(Resource.Id.deleteAll);
-            deleteCards = FindViewById<Button>(Resource.Id.deleteCards);
-            deleteAccessLevels = FindViewById<Button>(Resource.Id.deleteAccessLevels);
-            deleteTransactions = FindViewById<Button>(Resource.Id.deleteTransactions);
-
-            deleteAll.Click += delegate 
-            { 
+            deleteAll.PreferenceClick += delegate
+            {
+                ISharedPreferences prefs = PreferenceManager.GetDefaultSharedPreferences(this);
+                if (prefs.GetBoolean("working", true))
+                    Thread.Sleep(1000);
+                bool result, resultSpecified;
+                SerializeTools.deleteAllXml();
                 ReaderServices.deleteAll();
-                deleteAllXml();
-            };
-
-            deleteCards.Click += delegate
-            {
-                bool result, resultSpecified;
-                ReaderServices.deleteAllCards();
-                deleteCardXml();
-                Global.cs.DeleteAllCards(out result, out resultSpecified);
-            };
-
-            deleteAccessLevels.Click += delegate 
-            {
-                bool result, resultSpecified;
-                ReaderServices.deleteAllAccessLevels();
-                deleteAccessXml();
-                Global.cs.DeleteAllAccess(out result, out resultSpecified);
-            };
-
-            deleteTransactions.Click += delegate
-            {
-                bool result, resultSpecified;
-                deleteTransactionXml();
+                Global.cs.DeleteAllAccessAndCards(out result, out resultSpecified);
                 Global.cs.DeleteAllTransactions(out result, out resultSpecified);
             };
 
+            deleteCards.PreferenceClick += delegate
+            {
+                ISharedPreferences prefs = PreferenceManager.GetDefaultSharedPreferences(this);
+                if (prefs.GetBoolean("working", true))
+                    Thread.Sleep(1000);
+                bool result, resultSpecified;
+                SerializeTools.deleteCardXml();
+                ReaderServices.deleteAllCards();
+                Global.cs.DeleteAllCards(out result, out resultSpecified);
+            };
+
+            deleteAccessLevelsAndCards.PreferenceClick += delegate
+            {
+                ISharedPreferences prefs = PreferenceManager.GetDefaultSharedPreferences(this);
+                if (prefs.GetBoolean("working", true))
+                    Thread.Sleep(1000);
+                bool result, resultSpecified;
+                SerializeTools.deleteAccessAndCardXml();
+                ReaderServices.deleteAll();
+                Global.cs.DeleteAllAccessAndCards(out result, out resultSpecified);
+            };
+
+            deleteTransactions.PreferenceClick += delegate
+            {
+                ISharedPreferences prefs = PreferenceManager.GetDefaultSharedPreferences(this);
+                if (prefs.GetBoolean("working", true))
+                    Thread.Sleep(1000);
+                bool result, resultSpecified;
+                SerializeTools.deleteTransactionXml();
+                Global.cs.DeleteAllTransactions(out result, out resultSpecified);
+            };
+
+            cardSort.PreferenceChange += CardPreferenceChange;
+            accessSort.PreferenceChange += AccessPreferenceChange;
+            transSort.PreferenceChange += TransPreferenceChange;
+        }
+        public void CardPreferenceChange(object sender, Preference.PreferenceChangeEventArgs e)
+        {
+            SerializeTools.serializeCardList(SerializeTools.sortCard(SerializeTools.deserializeCardList(), (string) e.NewValue));
         }
 
-        public void deleteAllXml()
+        public void AccessPreferenceChange(object sender, Preference.PreferenceChangeEventArgs e)
         {
-            deleteCardXml();
-            deleteAccessXml();
-            deleteTransactionXml();
+            SerializeTools.serializeAccessLevelList(SerializeTools.sortAccess(SerializeTools.deserializeAccessLevelList(), (string) e.NewValue));
         }
 
-        public void deleteCardXml()
+        public void TransPreferenceChange(object sender, Preference.PreferenceChangeEventArgs e)
         {
-            string documentsPath = Android.OS.Environment.ExternalStorageDirectory + "/Gate";
-            var cardPath = Path.Combine(documentsPath, "card.xml");
-            File.Delete(cardPath);
-        }
-
-        public void deleteAccessXml()
-        {
-            string documentsPath = Android.OS.Environment.ExternalStorageDirectory + "/Gate";
-            var accessLevelPath = Path.Combine(documentsPath, "accesslevel.xml");
-            File.Delete(accessLevelPath);
-        }
-
-        public void deleteTransactionXml()
-        {
-            string documentsPath = Android.OS.Environment.ExternalStorageDirectory + "/Gate";
-            var transactionPath = Path.Combine(documentsPath, "transaction.xml");
-            File.Delete(transactionPath);
+            SerializeTools.serializeTransaction(SerializeTools.sortTransaction(SerializeTools.deserializeTransactionList(), (string) e.NewValue));
         }
     }
 }

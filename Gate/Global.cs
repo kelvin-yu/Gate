@@ -37,9 +37,10 @@ namespace Gate
                     return "Pass empty";
                 case 9:
                     return "Expired";
-                default :
+                default:
                     return "OK";
             }
         }
     }
+
 }

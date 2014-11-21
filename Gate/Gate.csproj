@@ -32,6 +32,16 @@
     <AndroidLinkMode>None</AndroidLinkMode>
     <DocumentationFile>
     </DocumentationFile>
+    <AndroidLinkSkip />
+    <EmbedAssembliesIntoApk>True</EmbedAssembliesIntoApk>
+    <BundleAssemblies>False</BundleAssemblies>
+    <AndroidCreatePackagePerAbi>False</AndroidCreatePackagePerAbi>
+    <AndroidSupportedAbis>armeabi,armeabi-v7a,x86</AndroidSupportedAbis>
+    <AndroidStoreUncompressedFileExtensions />
+    <MandroidI18n />
+    <JavaMaximumHeapSize />
+    <JavaOptions />
+    <MonoDroidExtraArgs />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -58,6 +68,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Search.cs" />
+    <Compile Include="SearchResults.cs" />
+    <Compile Include="Settings.cs" />
     <Compile Include="AddAccessLevel.cs" />
     <Compile Include="AddCard.cs" />
     <Compile Include="DisplayAccessLevel.cs" />
@@ -65,12 +78,12 @@
     <Compile Include="DisplayTransaction.cs" />
     <Compile Include="Fragments.cs" />
     <Compile Include="Global.cs" />
+    <Compile Include="Loading.cs" />
     <Compile Include="MainActivity.cs" />
     <Compile Include="ReaderServices.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Resources\Resource.Designer.cs" />
     <Compile Include="SerializeTools.cs" />
-    <Compile Include="Settings.cs" />
     <Compile Include="TCP.cs" />
     <Compile Include="Web References\WebReference\Reference.cs">
       <AutoGen>True</AutoGen>
@@ -97,6 +110,12 @@
       <SubType>AndroidResource</SubType>
     </AndroidResource>
     <AndroidResource Include="Resources\layout\Transaction.axml">
+      <SubType>AndroidResource</SubType>
+    </AndroidResource>
+    <AndroidResource Include="Resources\layout\Search.axml">
+      <SubType>AndroidResource</SubType>
+    </AndroidResource>
+    <AndroidResource Include="Resources\layout\SearchResults.axml">
       <SubType>AndroidResource</SubType>
     </AndroidResource>
     <None Include="Web References\WebReference\AccessLevel.datasource">
@@ -136,16 +155,26 @@
   <ItemGroup>
     <Content Include="Properties\AndroidManifest.xml" />
     <AndroidResource Include="Resources\drawable\Icon.png" />
+    <AndroidResource Include="Resources\drawable\Loading.png" />
+    <AndroidResource Include="Resources\values\Styles.xml">
+      <SubType>Designer</SubType>
+    </AndroidResource>
+    <AndroidResource Include="Resources\layout\prefs.xml">
+      <SubType>Designer</SubType>
+    </AndroidResource>
+    <AndroidResource Include="Resources\values\array.xml">
+      <SubType>Designer</SubType>
+    </AndroidResource>
     <None Include="Web References\WebReference\CardReader.disco" />
   </ItemGroup>
   <ItemGroup>
     <WebReferences Include="Web References\" />
   </ItemGroup>
   <ItemGroup>
-    <WebReferenceUrl Include="http://192.168.2.204:8000/DMTSolutions/CardReader">
+    <WebReferenceUrl Include="http://192.168.2.238:8000/DMTSolutions/CardReader">
       <UrlBehavior>Dynamic</UrlBehavior>
       <RelPath>Web References\WebReference\</RelPath>
-      <UpdateFromURL>http://192.168.2.204:8000/DMTSolutions/CardReader</UpdateFromURL>
+      <UpdateFromURL>http://192.168.2.238:8000/DMTSolutions/CardReader</UpdateFromURL>
       <ServiceLocationURL>
       </ServiceLocationURL>
       <CachedDynamicPropName>
@@ -156,6 +185,7 @@
       </CachedSettingsPropName>
     </WebReferenceUrl>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
      Other similar extension points exist, see Microsoft.Common.targets.

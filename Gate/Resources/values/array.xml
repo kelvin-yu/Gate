@@ -1,0 +1,45 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <string-array name="cardOptions">
+    <item>Oldest to Newest</item>
+    <item>Newest to Oldest</item>
+    <item>Name</item>
+    <item>Access Level</item>
+    <item>Card Code</item>
+  </string-array>
+  <string-array name="cardValues">
+    <item>Oldest to Newest</item>
+    <item>Newest to Oldest</item>
+    <item>Name</item>
+    <item>Access Level</item>
+    <item>Card Code</item>
+  </string-array>
+
+  <string-array name="accessOptions">
+    <item>Name</item>
+  </string-array>
+  <string-array name="accessValues">
+    <item>Name</item>
+  </string-array>
+
+  <string-array name="transactionOptions">
+    <item>Oldest to Newest</item>
+    <item>Newest to Oldest</item>
+    <item>Card Code</item>
+  </string-array>
+  <string-array name="transactionValues">
+    <item>Oldest to Newest</item>
+    <item>Newest to Oldest</item>
+    <item>Card Code</item>
+  </string-array>
+
+  <string-array name="themeOptions">
+    <item>White</item>
+    <item>Black</item>
+  </string-array>
+  <string-array name="themeValues">
+    <item>White</item>
+    <item>Black</item>
+  </string-array>
+  
+</resources>

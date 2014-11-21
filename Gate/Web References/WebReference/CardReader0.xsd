@@ -1,6 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <xs:schema xmlns:tns="http://dmtserv.CardServices" elementFormDefault="qualified" targetNamespace="http://dmtserv.CardServices" xmlns:xs="http://www.w3.org/2001/XMLSchema">
-  <xs:import schemaLocation="http://192.168.2.204:8000/DMTSolutions/CardReader?xsd=xsd2" namespace="http://schemas.microsoft.com/2003/10/Serialization/Arrays" />
+  <xs:import schemaLocation="http://192.168.2.238:8000/DMTSolutions/CardReader?xsd=xsd2" namespace="http://schemas.microsoft.com/2003/10/Serialization/Arrays" />
+  <xs:element name="Hello">
+    <xs:complexType>
+      <xs:sequence />
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="HelloResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="HelloResult" nillable="true" type="xs:string" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
   <xs:element name="GetTransactionList">
     <xs:complexType>
       <xs:sequence />
@@ -197,15 +209,32 @@
       </xs:sequence>
     </xs:complexType>
   </xs:element>
-  <xs:element name="DeleteAllAccess">
+  <xs:element name="DeleteAllAccessAndCards">
     <xs:complexType>
       <xs:sequence />
     </xs:complexType>
   </xs:element>
-  <xs:element name="DeleteAllAccessResponse">
+  <xs:element name="DeleteAllAccessAndCardsResponse">
     <xs:complexType>
       <xs:sequence>
-        <xs:element minOccurs="0" name="DeleteAllAccessResult" type="xs:boolean" />
+        <xs:element minOccurs="0" name="DeleteAllAccessAndCardsResult" type="xs:boolean" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="ModifyValues">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="table" nillable="true" type="xs:string" />
+        <xs:element minOccurs="0" name="column" nillable="true" type="xs:string" />
+        <xs:element minOccurs="0" name="oldv" nillable="true" type="xs:anyType" />
+        <xs:element minOccurs="0" name="newv" nillable="true" type="xs:anyType" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="ModifyValuesResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="ModifyValuesResult" type="xs:boolean" />
       </xs:sequence>
     </xs:complexType>
   </xs:element>

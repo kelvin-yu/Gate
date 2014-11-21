@@ -18,7 +18,7 @@ namespace Gate
     [Activity(Label = "DisplayTransaction")]
     public class DisplayTransaction : Activity
     {
-        TextView card, time, reader, error;
+        TextView holder, card, time, reader, error;
         List<Transaction> transactionList;
         int transactionIndex;
 
@@ -28,6 +28,7 @@ namespace Gate
 
             SetContentView(Resource.Layout.Transaction);
 
+            holder = FindViewById<TextView>(Resource.Id.transactionHolder);
             card = FindViewById<TextView>(Resource.Id.transactionCard);
             time = FindViewById<TextView>(Resource.Id.transactionTime);
             reader = FindViewById<TextView>(Resource.Id.transactionReader);
@@ -38,8 +39,8 @@ namespace Gate
             ISharedPreferences prefs = PreferenceManager.GetDefaultSharedPreferences(this);
             transactionIndex = prefs.GetInt("transactionclick", -1);
 
+            holder.Text = transactionList[transactionIndex].cardHolder;
             card.Text = transactionList[transactionIndex].cardCode.ToString();
-
             time.Text = transactionList[transactionIndex].dateTime.ToString("MM/dd/yy H:mm:ss");
 
             reader.Text = transactionList[transactionIndex].readerNumber.ToString();

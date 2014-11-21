@@ -21,6 +21,7 @@ namespace Gate
     {
         static TcpClient tcpClient = null;
         static NetworkStream tcpStream = null;
+        public static string ip = null;
 
         static private void GetStream()
         {
@@ -39,28 +40,7 @@ namespace Gate
             }
             return false;
         }
-
-        static public bool Connect(string ip, Activity a)
-        {
-            bool ok = false;
-            if (isPhoneOnline(a) & isConnectable(ip))
-            {
-                Console.WriteLine("here");
-                try
-                {
-                    tcpClient = new TcpClient(ip, 1025);
-                    ok = true;
-                }
-                catch (Exception e)
-                {
-                    Console.WriteLine(e.Message);
-                }
-                if (ok)
-                    GetStream();
-            }
-            return ok;
-        }
-
+       
         static public bool ConnectWithDialog(string ip, Activity a)
         {
             bool ok = false;
@@ -70,45 +50,31 @@ namespace Gate
                 {
                     tcpClient = new TcpClient(ip, 1025);
                     ok = true;
+                    TCP.ip = ip;
                 }
-                catch
+                catch(Exception e)
                 {
+                    Console.WriteLine(e.Message);
                 }
                 if (ok)
                     GetStream();
             }
             else
             {
-                AlertDialog.Builder builder = new AlertDialog.Builder(a);
                 a.RunOnUiThread(() =>
                 {
-                    builder.SetTitle("Connection Failed");
-                    builder.SetMessage("Cannot connect to reader.");
-                    builder.SetCancelable(false);
-                    builder.SetPositiveButton("Retry", (EventHandler<DialogClickEventArgs>)null);
-                    var dialog = builder.Create();
-                    dialog.Show();
-                    var yesBtn = dialog.GetButton((int)DialogButtonType.Positive);
-                    yesBtn.Click += (sender, args) =>
+                    AlertDialog.Builder builder = new AlertDialog.Builder(a);
+                    AlertDialog alertDialog = builder.Create();
+                    alertDialog.SetTitle("No Connection");
+                    alertDialog.SetIcon(Android.Resource.Drawable.IcDialogAlert);
+                    alertDialog.SetMessage("No connection to reader!");
+                    alertDialog.SetButton("OK", (s, ev) =>
                     {
-                        if (Connect(ip, a))
-                        {
-                            ok = true;
-                            dialog.Dismiss();
-                        }
-                    };
+                    });
+                    alertDialog.Show();
                 });
             }
             return ok;
-        }
-
-        static public void CloseTCPClient()
-        {
-            if (tcpClient != null)
-            {
-                tcpClient.GetStream().Close();
-                tcpClient.Close();
-            }
         }
 
         static public bool isConnectable(string ip)
@@ -120,18 +86,15 @@ namespace Gate
                 if (reply.Status == IPStatus.Success)
                     return true;
             }
-            catch { }
+            catch(Exception e)
+            {
+                Console.WriteLine(e.Message);
+            }
             return false;
-        }
-
-        static public bool isConnected()
-        {
-            return tcpClient.Connected;
         }
 
         static public bool isTCPNull()
         {
-            Console.WriteLine(tcpClient == null);
             return tcpClient == null;
         }
 

@@ -10,16 +10,23 @@ using System.Threading;
 using System.ComponentModel;
 
 using Gate.WebReference;
+using Android.Preferences;
 
 
 namespace Gate
 {
-    [Activity(Label = "Gate", MainLauncher = true, Icon = "@drawable/icon")]
+    [Activity(Label = "Gate", Icon = "@drawable/icon")]
     public class MainActivity : Activity
     {
         public List<Card> Card;
         Fragment[] fragments;
         IMenu menu1;
+        Timer timer;
+
+        private void TimerCallback(object state)
+        {
+            ReaderServices.UpdateInfo(this);
+        }
 
         protected override void OnCreate(Bundle bundle)
         {
@@ -28,11 +35,6 @@ namespace Gate
             ActionBar.NavigationMode = ActionBarNavigationMode.Tabs;
 
             SetContentView(Resource.Layout.Main);
-
-            if (ThreadPool.QueueUserWorkItem(o => TCP.ConnectWithDialog("192.168.2.180", this)))
-            {
-                ThreadPool.QueueUserWorkItem(o => ReaderServices.refreshTransactions());
-            }
 
             Card = new List<Card>();
 
@@ -48,6 +50,24 @@ namespace Gate
             AddTab("Access Levels");
             AddTab("Transactions");
             AddTab("Readers");
+        }
+
+        protected override void OnResume()
+        {
+            base.OnResume();
+
+            ISharedPreferences prefs = PreferenceManager.GetDefaultSharedPreferences(this);
+            if (TCP.isTCPNull())
+            {
+                if (ThreadPool.QueueUserWorkItem(o => TCP.ConnectWithDialog(prefs.GetString("reader_ip", "192.168.2.180"), this)))
+                {
+                    timer = new Timer(TimerCallback, null, 0, Convert.ToInt32(prefs.GetString("refresh", "1")) * 60000);
+                }
+            }
+            else
+            {
+                timer = new Timer(TimerCallback, null, 0, Convert.ToInt32(prefs.GetString("refresh", "1")) * 60000);
+            }
         }
 
         public void AddTab(string text)
@@ -70,24 +90,28 @@ namespace Gate
                     menu1.FindItem(1).SetVisible(false);
                     menu1.FindItem(0).SetVisible(true);
                     menu1.FindItem(2).SetVisible(false);
+                    menu1.FindItem(4).SetVisible(true);
                 }
                 else if (tab.Position == 1)
                 {
                     menu1.FindItem(1).SetVisible(true);
                     menu1.FindItem(0).SetVisible(false);
                     menu1.FindItem(2).SetVisible(false);
+                    menu1.FindItem(4).SetVisible(true);
                 }
                 else if (tab.Position == 2)
                 {
                     menu1.FindItem(0).SetVisible(false);
                     menu1.FindItem(1).SetVisible(false);
                     menu1.FindItem(2).SetVisible(true);
+                    menu1.FindItem(4).SetVisible(true);
                 }
                 else if (tab.Position == 3)
                 {
                     menu1.FindItem(0).SetVisible(false);
                     menu1.FindItem(1).SetVisible(false);
                     menu1.FindItem(2).SetVisible(false);
+                    menu1.FindItem(4).SetVisible(false);
                 }
             }
             tabEventArgs.FragmentTransaction.Replace(Resource.Id.frameLayout1, frag);
@@ -100,6 +124,7 @@ namespace Gate
             menu.Add(1, 1, 1, "Add Access Level");
             menu.Add(2, 2, 2, "Refresh");
             menu.Add(3, 3, 3, "Settings");
+            menu.Add(4, 4, 4, "Search");
             menu.GetItem(1).SetVisible(false);
             menu.GetItem(2).SetVisible(false);
             return true;
@@ -121,6 +146,9 @@ namespace Gate
                     return true;
                 case 3:
                     StartActivity(typeof(Settings));
+                    return true;
+                case 4:
+                    StartActivity(typeof(Search));
                     return true;
                 default:
                     return base.OnOptionsItemSelected(item);

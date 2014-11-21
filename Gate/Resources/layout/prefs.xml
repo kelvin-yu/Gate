@@ -1,0 +1,84 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android" >
+  <PreferenceCategory
+    android:summary="Connection information"
+    android:title="Connection information" >
+    <EditTextPreference
+       android:key="reader_ip"
+       android:summary="IP Address of the card reader"
+       android:title="Reader IP"
+       android:defaultValue="192.168.2.180"/>
+    <EditTextPreference
+      android:key="service_ip"
+      android:summary="IP Address of SQL service"
+      android:title="Service IP"
+      android:defaultValue="192.168.2.180"/>
+    <EditTextPreference
+      android:key="refresh"
+      android:summary="Time before SQL service refreshes in minutes"
+      android:title="SQL Refresh Rate"
+      android:inputType="number"
+      android:defaultValue="1"/>
+
+  </PreferenceCategory>
+
+  <PreferenceCategory
+    android:summary="Settings"
+    android:title="Settings" >
+    <ListPreference
+      android:entries="@array/cardOptions"
+      android:entryValues="@array/cardValues"
+       android:key="card_sort"
+       android:summary="Sort the cards by"
+       android:title="Card Sort"
+      android:defaultValue="Name"/>
+
+    <ListPreference
+       android:entries="@array/accessOptions"
+       android:entryValues="@array/accessValues"
+       android:key="access_sort"
+       android:summary="Sort the access levels by"
+       android:title="Access Level Sort"
+       android:defaultValue="Name"/>
+
+    <ListPreference
+       android:entries="@array/transactionOptions"
+       android:entryValues="@array/transactionValues"
+       android:key="transaction_sort"
+       android:summary="Sort the transactions by"
+       android:title="Transaction Sort"
+       android:defaultValue="Newest to Oldest"/>
+    
+  </PreferenceCategory>
+
+  <PreferenceCategory
+    android:summary="Advanced"
+    android:title="Advanced" >
+
+    <PreferenceScreen
+      android:title="Advanced"
+      android:key="Advanced" >
+      <PreferenceCategory
+        android:summary="Delete"
+        android:title="Delete">
+        <Preference
+          android:title="Delete All"
+          android:key="delete_all">
+        </Preference>
+        <Preference
+          android:title="Delete All Cards"
+          android:key="delete_all_c">
+        </Preference>
+        <Preference
+          android:title="Delete All Access Levels and Cards"
+          android:key="delete_all_a_c">
+        </Preference>
+        <Preference
+          android:title="Delete Transaction History"
+          android:key="delete_all_t">
+        </Preference>
+      </PreferenceCategory>
+    </PreferenceScreen>
+  </PreferenceCategory>
+  
+</PreferenceScreen>

@@ -12,6 +12,7 @@ using Android.Widget;
 using Android.Preferences;
 
 using Gate.WebReference;
+using System.Threading;
 
 
 namespace Gate
@@ -19,78 +20,129 @@ namespace Gate
     [Activity(Label = "DisplayCard")]
     public class DisplayCard : Activity
     {
-        Button cancelButton, doneButton;
+        Button cancelButton, updateButton;
         EditText nameField, numberField;
         Spinner spinner;
+        TextView dateAdded;
+
         List<Card> cardList;
         List<AccessLevel> accessLevelList;
-        List<string> accessNameList = new List<string>();
+        List<string> cardNameList = new List<string>();
+        List<string> spinnerList = new List<string>();
         int cardIndex;
-        TextView dateAdded;
 
         protected override void OnCreate(Bundle bundle)
         {
             base.OnCreate(bundle);
             SetContentView(Resource.Layout.AddCard);
 
+            accessLevelList = SerializeTools.deserializeAccessLevelList();
+            cardList = SerializeTools.deserializeCardList();
+
+            InitiateViews();
+            InitiateListeners();
+
+            foreach (Card card in cardList)
+                cardNameList.Add(card.name.ToLower());
+        }
+
+        public void InitiateViews()
+        {
             cancelButton = FindViewById<Button>(Resource.Id.cancelCardButton);
-            doneButton = FindViewById<Button>(Resource.Id.doneCardButton);
+            updateButton = FindViewById<Button>(Resource.Id.doneCardButton);
             nameField = FindViewById<EditText>(Resource.Id.cardNameField);
             numberField = FindViewById<EditText>(Resource.Id.cardNumberField);
             spinner = FindViewById<Spinner>(Resource.Id.accessLevelSpinner);
             dateAdded = FindViewById<TextView>(Resource.Id.dateAdded);
 
-            accessLevelList = SerializeTools.deserializeAccessLevelList();
+            updateButton.Text = "Update";
 
-            for (int i = 0; i < accessLevelList.Count; i++)
-            {
-                accessNameList.Add(accessLevelList[i].name);
-            }
-
-            var adapter = new ArrayAdapter<string>(this, Android.Resource.Layout.SimpleSpinnerItem, accessNameList);
+            spinnerList.Add(cardList[cardIndex].accessLevel);
+            var adapter = new ArrayAdapter<string>(this, Android.Resource.Layout.SimpleSpinnerItem, spinnerList);
             adapter.SetDropDownViewResource(Android.Resource.Layout.SimpleSpinnerDropDownItem);
             spinner.Adapter = adapter;
-
-            cardList = SerializeTools.deserializeCardList();
+            spinner.Enabled = false;
 
             ISharedPreferences prefs = PreferenceManager.GetDefaultSharedPreferences(this);
             cardIndex = prefs.GetInt("cardclick", -1);
+            Console.WriteLine("Card index is: " + cardIndex);
 
             nameField.Text = cardList[cardIndex].name;
             numberField.Text = cardList[cardIndex].cardCode.ToString();
             dateAdded.Text = cardList[cardIndex].dateAdded.ToString("MM/dd/yy HH:mm");
+        }
 
-            for(int i = 0; i < accessNameList.Count; i++)
+        public void InitiateListeners()
+        {
+            updateButton.Click += delegate
             {
-                if (accessNameList[i] == cardList[cardIndex].accessLevel)
+                ISharedPreferences pref = PreferenceManager.GetDefaultSharedPreferences(this);
+                if (pref.GetBoolean("working", true))
+                    Thread.Sleep(1000);
+                if (!nameField.Text.Equals(String.Empty) && !numberField.Text.Equals(String.Empty) && (!cardNameList.Contains(nameField.Text) || nameField.Text.Equals(cardList[cardIndex].name)))
                 {
-                    spinner.SetSelection(i);
-                    break;
+                    if (!TCP.isTCPNull() & TCP.isConnectable(TCP.ip))
+                    {
+                        bool SQLStatus = true;
+                        try
+                        {
+                            Global.cs.Hello();
+                        }
+                        catch
+                        {
+                            SQLStatus = false;
+                            CreateOkDialog("No Connection", "No connection to database!");
+                        }
+                        if (SQLStatus)
+                        {
+                            UpdateCard();
+                            Finish();
+                        }
+                    }
+                    else
+                        CreateOkDialog("No Connection", "No connection to reader!");
                 }
-            }
-
-            spinner.Enabled = false;
-
-            doneButton.Click += delegate
-            {
-                if (!TCP.isTCPNull() && TCP.isConnected())
-                {
-                    cardList.RemoveAt(cardIndex);
-                    addNewCard(cardList);
-                    SerializeTools.serializeCardList(cardList);
-                    Finish();
-                }
+                else if (nameField.Text.Equals(string.Empty))
+                    CreateOkDialog("Name", "You must set a name!");
+                else if (spinner.SelectedItem == null)
+                    CreateOkDialog("Access Level", "No access levels found!");
+                else if (numberField.Text.Equals(String.Empty))
+                    CreateOkDialog("Card Number", "You must set a card number!");
                 else
-                    Toast.MakeText(this, "No connection to reader", ToastLength.Long);
+                    CreateOkDialog("Card Name", "Card already exists!");
             };
 
             cancelButton.Click += delegate { Finish(); };
         }
 
-        public void addNewCard(List<Card> list)
+        public void UpdateCard()
         {
-            list.Add(new Card(nameField.Text, Convert.ToInt32(numberField.Text), spinner.SelectedItem.ToString(), DateTime.Now));
-            ReaderServices.sendCard(list);
+            string oldName = cardList[cardIndex].name;
+            //Keep old date added
+            DateTime dateCreated = cardList[cardIndex].dateAdded;
+            //Add to local
+            cardList.RemoveAt(cardIndex);
+            cardList.Add(new Card(nameField.Text, Convert.ToInt32(numberField.Text), spinner.SelectedItem.ToString(), dateCreated));
+            SerializeTools.serializeCardList(cardList);
+            //to Reader
+            ReaderServices.sendCard(cardList);
+            //to SQL
+            bool result, resultSpecified;
+            Global.cs.DeleteCard(oldName, out result, out resultSpecified);
+            Global.cs.AddOneCardSQL(new Card(nameField.Text, Convert.ToInt32(numberField.Text), spinner.SelectedItem.ToString(), dateCreated), out result, out resultSpecified);
+        }
+
+        public void CreateOkDialog(string title, string message)
+        {
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            AlertDialog alertDialog = builder.Create();
+            alertDialog.SetTitle(title);
+            alertDialog.SetIcon(Android.Resource.Drawable.IcDialogAlert);
+            alertDialog.SetMessage(message);
+            alertDialog.SetButton("OK", (s, ev) =>
+            {
+            });
+            alertDialog.Show();
         }
 
         public override bool OnCreateOptionsMenu(IMenu menu)

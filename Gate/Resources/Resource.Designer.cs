@@ -28,6 +28,43 @@ namespace Gate
 		{
 		}
 		
+		public partial class Array
+		{
+			
+			// aapt resource value: 0x7f040002
+			public const int accessOptions = 2130968578;
+			
+			// aapt resource value: 0x7f040003
+			public const int accessValues = 2130968579;
+			
+			// aapt resource value: 0x7f040000
+			public const int cardOptions = 2130968576;
+			
+			// aapt resource value: 0x7f040001
+			public const int cardValues = 2130968577;
+			
+			// aapt resource value: 0x7f040006
+			public const int themeOptions = 2130968582;
+			
+			// aapt resource value: 0x7f040007
+			public const int themeValues = 2130968583;
+			
+			// aapt resource value: 0x7f040004
+			public const int transactionOptions = 2130968580;
+			
+			// aapt resource value: 0x7f040005
+			public const int transactionValues = 2130968581;
+			
+			static Array()
+			{
+				global::Android.Runtime.ResourceIdManager.UpdateIdValues();
+			}
+			
+			private Array()
+			{
+			}
+		}
+		
 		public partial class Attribute
 		{
 			
@@ -47,6 +84,9 @@ namespace Gate
 			// aapt resource value: 0x7f020000
 			public const int Icon = 2130837504;
 			
+			// aapt resource value: 0x7f020001
+			public const int Loading = 2130837505;
+			
 			static Drawable()
 			{
 				global::Android.Runtime.ResourceIdManager.UpdateIdValues();
@@ -60,347 +100,377 @@ namespace Gate
 		public partial class Id
 		{
 			
-			// aapt resource value: 0x7f05005e
-			public const int accessLevelSpinner = 2131034206;
+			// aapt resource value: 0x7f07005e
+			public const int accessLevelSpinner = 2131165278;
 			
-			// aapt resource value: 0x7f050004
-			public const int accessNameField = 2131034116;
+			// aapt resource value: 0x7f070004
+			public const int accessNameField = 2131165188;
 			
-			// aapt resource value: 0x7f050003
-			public const int accessNameView = 2131034115;
+			// aapt resource value: 0x7f070003
+			public const int accessNameView = 2131165187;
 			
-			// aapt resource value: 0x7f05005d
-			public const int accessView = 2131034205;
+			// aapt resource value: 0x7f07005d
+			public const int accessView = 2131165277;
 			
-			// aapt resource value: 0x7f050057
-			public const int cancelAccessButton = 2131034199;
+			// aapt resource value: 0x7f070069
+			public const int bySpinner = 2131165289;
 			
-			// aapt resource value: 0x7f050061
-			public const int cancelCardButton = 2131034209;
+			// aapt resource value: 0x7f070057
+			public const int cancelAccessButton = 2131165271;
 			
-			// aapt resource value: 0x7f05005b
-			public const int cardField = 2131034203;
+			// aapt resource value: 0x7f070061
+			public const int cancelCardButton = 2131165281;
 			
-			// aapt resource value: 0x7f05005a
-			public const int cardNameField = 2131034202;
+			// aapt resource value: 0x7f07005b
+			public const int cardField = 2131165275;
 			
-			// aapt resource value: 0x7f050059
-			public const int cardNameView = 2131034201;
+			// aapt resource value: 0x7f07005a
+			public const int cardNameField = 2131165274;
 			
-			// aapt resource value: 0x7f05005c
-			public const int cardNumberField = 2131034204;
+			// aapt resource value: 0x7f070059
+			public const int cardNameView = 2131165273;
 			
-			// aapt resource value: 0x7f050060
-			public const int dateAdded = 2131034208;
+			// aapt resource value: 0x7f07005c
+			public const int cardNumberField = 2131165276;
 			
-			// aapt resource value: 0x7f050055
-			public const int dateEnd = 2131034197;
+			// aapt resource value: 0x7f070060
+			public const int dateAdded = 2131165280;
 			
-			// aapt resource value: 0x7f050054
-			public const int dateEndView = 2131034196;
+			// aapt resource value: 0x7f070055
+			public const int dateEnd = 2131165269;
 			
-			// aapt resource value: 0x7f050052
-			public const int dateStart = 2131034194;
+			// aapt resource value: 0x7f070054
+			public const int dateEndView = 2131165268;
 			
-			// aapt resource value: 0x7f050051
-			public const int dateStartView = 2131034193;
+			// aapt resource value: 0x7f07006c
+			public const int dateSearch = 2131165292;
 			
-			// aapt resource value: 0x7f050007
-			public const int dayHeader1 = 2131034119;
+			// aapt resource value: 0x7f070052
+			public const int dateStart = 2131165266;
 			
-			// aapt resource value: 0x7f050028
-			public const int dayHeader2 = 2131034152;
+			// aapt resource value: 0x7f070051
+			public const int dateStartView = 2131165265;
 			
-			// aapt resource value: 0x7f05006a
-			public const int deleteAccessLevels = 2131034218;
+			// aapt resource value: 0x7f070007
+			public const int dayHeader1 = 2131165191;
 			
-			// aapt resource value: 0x7f050068
-			public const int deleteAll = 2131034216;
+			// aapt resource value: 0x7f070028
+			public const int dayHeader2 = 2131165224;
 			
-			// aapt resource value: 0x7f050069
-			public const int deleteCards = 2131034217;
+			// aapt resource value: 0x7f070073
+			public const int deleteAccessLevels = 2131165299;
 			
-			// aapt resource value: 0x7f05006b
-			public const int deleteTransactions = 2131034219;
+			// aapt resource value: 0x7f070071
+			public const int deleteAll = 2131165297;
 			
-			// aapt resource value: 0x7f050058
-			public const int doneAccessButton = 2131034200;
+			// aapt resource value: 0x7f070072
+			public const int deleteCards = 2131165298;
 			
-			// aapt resource value: 0x7f050062
-			public const int doneCardButton = 2131034210;
+			// aapt resource value: 0x7f070074
+			public const int deleteTransactions = 2131165300;
 			
-			// aapt resource value: 0x7f05004e
-			public const int enableView = 2131034190;
+			// aapt resource value: 0x7f070058
+			public const int doneAccessButton = 2131165272;
 			
-			// aapt resource value: 0x7f050021
-			public const int endTimeFriday = 2131034145;
+			// aapt resource value: 0x7f070062
+			public const int doneCardButton = 2131165282;
 			
-			// aapt resource value: 0x7f050009
-			public const int endTimeHeader = 2131034121;
+			// aapt resource value: 0x7f07004e
+			public const int enableView = 2131165262;
 			
-			// aapt resource value: 0x7f050011
-			public const int endTimeMonday = 2131034129;
+			// aapt resource value: 0x7f070021
+			public const int endTimeFriday = 2131165217;
 			
-			// aapt resource value: 0x7f050025
-			public const int endTimeSaturday = 2131034149;
+			// aapt resource value: 0x7f070009
+			public const int endTimeHeader = 2131165193;
 			
-			// aapt resource value: 0x7f05000d
-			public const int endTimeSunday = 2131034125;
+			// aapt resource value: 0x7f070011
+			public const int endTimeMonday = 2131165201;
 			
-			// aapt resource value: 0x7f05001d
-			public const int endTimeThursday = 2131034141;
+			// aapt resource value: 0x7f070025
+			public const int endTimeSaturday = 2131165221;
 			
-			// aapt resource value: 0x7f050015
-			public const int endTimeTuesday = 2131034133;
+			// aapt resource value: 0x7f07000d
+			public const int endTimeSunday = 2131165197;
 			
-			// aapt resource value: 0x7f050019
-			public const int endTimeWednesday = 2131034137;
+			// aapt resource value: 0x7f07001d
+			public const int endTimeThursday = 2131165213;
 			
-			// aapt resource value: 0x7f050067
-			public const int frameLayout1 = 2131034215;
+			// aapt resource value: 0x7f070015
+			public const int endTimeTuesday = 2131165205;
 			
-			// aapt resource value: 0x7f05001f
-			public const int fridayView1 = 2131034143;
+			// aapt resource value: 0x7f070019
+			public const int endTimeWednesday = 2131165209;
 			
-			// aapt resource value: 0x7f050040
-			public const int fridayView2 = 2131034176;
+			// aapt resource value: 0x7f070067
+			public const int frameLayout1 = 2131165287;
 			
-			// aapt resource value: 0x7f050001
-			public const int linearLayout1 = 2131034113;
+			// aapt resource value: 0x7f07001f
+			public const int fridayView1 = 2131165215;
 			
-			// aapt resource value: 0x7f050002
-			public const int linearLayout2 = 2131034114;
+			// aapt resource value: 0x7f070040
+			public const int fridayView2 = 2131165248;
 			
-			// aapt resource value: 0x7f050047
-			public const int linearLayout3 = 2131034183;
+			// aapt resource value: 0x7f070001
+			public const int linearLayout1 = 2131165185;
 			
-			// aapt resource value: 0x7f05004d
-			public const int linearLayout4 = 2131034189;
+			// aapt resource value: 0x7f070002
+			public const int linearLayout2 = 2131165186;
 			
-			// aapt resource value: 0x7f050056
-			public const int linearLayout5 = 2131034198;
+			// aapt resource value: 0x7f070047
+			public const int linearLayout3 = 2131165255;
 			
-			// aapt resource value: 0x7f05004a
-			public const int linearLayout6 = 2131034186;
+			// aapt resource value: 0x7f07004d
+			public const int linearLayout4 = 2131165261;
 			
-			// aapt resource value: 0x7f050050
-			public const int linearLayout7 = 2131034192;
+			// aapt resource value: 0x7f070056
+			public const int linearLayout5 = 2131165270;
 			
-			// aapt resource value: 0x7f050053
-			public const int linearLayout8 = 2131034195;
+			// aapt resource value: 0x7f07004a
+			public const int linearLayout6 = 2131165258;
 			
-			// aapt resource value: 0x7f050063
-			public const int listView = 2131034211;
+			// aapt resource value: 0x7f070050
+			public const int linearLayout7 = 2131165264;
 			
-			// aapt resource value: 0x7f050065
-			public const int listView1 = 2131034213;
+			// aapt resource value: 0x7f070053
+			public const int linearLayout8 = 2131165267;
 			
-			// aapt resource value: 0x7f050066
-			public const int listView2 = 2131034214;
+			// aapt resource value: 0x7f070063
+			public const int listView = 2131165283;
 			
-			// aapt resource value: 0x7f05000f
-			public const int mondayView1 = 2131034127;
+			// aapt resource value: 0x7f070065
+			public const int listView1 = 2131165285;
 			
-			// aapt resource value: 0x7f050030
-			public const int mondayView2 = 2131034160;
+			// aapt resource value: 0x7f070066
+			public const int listView2 = 2131165286;
 			
-			// aapt resource value: 0x7f050049
-			public const int numberOfUsesField = 2131034185;
+			// aapt resource value: 0x7f07000f
+			public const int mondayView1 = 2131165199;
 			
-			// aapt resource value: 0x7f050041
-			public const int r1Fri = 2131034177;
+			// aapt resource value: 0x7f070030
+			public const int mondayView2 = 2131165232;
 			
-			// aapt resource value: 0x7f050031
-			public const int r1Mon = 2131034161;
+			// aapt resource value: 0x7f070049
+			public const int numberOfUsesField = 2131165257;
 			
-			// aapt resource value: 0x7f050045
-			public const int r1Sat = 2131034181;
+			// aapt resource value: 0x7f07006b
+			public const int parameter = 2131165291;
 			
-			// aapt resource value: 0x7f05002d
-			public const int r1Sun = 2131034157;
+			// aapt resource value: 0x7f070041
+			public const int r1Fri = 2131165249;
 			
-			// aapt resource value: 0x7f05003d
-			public const int r1Thurs = 2131034173;
+			// aapt resource value: 0x7f070031
+			public const int r1Mon = 2131165233;
 			
-			// aapt resource value: 0x7f050035
-			public const int r1Tues = 2131034165;
+			// aapt resource value: 0x7f070045
+			public const int r1Sat = 2131165253;
 			
-			// aapt resource value: 0x7f050039
-			public const int r1Wed = 2131034169;
+			// aapt resource value: 0x7f07002d
+			public const int r1Sun = 2131165229;
 			
-			// aapt resource value: 0x7f050042
-			public const int r2Fri = 2131034178;
+			// aapt resource value: 0x7f07003d
+			public const int r1Thurs = 2131165245;
 			
-			// aapt resource value: 0x7f050032
-			public const int r2Mon = 2131034162;
+			// aapt resource value: 0x7f070035
+			public const int r1Tues = 2131165237;
 			
-			// aapt resource value: 0x7f050046
-			public const int r2Sat = 2131034182;
+			// aapt resource value: 0x7f070039
+			public const int r1Wed = 2131165241;
 			
-			// aapt resource value: 0x7f05002e
-			public const int r2Sun = 2131034158;
+			// aapt resource value: 0x7f070042
+			public const int r2Fri = 2131165250;
 			
-			// aapt resource value: 0x7f05003e
-			public const int r2Thurs = 2131034174;
+			// aapt resource value: 0x7f070032
+			public const int r2Mon = 2131165234;
 			
-			// aapt resource value: 0x7f050036
-			public const int r2Tues = 2131034166;
+			// aapt resource value: 0x7f070046
+			public const int r2Sat = 2131165254;
 			
-			// aapt resource value: 0x7f05003a
-			public const int r2Wed = 2131034170;
+			// aapt resource value: 0x7f07002e
+			public const int r2Sun = 2131165230;
 			
-			// aapt resource value: 0x7f050023
-			public const int saturdayView1 = 2131034147;
+			// aapt resource value: 0x7f07003e
+			public const int r2Thurs = 2131165246;
 			
-			// aapt resource value: 0x7f050044
-			public const int saturdayView2 = 2131034180;
+			// aapt resource value: 0x7f070036
+			public const int r2Tues = 2131165238;
 			
-			// aapt resource value: 0x7f050000
-			public const int scrollView1 = 2131034112;
+			// aapt resource value: 0x7f07003a
+			public const int r2Wed = 2131165242;
 			
-			// aapt resource value: 0x7f050020
-			public const int startTimeFriday = 2131034144;
+			// aapt resource value: 0x7f070070
+			public const int results = 2131165296;
 			
-			// aapt resource value: 0x7f050008
-			public const int startTimeHeader = 2131034120;
+			// aapt resource value: 0x7f070023
+			public const int saturdayView1 = 2131165219;
 			
-			// aapt resource value: 0x7f050010
-			public const int startTimeMonday = 2131034128;
+			// aapt resource value: 0x7f070044
+			public const int saturdayView2 = 2131165252;
 			
-			// aapt resource value: 0x7f050024
-			public const int startTimeSaturday = 2131034148;
+			// aapt resource value: 0x7f070000
+			public const int scrollView1 = 2131165184;
 			
-			// aapt resource value: 0x7f05000c
-			public const int startTimeSunday = 2131034124;
+			// aapt resource value: 0x7f07006d
+			public const int searchCancel = 2131165293;
 			
-			// aapt resource value: 0x7f05001c
-			public const int startTimeThursday = 2131034140;
+			// aapt resource value: 0x7f07006e
+			public const int searchDone = 2131165294;
 			
-			// aapt resource value: 0x7f050014
-			public const int startTimeTuesday = 2131034132;
+			// aapt resource value: 0x7f070020
+			public const int startTimeFriday = 2131165216;
 			
-			// aapt resource value: 0x7f050018
-			public const int startTimeWednesday = 2131034136;
+			// aapt resource value: 0x7f070008
+			public const int startTimeHeader = 2131165192;
 			
-			// aapt resource value: 0x7f05000b
-			public const int sundayView1 = 2131034123;
+			// aapt resource value: 0x7f070010
+			public const int startTimeMonday = 2131165200;
 			
-			// aapt resource value: 0x7f05002c
-			public const int sundayView2 = 2131034156;
+			// aapt resource value: 0x7f070024
+			public const int startTimeSaturday = 2131165220;
 			
-			// aapt resource value: 0x7f050005
-			public const int tableLayout1 = 2131034117;
+			// aapt resource value: 0x7f07000c
+			public const int startTimeSunday = 2131165196;
 			
-			// aapt resource value: 0x7f050026
-			public const int tableLayout2 = 2131034150;
+			// aapt resource value: 0x7f07001c
+			public const int startTimeThursday = 2131165212;
 			
-			// aapt resource value: 0x7f050006
-			public const int tableRow1 = 2131034118;
+			// aapt resource value: 0x7f070014
+			public const int startTimeTuesday = 2131165204;
 			
-			// aapt resource value: 0x7f05002b
-			public const int tableRow11 = 2131034155;
+			// aapt resource value: 0x7f070018
+			public const int startTimeWednesday = 2131165208;
 			
-			// aapt resource value: 0x7f05002f
-			public const int tableRow12 = 2131034159;
+			// aapt resource value: 0x7f07000b
+			public const int sundayView1 = 2131165195;
 			
-			// aapt resource value: 0x7f050033
-			public const int tableRow13 = 2131034163;
+			// aapt resource value: 0x7f07002c
+			public const int sundayView2 = 2131165228;
 			
-			// aapt resource value: 0x7f050037
-			public const int tableRow14 = 2131034167;
+			// aapt resource value: 0x7f070005
+			public const int tableLayout1 = 2131165189;
 			
-			// aapt resource value: 0x7f050043
-			public const int tableRow15 = 2131034179;
+			// aapt resource value: 0x7f070026
+			public const int tableLayout2 = 2131165222;
 			
-			// aapt resource value: 0x7f05003b
-			public const int tableRow16 = 2131034171;
+			// aapt resource value: 0x7f070006
+			public const int tableRow1 = 2131165190;
 			
-			// aapt resource value: 0x7f05003f
-			public const int tableRow17 = 2131034175;
+			// aapt resource value: 0x7f07002b
+			public const int tableRow11 = 2131165227;
 			
-			// aapt resource value: 0x7f05000a
-			public const int tableRow2 = 2131034122;
+			// aapt resource value: 0x7f07002f
+			public const int tableRow12 = 2131165231;
 			
-			// aapt resource value: 0x7f05000e
-			public const int tableRow3 = 2131034126;
+			// aapt resource value: 0x7f070033
+			public const int tableRow13 = 2131165235;
 			
-			// aapt resource value: 0x7f050012
-			public const int tableRow4 = 2131034130;
+			// aapt resource value: 0x7f070037
+			public const int tableRow14 = 2131165239;
 			
-			// aapt resource value: 0x7f05001a
-			public const int tableRow5 = 2131034138;
+			// aapt resource value: 0x7f070043
+			public const int tableRow15 = 2131165251;
 			
-			// aapt resource value: 0x7f050016
-			public const int tableRow6 = 2131034134;
+			// aapt resource value: 0x7f07003b
+			public const int tableRow16 = 2131165243;
 			
-			// aapt resource value: 0x7f05001e
-			public const int tableRow7 = 2131034142;
+			// aapt resource value: 0x7f07003f
+			public const int tableRow17 = 2131165247;
 			
-			// aapt resource value: 0x7f050022
-			public const int tableRow8 = 2131034146;
+			// aapt resource value: 0x7f07000a
+			public const int tableRow2 = 2131165194;
 			
-			// aapt resource value: 0x7f050027
-			public const int tableRow9 = 2131034151;
+			// aapt resource value: 0x7f07000e
+			public const int tableRow3 = 2131165198;
 			
-			// aapt resource value: 0x7f05005f
-			public const int textView1 = 2131034207;
+			// aapt resource value: 0x7f070012
+			public const int tableRow4 = 2131165202;
 			
-			// aapt resource value: 0x7f050064
-			public const int textView2 = 2131034212;
+			// aapt resource value: 0x7f07001a
+			public const int tableRow5 = 2131165210;
 			
-			// aapt resource value: 0x7f050029
-			public const int textView21 = 2131034153;
+			// aapt resource value: 0x7f070016
+			public const int tableRow6 = 2131165206;
 			
-			// aapt resource value: 0x7f05002a
-			public const int textView22 = 2131034154;
+			// aapt resource value: 0x7f07001e
+			public const int tableRow7 = 2131165214;
 			
-			// aapt resource value: 0x7f05004b
-			public const int textView23 = 2131034187;
+			// aapt resource value: 0x7f070022
+			public const int tableRow8 = 2131165218;
 			
-			// aapt resource value: 0x7f05006e
-			public const int textView3 = 2131034222;
+			// aapt resource value: 0x7f070027
+			public const int tableRow9 = 2131165223;
 			
-			// aapt resource value: 0x7f050070
-			public const int textView4 = 2131034224;
+			// aapt resource value: 0x7f07005f
+			public const int textView1 = 2131165279;
 			
-			// aapt resource value: 0x7f05001b
-			public const int thursdayView1 = 2131034139;
+			// aapt resource value: 0x7f070064
+			public const int textView2 = 2131165284;
 			
-			// aapt resource value: 0x7f05003c
-			public const int thursdayView2 = 2131034172;
+			// aapt resource value: 0x7f070029
+			public const int textView21 = 2131165225;
 			
-			// aapt resource value: 0x7f05006c
-			public const int transactionCard = 2131034220;
+			// aapt resource value: 0x7f07002a
+			public const int textView22 = 2131165226;
 			
-			// aapt resource value: 0x7f050071
-			public const int transactionError = 2131034225;
+			// aapt resource value: 0x7f07004b
+			public const int textView23 = 2131165259;
 			
-			// aapt resource value: 0x7f05006f
-			public const int transactionReader = 2131034223;
+			// aapt resource value: 0x7f070079
+			public const int textView3 = 2131165305;
 			
-			// aapt resource value: 0x7f05006d
-			public const int transactionTime = 2131034221;
+			// aapt resource value: 0x7f07006a
+			public const int textView4 = 2131165290;
 			
-			// aapt resource value: 0x7f050013
-			public const int tuesdayView1 = 2131034131;
+			// aapt resource value: 0x7f070075
+			public const int textView5 = 2131165301;
 			
-			// aapt resource value: 0x7f050034
-			public const int tuesdayView2 = 2131034164;
+			// aapt resource value: 0x7f07001b
+			public const int thursdayView1 = 2131165211;
 			
-			// aapt resource value: 0x7f05004f
-			public const int useDateRange = 2131034191;
+			// aapt resource value: 0x7f07003c
+			public const int thursdayView2 = 2131165244;
 			
-			// aapt resource value: 0x7f05004c
-			public const int usePassBack = 2131034188;
+			// aapt resource value: 0x7f07006f
+			public const int title = 2131165295;
 			
-			// aapt resource value: 0x7f050048
-			public const int usesView = 2131034184;
+			// aapt resource value: 0x7f070077
+			public const int transactionCard = 2131165303;
 			
-			// aapt resource value: 0x7f050017
-			public const int wednesdayView1 = 2131034135;
+			// aapt resource value: 0x7f07007b
+			public const int transactionError = 2131165307;
 			
-			// aapt resource value: 0x7f050038
-			public const int wednesdayView2 = 2131034168;
+			// aapt resource value: 0x7f070076
+			public const int transactionHolder = 2131165302;
+			
+			// aapt resource value: 0x7f07007a
+			public const int transactionReader = 2131165306;
+			
+			// aapt resource value: 0x7f070078
+			public const int transactionTime = 2131165304;
+			
+			// aapt resource value: 0x7f070013
+			public const int tuesdayView1 = 2131165203;
+			
+			// aapt resource value: 0x7f070034
+			public const int tuesdayView2 = 2131165236;
+			
+			// aapt resource value: 0x7f070068
+			public const int typeSpinner = 2131165288;
+			
+			// aapt resource value: 0x7f07004f
+			public const int useDateRange = 2131165263;
+			
+			// aapt resource value: 0x7f07004c
+			public const int usePassBack = 2131165260;
+			
+			// aapt resource value: 0x7f070048
+			public const int usesView = 2131165256;
+			
+			// aapt resource value: 0x7f070017
+			public const int wednesdayView1 = 2131165207;
+			
+			// aapt resource value: 0x7f070038
+			public const int wednesdayView2 = 2131165240;
 			
 			static Id()
 			{
@@ -431,10 +501,19 @@ namespace Gate
 			public const int Main = 2130903044;
 			
 			// aapt resource value: 0x7f030005
-			public const int Settings = 2130903045;
+			public const int prefs = 2130903045;
 			
 			// aapt resource value: 0x7f030006
-			public const int Transaction = 2130903046;
+			public const int Search = 2130903046;
+			
+			// aapt resource value: 0x7f030007
+			public const int SearchResults = 2130903047;
+			
+			// aapt resource value: 0x7f030008
+			public const int Settings = 2130903048;
+			
+			// aapt resource value: 0x7f030009
+			public const int Transaction = 2130903049;
 			
 			static Layout()
 			{
@@ -449,110 +528,122 @@ namespace Gate
 		public partial class String
 		{
 			
-			// aapt resource value: 0x7f040003
-			public const int AccessLevel = 2130968579;
+			// aapt resource value: 0x7f050003
+			public const int AccessLevel = 2131034115;
 			
-			// aapt resource value: 0x7f040000
-			public const int ApplicationName = 2130968576;
+			// aapt resource value: 0x7f050000
+			public const int ApplicationName = 2131034112;
 			
-			// aapt resource value: 0x7f040014
-			public const int Cancel = 2130968596;
+			// aapt resource value: 0x7f050014
+			public const int Cancel = 2131034132;
 			
-			// aapt resource value: 0x7f040002
-			public const int CardNumber = 2130968578;
+			// aapt resource value: 0x7f050026
+			public const int CardHolder = 2131034150;
 			
-			// aapt resource value: 0x7f040022
-			public const int DateAdded = 2130968610;
+			// aapt resource value: 0x7f050002
+			public const int CardNumber = 2131034114;
 			
-			// aapt resource value: 0x7f04001c
-			public const int DateEnd = 2130968604;
+			// aapt resource value: 0x7f050022
+			public const int DateAdded = 2131034146;
 			
-			// aapt resource value: 0x7f04001b
-			public const int DateStart = 2130968603;
+			// aapt resource value: 0x7f05001c
+			public const int DateEnd = 2131034140;
 			
-			// aapt resource value: 0x7f040009
-			public const int Day = 2130968585;
+			// aapt resource value: 0x7f05001b
+			public const int DateStart = 2131034139;
 			
-			// aapt resource value: 0x7f040008
-			public const int DefaultEndTime = 2130968584;
+			// aapt resource value: 0x7f050009
+			public const int Day = 2131034121;
 			
-			// aapt resource value: 0x7f040007
-			public const int DefaultStartTime = 2130968583;
+			// aapt resource value: 0x7f050008
+			public const int DefaultEndTime = 2131034120;
 			
-			// aapt resource value: 0x7f04001a
-			public const int DeleteAccessLevels = 2130968602;
+			// aapt resource value: 0x7f050007
+			public const int DefaultStartTime = 2131034119;
 			
-			// aapt resource value: 0x7f040018
-			public const int DeleteAll = 2130968600;
+			// aapt resource value: 0x7f05001a
+			public const int DeleteAccessLevels = 2131034138;
 			
-			// aapt resource value: 0x7f040019
-			public const int DeleteCards = 2130968601;
+			// aapt resource value: 0x7f050018
+			public const int DeleteAll = 2131034136;
 			
-			// aapt resource value: 0x7f04001e
-			public const int DeleteTransactions = 2130968606;
+			// aapt resource value: 0x7f050019
+			public const int DeleteCards = 2131034137;
 			
-			// aapt resource value: 0x7f040015
-			public const int Done = 2130968597;
+			// aapt resource value: 0x7f05001e
+			public const int DeleteTransactions = 2131034142;
 			
-			// aapt resource value: 0x7f040013
-			public const int EnableDateRange = 2130968595;
+			// aapt resource value: 0x7f050015
+			public const int Done = 2131034133;
 			
-			// aapt resource value: 0x7f040011
-			public const int EnablePassBack = 2130968593;
+			// aapt resource value: 0x7f050013
+			public const int EnableDateRange = 2131034131;
 			
-			// aapt resource value: 0x7f040006
-			public const int EndTime = 2130968582;
+			// aapt resource value: 0x7f050011
+			public const int EnablePassBack = 2131034129;
 			
-			// aapt resource value: 0x7f040020
-			public const int ErrorCode = 2130968608;
+			// aapt resource value: 0x7f050006
+			public const int EndTime = 2131034118;
 			
-			// aapt resource value: 0x7f04000e
-			public const int Friday = 2130968590;
+			// aapt resource value: 0x7f050020
+			public const int ErrorCode = 2131034144;
 			
-			// aapt resource value: 0x7f04000a
-			public const int Monday = 2130968586;
+			// aapt resource value: 0x7f05000e
+			public const int Friday = 2131034126;
 			
-			// aapt resource value: 0x7f040001
-			public const int Name = 2130968577;
+			// aapt resource value: 0x7f05000a
+			public const int Monday = 2131034122;
 			
-			// aapt resource value: 0x7f040012
-			public const int NumberOfUses = 2130968594;
+			// aapt resource value: 0x7f050001
+			public const int Name = 2131034113;
 			
-			// aapt resource value: 0x7f040021
-			public const int ReaderNumber = 2130968609;
+			// aapt resource value: 0x7f050012
+			public const int NumberOfUses = 2131034130;
 			
-			// aapt resource value: 0x7f04001d
-			public const int Reconnect = 2130968605;
+			// aapt resource value: 0x7f050025
+			public const int Parameter = 2131034149;
 			
-			// aapt resource value: 0x7f04000f
-			public const int Saturday = 2130968591;
+			// aapt resource value: 0x7f050021
+			public const int ReaderNumber = 2131034145;
 			
-			// aapt resource value: 0x7f040005
-			public const int StartTime = 2130968581;
+			// aapt resource value: 0x7f05001d
+			public const int Reconnect = 2131034141;
 			
-			// aapt resource value: 0x7f040010
-			public const int Sunday = 2130968592;
+			// aapt resource value: 0x7f05000f
+			public const int Saturday = 2131034127;
 			
-			// aapt resource value: 0x7f04000d
-			public const int Thursday = 2130968589;
+			// aapt resource value: 0x7f050024
+			public const int SearchBy = 2131034148;
 			
-			// aapt resource value: 0x7f04001f
-			public const int Time = 2130968607;
+			// aapt resource value: 0x7f050023
+			public const int SearchType = 2131034147;
 			
-			// aapt resource value: 0x7f04000b
-			public const int Tuesday = 2130968587;
+			// aapt resource value: 0x7f050005
+			public const int StartTime = 2131034117;
 			
-			// aapt resource value: 0x7f04000c
-			public const int Wednesday = 2130968588;
+			// aapt resource value: 0x7f050010
+			public const int Sunday = 2131034128;
 			
-			// aapt resource value: 0x7f040004
-			public const int Week = 2130968580;
+			// aapt resource value: 0x7f05000d
+			public const int Thursday = 2131034125;
 			
-			// aapt resource value: 0x7f040016
-			public const int one = 2130968598;
+			// aapt resource value: 0x7f05001f
+			public const int Time = 2131034143;
 			
-			// aapt resource value: 0x7f040017
-			public const int two = 2130968599;
+			// aapt resource value: 0x7f05000b
+			public const int Tuesday = 2131034123;
+			
+			// aapt resource value: 0x7f05000c
+			public const int Wednesday = 2131034124;
+			
+			// aapt resource value: 0x7f050004
+			public const int Week = 2131034116;
+			
+			// aapt resource value: 0x7f050016
+			public const int one = 2131034134;
+			
+			// aapt resource value: 0x7f050017
+			public const int two = 2131034135;
 			
 			static String()
 			{
@@ -560,6 +651,28 @@ namespace Gate
 			}
 			
 			private String()
+			{
+			}
+		}
+		
+		public partial class Style
+		{
+			
+			// aapt resource value: 0x7f060002
+			public const int MyActionBar = 2131099650;
+			
+			// aapt resource value: 0x7f060001
+			public const int Theme_MyLight = 2131099649;
+			
+			// aapt resource value: 0x7f060000
+			public const int Theme_Splash = 2131099648;
+			
+			static Style()
+			{
+				global::Android.Runtime.ResourceIdManager.UpdateIdValues();
+			}
+			
+			private Style()
 			{
 			}
 		}

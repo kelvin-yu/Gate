@@ -1,0 +1,13 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<resources>
+  <style name="Theme.Splash" parent="android:Theme">
+    <item name="android:windowBackground">@drawable/loading</item>
+    <item name="android:windowNoTitle">true</item>
+  </style>
+  <style name="Theme.MyLight" parent="@android:style/Theme.Holo.Light">
+    <item name="android:actionBarStyle">@style/MyActionBar</item>
+  </style>
+  <style name="MyActionBar" parent="@android:style/Widget.Holo.Light.ActionBar">
+    <item name="android:background">#ffffff</item>
+  </style>
+</resources>
