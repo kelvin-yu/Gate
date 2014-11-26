@@ -14,23 +14,23 @@ using System.Net;
 using System.Threading;
 using Android.Net;
 using System.Net.NetworkInformation;
+using Android.Preferences;
 
 namespace Gate
 {
-    static class TCP
+    class TCP
     {
-        static TcpClient tcpClient = null;
-        static NetworkStream tcpStream = null;
-        public static string ip = null;
+        TcpClient tcpClient = null;
+        NetworkStream tcpStream = null;
 
-        static private void GetStream()
+        private void GetStream()
         {
             tcpStream = tcpClient.GetStream();
             tcpStream.ReadTimeout = 5000;
             tcpStream.WriteTimeout = 2000;
         }
 
-        static public bool isPhoneOnline(Activity a)
+        public bool isPhoneOnline(Activity a)
         {
             var cm = (ConnectivityManager)a.GetSystemService(Context.ConnectivityService);
             NetworkInfo netInfo = cm.ActiveNetworkInfo;
@@ -41,64 +41,66 @@ namespace Gate
             return false;
         }
        
-        static public bool ConnectWithDialog(string ip, Activity a)
+        public bool Connect(string ip, Activity a)
         {
             bool ok = false;
-            if (isPhoneOnline(a) & isConnectable(ip))
+            if (isPhoneOnline(a) & ReaderServices.isConnectable(ip))
             {
-                try
+                bool succeeded = false;
+                int tries = 3;
+                do
                 {
-                    tcpClient = new TcpClient(ip, 1025);
-                    ok = true;
-                    TCP.ip = ip;
+                    try
+                    {
+                        tcpClient = new TcpClient(ip, 1025);
+                        ok = true;
+                        succeeded = true;
+                    }
+                    catch (Exception e)
+                    {
+                        Thread.Sleep(1000);
+                        tries--;
+                        if(tries == 0)
+                            throw e;
+                    }
                 }
-                catch(Exception e)
-                {
-                    Console.WriteLine(e.Message);
-                }
+                while (!succeeded && tries > 0);
                 if (ok)
+                {
                     GetStream();
+                    Console.WriteLine("passed");
+                }
             }
             else
             {
-                a.RunOnUiThread(() =>
+                ISharedPreferences prefs = PreferenceManager.GetDefaultSharedPreferences(a);
+                Console.WriteLine("HEREE");
+                Console.WriteLine(prefs.GetBoolean("visible", true));
+                if (prefs.GetBoolean("visible", true))
                 {
-                    AlertDialog.Builder builder = new AlertDialog.Builder(a);
-                    AlertDialog alertDialog = builder.Create();
-                    alertDialog.SetTitle("No Connection");
-                    alertDialog.SetIcon(Android.Resource.Drawable.IcDialogAlert);
-                    alertDialog.SetMessage("No connection to reader!");
-                    alertDialog.SetButton("OK", (s, ev) =>
+                    a.RunOnUiThread(() =>
                     {
+                        AlertDialog.Builder builder = new AlertDialog.Builder(a);
+                        AlertDialog alertDialog = builder.Create();
+                        alertDialog.SetTitle("No Connection");
+                        alertDialog.SetIcon(Android.Resource.Drawable.IcDialogAlert);
+                        alertDialog.SetMessage("No connection to reader!");
+                        alertDialog.SetButton("OK", (s, ev) =>
+                        {
+                        });
+                        alertDialog.Show();
                     });
-                    alertDialog.Show();
-                });
+                }
             }
             return ok;
         }
 
-        static public bool isConnectable(string ip)
-        {
-            Ping p = new Ping();
-            try
-            {
-                PingReply reply = p.Send(ip, 500);
-                if (reply.Status == IPStatus.Success)
-                    return true;
-            }
-            catch(Exception e)
-            {
-                Console.WriteLine(e.Message);
-            }
-            return false;
-        }
-
-        static public bool isTCPNull()
+        public bool isTCPNull()
         {
             return tcpClient == null;
         }
 
-        static public void Close()
+        public void Close()
         {
             if (tcpStream != null)
             {
@@ -113,7 +115,7 @@ namespace Gate
             }
         }
 
-        static public bool WriteOnly(string cmd)
+        public bool WriteOnly(string cmd)
         {
             // Send the message to the connected TcpServer. 
             Byte[] d = System.Text.Encoding.ASCII.GetBytes(cmd);
@@ -140,7 +142,7 @@ namespace Gate
         /// <param name="cmd">Command to send</param>
         /// <param name="data">result if returns true</param>
         /// <returns>true if all is well</returns>
-        static public bool Write(string cmd, out string data)
+        public bool Write(string cmd, out string data)
         {
             data = "";
             if (!WriteOnly(cmd))

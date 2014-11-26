@@ -34,43 +34,31 @@ namespace Gate
 
             deleteAll.PreferenceClick += delegate
             {
-                ISharedPreferences prefs = PreferenceManager.GetDefaultSharedPreferences(this);
-                if (prefs.GetBoolean("working", true))
-                    Thread.Sleep(1000);
                 bool result, resultSpecified;
                 SerializeTools.deleteAllXml();
-                ReaderServices.deleteAll();
+                ReaderServices.deleteAll(this);
                 Global.cs.DeleteAllAccessAndCards(out result, out resultSpecified);
                 Global.cs.DeleteAllTransactions(out result, out resultSpecified);
             };
 
             deleteCards.PreferenceClick += delegate
             {
-                ISharedPreferences prefs = PreferenceManager.GetDefaultSharedPreferences(this);
-                if (prefs.GetBoolean("working", true))
-                    Thread.Sleep(1000);
                 bool result, resultSpecified;
                 SerializeTools.deleteCardXml();
-                ReaderServices.deleteAllCards();
+                ReaderServices.deleteAllCards(this);
                 Global.cs.DeleteAllCards(out result, out resultSpecified);
             };
 
             deleteAccessLevelsAndCards.PreferenceClick += delegate
             {
-                ISharedPreferences prefs = PreferenceManager.GetDefaultSharedPreferences(this);
-                if (prefs.GetBoolean("working", true))
-                    Thread.Sleep(1000);
                 bool result, resultSpecified;
                 SerializeTools.deleteAccessAndCardXml();
-                ReaderServices.deleteAll();
+                ReaderServices.deleteAll(this);
                 Global.cs.DeleteAllAccessAndCards(out result, out resultSpecified);
             };
 
             deleteTransactions.PreferenceClick += delegate
             {
-                ISharedPreferences prefs = PreferenceManager.GetDefaultSharedPreferences(this);
-                if (prefs.GetBoolean("working", true))
-                    Thread.Sleep(1000);
                 bool result, resultSpecified;
                 SerializeTools.deleteTransactionXml();
                 Global.cs.DeleteAllTransactions(out result, out resultSpecified);

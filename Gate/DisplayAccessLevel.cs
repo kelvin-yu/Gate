@@ -18,7 +18,7 @@ using System.Threading;
 
 namespace Gate
 {
-    [Activity(Label = "DisplayAccessLevel")]
+    [Activity(Label = "Display Access Level")]
     public class DisplayAccessLevel : Activity
     {
         EditText name, numberOfUses;
@@ -71,6 +71,7 @@ namespace Gate
         {
             doneButton = FindViewById<Button>(Resource.Id.doneAccessButton);
             cancelButton = FindViewById<Button>(Resource.Id.cancelAccessButton);
+            doneButton.Text = "Update";
 
             name = FindViewById<EditText>(Resource.Id.accessNameField);
             numberOfUses = FindViewById<EditText>(Resource.Id.numberOfUsesField);
@@ -205,11 +206,9 @@ namespace Gate
             doneButton.Click += delegate
             {
                 ISharedPreferences prefs = PreferenceManager.GetDefaultSharedPreferences(this);
-                if (prefs.GetBoolean("working", true))
-                    Thread.Sleep(1000);
                 if (!name.Text.Equals(String.Empty) && !numberOfUses.Text.Equals(String.Empty) && (!accessNameList.Contains(name.Text) || name.Text.Equals(accessLevelList[levelIndex].name)))
                 {
-                    if (!TCP.isTCPNull() & TCP.isConnectable(TCP.ip))
+                    if (ReaderServices.isConnectable(prefs.GetString("reader_ip", "192.168.2.180")))
                     {
                         bool SQLStatus = true;
                         try
@@ -300,7 +299,7 @@ namespace Gate
             accessLevelList.Add(new AccessLevel(name.Text, startTime, endTime, r1, r2, usePassBack.Checked, Convert.ToInt16(numberOfUses.Text), useDateRange.Checked, dStart, dEnd));
             SerializeTools.serializeAccessLevelList(accessLevelList);
             //Send to reader
-            ReaderServices.sendAccessLevel(accessLevelList);
+            ReaderServices.sendAccessLevel(accessLevelList, this);
             //Add to SQL
             bool result2, resultSpecified2;
             Global.cs.DeleteAccess(oldName, out result2, out resultSpecified2);
@@ -338,8 +337,8 @@ namespace Gate
                         SerializeTools.serializeCardList(cardList);
                         SerializeTools.serializeAccessLevelList(accessLevelList);
                         //to reader
-                        ReaderServices.sendCard(cardList);
-                        ReaderServices.sendAccessLevel(accessLevelList);
+                        ReaderServices.sendCard(cardList, this);
+                        ReaderServices.sendAccessLevel(accessLevelList, this);
                         //to SQL
                         Global.cs.DeleteAccess(accessLevelList[levelIndex].name, out result, out resultSpecified);
                         accessLevelList.RemoveAt(levelIndex);

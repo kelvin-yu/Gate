@@ -19,7 +19,7 @@ using Android.Preferences;
 
 namespace Gate
 {
-    [Activity(Label = "AddAccessLevel")]
+    [Activity(Label = "Add Access Level")]
     public class AddAccessLevel : Activity
     {
         EditText name, numberOfUses;
@@ -158,11 +158,10 @@ namespace Gate
             doneButton.Click += delegate
             {
                 ISharedPreferences prefs = PreferenceManager.GetDefaultSharedPreferences(this);
-                if (prefs.GetBoolean("working", true))
-                    Thread.Sleep(1000);
                 if (!name.Text.Equals(String.Empty) && !numberOfUses.Text.Equals(String.Empty) && !accessNameList.Contains(name.Text))
                 {
-                    if (!TCP.isTCPNull() & TCP.isConnectable(TCP.ip))
+                    Console.WriteLine(prefs.GetString("reader_ip", "192.168.2.180"));
+                    if (ReaderServices.isConnectable(prefs.GetString("reader_ip", "192.168.2.180")))
                     {
                         bool SQLStatus = true;
                         try
@@ -241,7 +240,7 @@ namespace Gate
             accessLevelList = SerializeTools.sortAccess(accessLevelList, prefs.GetString("access_sort", "Name"));
             SerializeTools.serializeAccessLevelList(accessLevelList);
             //Sending the updated list to the reader
-            ReaderServices.sendAccessLevel(accessLevelList);
+            ReaderServices.sendAccessLevel(accessLevelList, this);
             //Adding to sql
             bool result, resultSpecified;
             Global.cs.AddOneAccessSQL(new AccessLevel(name.Text, startTime, endTime, r1, r2, usePassBack.Checked, Convert.ToInt16(numberOfUses.Text), useDateRange.Checked, dStart, dEnd), out result, out resultSpecified);

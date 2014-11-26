@@ -15,7 +15,7 @@ using Gate.WebReference;
 
 namespace Gate
 {
-    [Activity(Label = "DisplayTransaction")]
+    [Activity(Label = "Display Transaction")]
     public class DisplayTransaction : Activity
     {
         TextView holder, card, time, reader, error;

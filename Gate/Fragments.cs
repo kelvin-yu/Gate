@@ -50,7 +50,11 @@ namespace Gate
         public override void OnResume()
         {
             base.OnResume();
+            updateCard();
+        }
 
+        public void updateCard()
+        {
             List<string> nameList = new List<string>();
 
             cardList = SerializeTools.deserializeCardList();
@@ -95,7 +99,11 @@ namespace Gate
         public override void OnResume()
         {
             base.OnResume();
+            updateAccess();
+        }
 
+        public void updateAccess()
+        {
             List<string> nameList = new List<string>();
 
             accessList = SerializeTools.deserializeAccessLevelList();
@@ -158,8 +166,6 @@ namespace Gate
 
         public void updateTransactions()
         {
-            ReaderServices.UpdateInfo(this.Activity);
-
             List<string> cardList = new List<string>();
             List<string> dateList = new List<string>();
 
@@ -208,8 +214,6 @@ namespace Gate
 
         public void OnListItemClick(object sender, Android.Widget.AdapterView.ItemClickEventArgs e)
         {
-            string data = "";
-
             AlertDialog.Builder builder = new AlertDialog.Builder(this.Activity);
             AlertDialog alertDialog = builder.Create();
             alertDialog.SetTitle("Open " + readers[e.Position]);
@@ -218,9 +222,9 @@ namespace Gate
             alertDialog.SetButton("OK", (s, ev) =>
             {
                 if (e.Position == 0)
-                    TCP.Write("O1", out data);
+                    ReaderServices.OpenGate("1", this.Activity);
                 else if (e.Position == 1)
-                    TCP.Write("O2", out data);
+                    ReaderServices.OpenGate("2", this.Activity);
             });
             alertDialog.SetButton2("Cancel", (s, ev) =>
             {

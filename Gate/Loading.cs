@@ -11,6 +11,7 @@ using Android.Views;
 using Android.Widget;
 using System.Threading;
 using Gate.WebReference;
+using Android.Preferences;
 
 namespace Gate
 {
@@ -20,21 +21,12 @@ namespace Gate
         protected override void OnCreate(Bundle bundle)
         {
             base.OnCreate(bundle);
-            bool SQLStatus = true;
-            try
-            {
-                ReaderServices.UpdateInfo(this);
-            }
-            catch(Exception e)
-            {
-                SQLStatus = false;
-                Console.WriteLine(e.Message);
-            }
-            if (SQLStatus)
-            {
-                Console.WriteLine("Continuing");
-                StartActivity(typeof(MainActivity));
-            }
+
+            ReaderServices.UpdateInfo(this);
+
+            Console.WriteLine("Finished Loading");
+
+            StartActivity(typeof(MainActivity));
         }
     }
 }

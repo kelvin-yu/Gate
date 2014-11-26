@@ -14,6 +14,8 @@ using System.Threading;
 using Gate.WebReference;
 using Android.Preferences;
 using System.Diagnostics;
+using System.Net.NetworkInformation;
+using Android.Net.Wifi;
 
 
 namespace Gate
@@ -22,9 +24,9 @@ namespace Gate
     {
         static string data = "";
 
-        public static void sendAccessLevel(List<AccessLevel> list)
+        public static void sendAccessLevel(List<AccessLevel> list, Activity a)
         {
-            deleteAllAccessLevels();
+            deleteAllAccessLevels(a);
             foreach (AccessLevel level in list)
             {
                 string acc = "AA";
@@ -81,39 +83,62 @@ namespace Gate
                     acc += "\t" + start;
                     acc += "\t" + end;
                 }
-                
-                TCP.Write(acc, out data);
-                Console.WriteLine(data);
+
+                ISharedPreferences prefs = PreferenceManager.GetDefaultSharedPreferences(a);
+                TCP tcp = new TCP();
+                tcp.Connect(prefs.GetString("reader_ip", "192.168.2.180"), a);
+                tcp.Write(acc, out data);
+                tcp.Close();
             }
         }
 
-        public static void sendCard(List<Card> list)
+        public static void sendCard(List<Card> list, Activity a)
         {
-            deleteAllCards();
+            deleteAllCards(a);
+            ISharedPreferences prefs = PreferenceManager.GetDefaultSharedPreferences(a);
+            TCP tcp = new TCP();
+            tcp.Connect(prefs.GetString("reader_ip", "192.168.2.180"), a);
             foreach (Card card in list)
             {
                 string c = "AC";
                 c += "\t" + card.accessLevel;
                 c += "\t" + card.cardCode;
-                TCP.Write(c, out data);
-                Console.WriteLine(c);
+                tcp.Write(c, out data);
             }
+            tcp.Close();
         }
 
-        public static void deleteAllAccessLevels()
+        public static void deleteAllAccessLevels(Activity a)
         {
-           TCP.Write("DA", out data);
+            ISharedPreferences prefs = PreferenceManager.GetDefaultSharedPreferences(a);
+            TCP tcp = new TCP();
+            tcp.Connect(prefs.GetString("reader_ip", "192.168.2.180"), a);
+            tcp.Write("DA", out data);
+            tcp.Close();
         }
 
-        public static void deleteAllCards()
+        public static void deleteAllCards(Activity a)
         {
-            TCP.Write("DC", out data);
+            ISharedPreferences prefs = PreferenceManager.GetDefaultSharedPreferences(a);
+            TCP tcp = new TCP();
+            tcp.Connect(prefs.GetString("reader_ip", "192.168.2.180"), a);
+            tcp.Write("DC", out data);
+            tcp.Close();
         }
 
-        public static void deleteAll()
+        public static void deleteAll(Activity a)
         {
-            deleteAllAccessLevels();
-            deleteAllCards();
+            deleteAllAccessLevels(a);
+            deleteAllCards(a);
+        }
+
+        public static void OpenGate(string readerNum, Activity a)
+        {
+            ISharedPreferences prefs = PreferenceManager.GetDefaultSharedPreferences(a);
+            TCP tcp = new TCP();
+            tcp.Connect(prefs.GetString("reader_ip", "192.168.2.180"), a);
+            tcp.Write("O" + readerNum, out data);
+            tcp.Close();
         }
 
         public static void CreateOkDialog(string title, string message, Activity a)
@@ -129,42 +154,61 @@ namespace Gate
             alertDialog.Show();
         }
 
+        static ProgressDialog bar;
+
+        private static void CreateProgress(Activity a)
+        {
+            bar = new ProgressDialog(a);
+            bar.SetCancelable(false);
+            bar.SetMessage("Refreshing Information");
+            bar.SetProgressStyle(ProgressDialogStyle.Horizontal);
+            bar.Progress = 0;
+            bar.Max = 100;
+            bar.Show();
+        }
+
         public static void UpdateInfo(Activity a)
         {
+            Console.WriteLine("Happened");
             ISharedPreferences prefs = PreferenceManager.GetDefaultSharedPreferences(a);
-            if(TCP.isConnectable(TCP.ip))
+            if (isConnectable(prefs.GetString("reader_ip", "192.168.2.180")))
             {
-                Console.WriteLine("Happened");
-                //Stopwatch watch = new Stopwatch();
-                //watch.Start();
-                ISharedPreferencesEditor editor = prefs.Edit();
-                editor.PutBoolean("working", true); //Make sure nothing is happening when loading up new data
-                editor.Apply();
+                TCP tcp = new TCP();
+                tcp.Connect(prefs.GetString("reader_ip", "192.168.2.180"), a);
+                Stopwatch watch = new Stopwatch();
+                watch.Start();
 
                 bool SQLStatus = true;
                 try
                 {
                     Global.cs.Hello();
                 }
-                catch(Exception e)
+                catch (Exception e)
                 {
-                    Console.WriteLine(e.Message);
+                    Console.WriteLine(e.Source + " " + e.Message);
                     SQLStatus = false;
-                    a.RunOnUiThread(() => CreateOkDialog("No Connection", "No connection to database!", a));
+                    if (prefs.GetBoolean("visible", true))
+                    {
+                        a.RunOnUiThread(() => CreateOkDialog("No Connection", "No connection to database!", a));
+                    }
                 }
                 if (SQLStatus)
                 {
+                    a.RunOnUiThread(() => CreateProgress(a));
+
                     //Card Stuff
                     string cardSort = prefs.GetString("card_sort", "Name");
                     List<Card> sqlCardList = new List<Card>(Global.cs.GetCardList());
                     sqlCardList = SerializeTools.sortCard(sqlCardList, prefs.GetString("card_sort", "Name"));
                     SerializeTools.serializeCardList(sqlCardList);
+                    bar.Progress = 10;
 
                     //Access Level Stuff
                     string accessSort = prefs.GetString("access_sort", "Name");
                     List<AccessLevel> sqlAccessList = new List<AccessLevel>(Global.cs.GetAccessLevelList());
                     sqlAccessList = SerializeTools.sortAccess(sqlAccessList, prefs.GetString("access_sort", "Name"));
                     SerializeTools.serializeAccessLevelList(sqlAccessList);
+                    bar.Progress = 20;
 
                     //Transaction Stuff
                     List<Transaction> sqlTransList = new List<Transaction>(Global.cs.GetTransactionList());
@@ -172,7 +216,7 @@ namespace Gate
                     while (true)
                     {
                         string data = "";
-                        TCP.Write("t", out data);
+                        tcp.Write("t", out data);
                         if (data.Length < 5)
                             break;
                         if (data.Substring(0, 1) != "t")
@@ -203,19 +247,49 @@ namespace Gate
                             newList.Add(new Transaction(readerNumber, cardCode, dateTime, errorCode, cardHolder));
                         }
                     }
+                    bar.Progress = 50;
                     sqlTransList.AddRange(newList);
                     bool result, resultSpecified;
                     Global.cs.UpdateTransactionSQL(newList.ToArray(), out result, out resultSpecified);
+                    bar.Progress = 70;
                     string transactionSort = prefs.GetString("transaction_sort", "Newest to Oldest");
                     sqlTransList = SerializeTools.sortTransaction(sqlTransList, prefs.GetString("transaction_sort", "Newest to Oldest"));
+                    bar.Progress = 85;
                     SerializeTools.serializeTransaction(sqlTransList);
+                    bar.Progress = 100;
+                    Thread.Sleep(500);
+                    bar.Dismiss();
                 }
 
-                editor.PutBoolean("working", false); //Make sure nothing is happening when loading up new data
-                editor.Apply();
-                //watch.Stop();
-                //Console.WriteLine("Elapsed miliseconds" + watch.Elapsed.Milliseconds.ToString());
+                watch.Stop();
+                Console.WriteLine("Elapsed miliseconds" + watch.Elapsed.Milliseconds.ToString());
+                tcp.Close();
+            }
+            else
+            {
+                if (prefs.GetBoolean("visible", true))
+                {
+                    a.RunOnUiThread(() => CreateOkDialog("No Connection", "No connection to reader!", a));
+                }
             }
         }
+
+        public static bool isConnectable(string ip)
+        {
+            Ping p = new Ping();
+            try
+            {
+                PingReply reply = p.Send(ip, 500);
+                if (reply.Status == IPStatus.Success)
+                    return true;
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Source + " " + e.Message);
+            }
+            return false;
+        }
+
+
     }
 }

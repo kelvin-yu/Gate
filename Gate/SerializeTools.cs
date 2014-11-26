@@ -13,6 +13,7 @@ using System.IO;
 using System.Xml.Serialization;
 
 using Gate.WebReference;
+using System.Threading;
 
 
 namespace Gate
@@ -21,104 +22,203 @@ namespace Gate
     {
         public static List<Card> deserializeCardList()
         {
-            string documentsPath = Android.OS.Environment.ExternalStorageDirectory + "/Gate";
-            var cardPath = Path.Combine(documentsPath, "card.xml");
-            if (File.Exists(cardPath))
+            int tries = 3;
+            do
             {
-                XmlSerializer serializer = new XmlSerializer(typeof(List<Card>));
-                StreamReader reader = new StreamReader(cardPath);
-                List<Card> cardList = (List<Card>)serializer.Deserialize(reader);
-                reader.Close();
-                return cardList;
+                try
+                {
+                    string documentsPath = Android.OS.Environment.ExternalStorageDirectory + "/Gate";
+                    var cardPath = Path.Combine(documentsPath, "card.xml");
+                    if (File.Exists(cardPath))
+                    {
+                        XmlSerializer serializer = new XmlSerializer(typeof(List<Card>));
+                        StreamReader reader = new StreamReader(cardPath);
+                        List<Card> cardList = (List<Card>)serializer.Deserialize(reader);
+                        reader.Close();
+                        return cardList;
+                    }
+                    return new List<Card>();
+                }
+                catch(Exception e)
+                {
+                    Console.WriteLine(e.Source + " " + e.Message);
+                    Thread.Sleep(1000);
+                    tries--;
+                }
             }
-            return new List<Card>();
+            while (tries > 0);
+            return null;
         }
 
         public static List<AccessLevel> deserializeAccessLevelList()
         {
-            string documentsPath = Android.OS.Environment.ExternalStorageDirectory + "/Gate";
-            var accessLevelPath = Path.Combine(documentsPath, "accesslevel.xml");
-            if (File.Exists(accessLevelPath))
+            int tries = 3;
+            do
             {
-                XmlSerializer serializer = new XmlSerializer(typeof(List<AccessLevel>));
-                StreamReader reader = new StreamReader(accessLevelPath);
-                List<AccessLevel> accessLevelList = (List<AccessLevel>)serializer.Deserialize(reader);
-                reader.Close();
-                return accessLevelList;
+                try
+                {
+                    string documentsPath = Android.OS.Environment.ExternalStorageDirectory + "/Gate";
+                    var accessLevelPath = Path.Combine(documentsPath, "accesslevel.xml");
+                    if (File.Exists(accessLevelPath))
+                    {
+                        XmlSerializer serializer = new XmlSerializer(typeof(List<AccessLevel>));
+                        StreamReader reader = new StreamReader(accessLevelPath);
+                        List<AccessLevel> accessLevelList = (List<AccessLevel>)serializer.Deserialize(reader);
+                        reader.Close();
+                        return accessLevelList;
+                    }
+                    return new List<AccessLevel>();
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine(e.Source + " " + e.Message);
+                    Thread.Sleep(1000);
+                    tries--;
+                }
             }
-            return new List<AccessLevel>();
+            while (tries > 0);
+            return null;
         }
         
         public static List<Transaction> deserializeTransactionList()
         {
-            string documentsPath = Android.OS.Environment.ExternalStorageDirectory + "/Gate";
-            var transactionPath = Path.Combine(documentsPath, "transaction.xml");
-            if (File.Exists(transactionPath))
+            int tries = 3;
+            do
             {
-                XmlSerializer serializer = new XmlSerializer(typeof(List<Transaction>));
-                StreamReader reader = new StreamReader(transactionPath);
-                List<Transaction> transactionList = (List<Transaction>)serializer.Deserialize(reader);
-                reader.Close();
-                return transactionList;
+                try
+                {
+                    string documentsPath = Android.OS.Environment.ExternalStorageDirectory + "/Gate";
+                    var transactionPath = Path.Combine(documentsPath, "transaction.xml");
+                    if (File.Exists(transactionPath))
+                    {
+                        XmlSerializer serializer = new XmlSerializer(typeof(List<Transaction>));
+                        StreamReader reader = new StreamReader(transactionPath);
+                        List<Transaction> transactionList = (List<Transaction>)serializer.Deserialize(reader);
+                        reader.Close();
+                        return transactionList;
+                    }
+                    return new List<Transaction>();
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine(e.Source + " " + e.Message);
+                    Thread.Sleep(1000);
+                    tries--;
+                }
             }
-            return new List<Transaction>();
+            while (tries > 0);
+            return null;
         }
 
         public static void serializeCardList(List<Card> cardList)
         {
-            string documentsPath = Android.OS.Environment.ExternalStorageDirectory + "/Gate";
-
-            if (!Directory.Exists(documentsPath))
+            int tries = 3;
+            bool succeeded = false;
+            do
             {
-                Directory.CreateDirectory(documentsPath);
-            }
-            var cardPath = Path.Combine(documentsPath, "card.xml");
+                try
+                {
+                    string documentsPath = Android.OS.Environment.ExternalStorageDirectory + "/Gate";
 
-            XmlSerializer writer = new XmlSerializer(typeof(List<Card>));
-            using (var file = File.Open(cardPath, FileMode.Create, FileAccess.ReadWrite))
-            {
-                StreamWriter strm = new StreamWriter(file);
-                writer.Serialize(strm, cardList);
-                strm.Close();
+                    if (!Directory.Exists(documentsPath))
+                    {
+                        Directory.CreateDirectory(documentsPath);
+                    }
+                    var cardPath = Path.Combine(documentsPath, "card.xml");
+
+                    XmlSerializer writer = new XmlSerializer(typeof(List<Card>));
+                    using (var file = File.Open(cardPath, FileMode.Create, FileAccess.ReadWrite))
+                    {
+                        StreamWriter strm = new StreamWriter(file);
+                        writer.Serialize(strm, cardList);
+                        strm.Close();
+                    }
+                    succeeded = true;
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine(e.Source + " " + e.Message);
+                    Thread.Sleep(1000);
+                    if (tries == 0)
+                        throw e;
+                    tries--;
+                }
             }
+            while (!succeeded && tries > 0);
         }
 
         public static void serializeAccessLevelList(List<AccessLevel> accessLevelList)
         {
-            string documentsPath = Android.OS.Environment.ExternalStorageDirectory + "/Gate";
-
-            if (!Directory.Exists(documentsPath))
+            int tries = 3;
+            bool succeeded = false;
+            do
             {
-                Directory.CreateDirectory(documentsPath);
-            }
-            var accessLevelPath = Path.Combine(documentsPath, "accesslevel.xml");
+                try
+                {
+                    string documentsPath = Android.OS.Environment.ExternalStorageDirectory + "/Gate";
 
-            XmlSerializer writer = new XmlSerializer(typeof(List<AccessLevel>));
-            using (var file = File.Open(accessLevelPath, FileMode.Create, FileAccess.ReadWrite))
-            {
-                StreamWriter strm = new StreamWriter(file);
-                writer.Serialize(strm, accessLevelList);
-                strm.Close();
+                    if (!Directory.Exists(documentsPath))
+                    {
+                        Directory.CreateDirectory(documentsPath);
+                    }
+                    var accessLevelPath = Path.Combine(documentsPath, "accesslevel.xml");
+
+                    XmlSerializer writer = new XmlSerializer(typeof(List<AccessLevel>));
+                    using (var file = File.Open(accessLevelPath, FileMode.Create, FileAccess.ReadWrite))
+                    {
+                        StreamWriter strm = new StreamWriter(file);
+                        writer.Serialize(strm, accessLevelList);
+                        strm.Close();
+                    }
+                    succeeded = true;
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine(e.Source + " " + e.Message);
+                    Thread.Sleep(1000);
+                    if (tries == 0)
+                        throw e;
+                    tries--;
+                }
             }
+            while (!succeeded && tries > 0);
         }
 
         public static void serializeTransaction(List<Transaction> transactionList)
         {
-            string documentsPath = Android.OS.Environment.ExternalStorageDirectory + "/Gate";
-
-            if (!Directory.Exists(documentsPath))
+            int tries = 3;
+            bool succeeded = false;
+            do
             {
-                Directory.CreateDirectory(documentsPath);
-            }
-            var transactionPath = Path.Combine(documentsPath, "transaction.xml");
+                try
+                {
+                    string documentsPath = Android.OS.Environment.ExternalStorageDirectory + "/Gate";
 
-            XmlSerializer writer = new XmlSerializer(typeof(List<Transaction>));
-            using (var file = File.Open(transactionPath, FileMode.Create, FileAccess.ReadWrite))
-            {
-                StreamWriter strm = new StreamWriter(file);
-                writer.Serialize(strm, transactionList);
-                strm.Close();
+                    if (!Directory.Exists(documentsPath))
+                    {
+                        Directory.CreateDirectory(documentsPath);
+                    }
+                    var transactionPath = Path.Combine(documentsPath, "transaction.xml");
+
+                    XmlSerializer writer = new XmlSerializer(typeof(List<Transaction>));
+                    using (var file = File.Open(transactionPath, FileMode.Create, FileAccess.ReadWrite))
+                    {
+                        StreamWriter strm = new StreamWriter(file);
+                        writer.Serialize(strm, transactionList);
+                        strm.Close();
+                    }
+                    succeeded = true;
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine(e.Source + " " + e.Message);
+                    Thread.Sleep(1000);
+                    if (tries == 0)
+                        throw e;
+                    tries--;
+                }
             }
+            while (!succeeded && tries > 0);
         }
 
         public static void deleteAllXml()
@@ -129,25 +229,79 @@ namespace Gate
 
         public static void deleteCardXml()
         {
-            string documentsPath = Android.OS.Environment.ExternalStorageDirectory + "/Gate";
-            var cardPath = Path.Combine(documentsPath, "card.xml");
-            File.Delete(cardPath);
+            int tries = 3;
+            bool succeeded = false;
+            do
+            {
+                try
+                {
+                    string documentsPath = Android.OS.Environment.ExternalStorageDirectory + "/Gate";
+                    var cardPath = Path.Combine(documentsPath, "card.xml");
+                    File.Delete(cardPath);
+                    succeeded = true;
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine(e.Source + " " + e.Message);
+                    Thread.Sleep(1000);
+                    if (tries == 0)
+                        throw e;
+                    tries--;
+                }
+            }
+            while (!succeeded && tries > 0);
         }
 
         public static void deleteAccessAndCardXml()
         {
-            string documentsPath = Android.OS.Environment.ExternalStorageDirectory + "/Gate";
-            var accessLevelPath = Path.Combine(documentsPath, "accesslevel.xml");
-            File.Delete(accessLevelPath);
-            var cardPath = Path.Combine(documentsPath, "card.xml");
-            File.Delete(cardPath);
+            int tries = 3;
+            bool succeeded = false;
+            do
+            {
+                try
+                {
+                    string documentsPath = Android.OS.Environment.ExternalStorageDirectory + "/Gate";
+                    var accessLevelPath = Path.Combine(documentsPath, "accesslevel.xml");
+                    File.Delete(accessLevelPath);
+                    var cardPath = Path.Combine(documentsPath, "card.xml");
+                    File.Delete(cardPath);
+                    succeeded = true;
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine(e.Source + " " + e.Message);
+                    Thread.Sleep(1000);
+                    if (tries == 0)
+                        throw e;
+                    tries--;
+                }
+            }
+            while (!succeeded && tries > 0);
         }
 
         public static void deleteTransactionXml()
         {
-            string documentsPath = Android.OS.Environment.ExternalStorageDirectory + "/Gate";
-            var transactionPath = Path.Combine(documentsPath, "transaction.xml");
-            File.Delete(transactionPath);
+            int tries = 3;
+            bool succeeded = false;
+            do
+            {
+                try
+                {
+                    string documentsPath = Android.OS.Environment.ExternalStorageDirectory + "/Gate";
+                    var transactionPath = Path.Combine(documentsPath, "transaction.xml");
+                    File.Delete(transactionPath);
+                    succeeded = true;
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine(e.Source + " " + e.Message);
+                    Thread.Sleep(1000);
+                    if(tries == 0)
+                        throw e;
+                    tries--;
+                }
+            }
+            while (!succeeded && tries > 0);
         }
 
         public static List<Card> sortCard(List<Card> sort, string sortby)

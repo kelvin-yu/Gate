@@ -19,7 +19,7 @@ using Android.Preferences;
 
 namespace Gate
 {
-    [Activity(Label = "AddCard")]
+    [Activity(Label = "Add Card")]
     public class AddCard : Activity
     {
         List<AccessLevel> accessLevelList;
@@ -70,11 +70,9 @@ namespace Gate
             doneButton.Click += delegate
             {
                 ISharedPreferences prefs = PreferenceManager.GetDefaultSharedPreferences(this);
-                if (prefs.GetBoolean("working", true))
-                    Thread.Sleep(1000);
                 if (!nameField.Text.Equals(String.Empty) && !numberField.Text.Equals(String.Empty) && spinner.SelectedItem != null && !cardNameList.Contains(nameField.Text))
                 {
-                    if (!TCP.isTCPNull() & TCP.isConnectable(TCP.ip))
+                    if (ReaderServices.isConnectable(prefs.GetString("reader_ip", "192.168.2.180")))
                     {
                         bool SQLStatus = true;
                         try
@@ -129,7 +127,7 @@ namespace Gate
             cardList = SerializeTools.sortCard(cardList, prefs.GetString("card_sort", "Name"));
             SerializeTools.serializeCardList(cardList);
             //reader
-            ReaderServices.sendCard(cardList);
+            ReaderServices.sendCard(cardList, this);
             //sql
             bool result, resultSpecified;
             Global.cs.AddOneCardSQL(new Card(nameField.Text, Convert.ToInt32(numberField.Text), spinner.SelectedItem.ToString(), DateTime.Now), out result, out resultSpecified);

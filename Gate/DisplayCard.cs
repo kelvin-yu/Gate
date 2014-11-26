@@ -17,7 +17,7 @@ using System.Threading;
 
 namespace Gate
 {
-    [Activity(Label = "DisplayCard")]
+    [Activity(Label = "Display Card")]
     public class DisplayCard : Activity
     {
         Button cancelButton, updateButton;
@@ -77,11 +77,9 @@ namespace Gate
             updateButton.Click += delegate
             {
                 ISharedPreferences pref = PreferenceManager.GetDefaultSharedPreferences(this);
-                if (pref.GetBoolean("working", true))
-                    Thread.Sleep(1000);
                 if (!nameField.Text.Equals(String.Empty) && !numberField.Text.Equals(String.Empty) && (!cardNameList.Contains(nameField.Text) || nameField.Text.Equals(cardList[cardIndex].name)))
                 {
-                    if (!TCP.isTCPNull() & TCP.isConnectable(TCP.ip))
+                    if (ReaderServices.isConnectable(pref.GetString("reader_ip", "192.168.2.180")))
                     {
                         bool SQLStatus = true;
                         try
@@ -125,7 +123,7 @@ namespace Gate
             cardList.Add(new Card(nameField.Text, Convert.ToInt32(numberField.Text), spinner.SelectedItem.ToString(), dateCreated));
             SerializeTools.serializeCardList(cardList);
             //to Reader
-            ReaderServices.sendCard(cardList);
+            ReaderServices.sendCard(cardList, this);
             //to SQL
             bool result, resultSpecified;
             Global.cs.DeleteCard(oldName, out result, out resultSpecified);
@@ -160,7 +158,7 @@ namespace Gate
                     Global.cs.DeleteCard(cardList[cardIndex].name, out result, out resultSpecified);
                     cardList.RemoveAt(cardIndex);
                     SerializeTools.serializeCardList(cardList);
-                    ReaderServices.sendCard(cardList);
+                    ReaderServices.sendCard(cardList, this);
                     Finish();
                     return true;
                 default:

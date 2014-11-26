@@ -11,6 +11,7 @@ using System.ComponentModel;
 
 using Gate.WebReference;
 using Android.Preferences;
+using System.Threading.Tasks;
 
 
 namespace Gate
@@ -45,29 +46,30 @@ namespace Gate
                 new TransactionFragment(),
                 new ReaderFragment()
             };
-
+            
             AddTab("Cards");
             AddTab("Access Levels");
             AddTab("Transactions");
             AddTab("Readers");
         }
 
+        protected override void OnStop()
+        {
+            base.OnStop();
+            ISharedPreferences prefs = PreferenceManager.GetDefaultSharedPreferences(this);
+            ISharedPreferencesEditor editor = prefs.Edit();
+            editor.PutBoolean("visible", false);
+            editor.Apply();
+        } 
+
         protected override void OnResume()
         {
             base.OnResume();
-
             ISharedPreferences prefs = PreferenceManager.GetDefaultSharedPreferences(this);
-            if (TCP.isTCPNull())
-            {
-                if (ThreadPool.QueueUserWorkItem(o => TCP.ConnectWithDialog(prefs.GetString("reader_ip", "192.168.2.180"), this)))
-                {
-                    timer = new Timer(TimerCallback, null, 0, Convert.ToInt32(prefs.GetString("refresh", "1")) * 60000);
-                }
-            }
-            else
-            {
-                timer = new Timer(TimerCallback, null, 0, Convert.ToInt32(prefs.GetString("refresh", "1")) * 60000);
-            }
+            ISharedPreferencesEditor editor = prefs.Edit();
+            editor.PutBoolean("visible", true);
+            editor.Apply();
+            timer = new Timer(TimerCallback, null, Convert.ToInt32(prefs.GetString("refresh", "1")) * 60000, Convert.ToInt32(prefs.GetString("refresh", "1")) * 60000);
         }
 
         public void AddTab(string text)
@@ -89,28 +91,24 @@ namespace Gate
                 {
                     menu1.FindItem(1).SetVisible(false);
                     menu1.FindItem(0).SetVisible(true);
-                    menu1.FindItem(2).SetVisible(false);
                     menu1.FindItem(4).SetVisible(true);
                 }
                 else if (tab.Position == 1)
                 {
                     menu1.FindItem(1).SetVisible(true);
                     menu1.FindItem(0).SetVisible(false);
-                    menu1.FindItem(2).SetVisible(false);
                     menu1.FindItem(4).SetVisible(true);
                 }
                 else if (tab.Position == 2)
                 {
                     menu1.FindItem(0).SetVisible(false);
                     menu1.FindItem(1).SetVisible(false);
-                    menu1.FindItem(2).SetVisible(true);
                     menu1.FindItem(4).SetVisible(true);
                 }
                 else if (tab.Position == 3)
                 {
                     menu1.FindItem(0).SetVisible(false);
                     menu1.FindItem(1).SetVisible(false);
-                    menu1.FindItem(2).SetVisible(false);
                     menu1.FindItem(4).SetVisible(false);
                 }
             }
@@ -126,7 +124,6 @@ namespace Gate
             menu.Add(3, 3, 3, "Settings");
             menu.Add(4, 4, 4, "Search");
             menu.GetItem(1).SetVisible(false);
-            menu.GetItem(2).SetVisible(false);
             return true;
         }
 
@@ -141,8 +138,9 @@ namespace Gate
                     StartActivity(typeof(AddAccessLevel));
                     return true;
                 case 2:
-                    var fragment = (TransactionFragment)fragments[2];
-                    fragment.updateTransactions();
+                    var t1 = new Task(() => ReaderServices.UpdateInfo(this));
+                    var t2 = t1.ContinueWith(o => Refresh(), TaskScheduler.FromCurrentSynchronizationContext());
+                    t1.Start();
                     return true;
                 case 3:
                     StartActivity(typeof(Settings));
@@ -152,9 +150,21 @@ namespace Gate
                     return true;
                 default:
                     return base.OnOptionsItemSelected(item);
-
             }
         }
 
+        public void Refresh()
+        {
+            var card = (CardFragment)fragments[0];
+            var access = (AccessLevelFragment)fragments[1];
+            var trans = (TransactionFragment)fragments[2];
+
+            if (card.IsVisible)
+                card.updateCard();
+            else if (access.IsVisible)
+                access.updateAccess();
+            else if (trans.IsVisible)
+                trans.updateTransactions();
+        }
     }
 }
