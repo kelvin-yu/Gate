@@ -61,7 +61,7 @@ namespace Gate.WebReference {
         
         /// <remarks/>
         public CardService() {
-            this.Url = "http://192.168.2.238:8000/DMTSolutions/CardReader";
+            this.Url = "http://localhost:8000/DMTSolutions/CardReader";
             if ((this.IsLocalFileSystemWebService(this.Url) == true)) {
                 this.UseDefaultCredentials = true;
                 this.useDefaultCredentialsSetExplicitly = false;
@@ -581,24 +581,21 @@ namespace Gate.WebReference {
 
         private int cardCodeField;
 
+        private bool cardCodeFieldSpecified;
+
         private string cardHolderField;
 
         private System.DateTime dateTimeField;
 
+        private bool dateTimeFieldSpecified;
+
         private int errorNumberField;
+
+        private bool errorNumberFieldSpecified;
 
         private int readerNumberField;
 
-        public Transaction() { }
-
-        public Transaction(int readerNumber, int cardCode, DateTime dateTime, int errorCode, string cardHolder)
-        {
-            this.readerNumber = readerNumber;
-            this.cardCode = cardCode;
-            this.dateTime = dateTime;
-            this.errorNumber = errorCode;
-            this.cardHolder = cardHolder;
-        }
+        private bool readerNumberFieldSpecified;
 
         /// <remarks/>
         public int cardCode
@@ -610,6 +607,20 @@ namespace Gate.WebReference {
             set
             {
                 this.cardCodeField = value;
+            }
+        }
+
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool cardCodeSpecified
+        {
+            get
+            {
+                return this.cardCodeFieldSpecified;
+            }
+            set
+            {
+                this.cardCodeFieldSpecified = value;
             }
         }
 
@@ -641,6 +652,20 @@ namespace Gate.WebReference {
         }
 
         /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool dateTimeSpecified
+        {
+            get
+            {
+                return this.dateTimeFieldSpecified;
+            }
+            set
+            {
+                this.dateTimeFieldSpecified = value;
+            }
+        }
+
+        /// <remarks/>
         public int errorNumber
         {
             get
@@ -650,6 +675,20 @@ namespace Gate.WebReference {
             set
             {
                 this.errorNumberField = value;
+            }
+        }
+
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool errorNumberSpecified
+        {
+            get
+            {
+                return this.errorNumberFieldSpecified;
+            }
+            set
+            {
+                this.errorNumberFieldSpecified = value;
             }
         }
 
@@ -666,6 +705,19 @@ namespace Gate.WebReference {
             }
         }
 
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool readerNumberSpecified
+        {
+            get
+            {
+                return this.readerNumberFieldSpecified;
+            }
+            set
+            {
+                this.readerNumberFieldSpecified = value;
+            }
+        }
     }
 
     /// <remarks/>
@@ -679,15 +731,25 @@ namespace Gate.WebReference {
 
         private System.DateTime dateEndField;
 
+        private bool dateEndFieldSpecified;
+
         private System.DateTime dateStartField;
+
+        private bool dateStartFieldSpecified;
 
         private string nameField;
 
         private int numberOfUsesField;
 
+        private bool numberOfUsesFieldSpecified;
+
         private bool useDateRangeField;
 
+        private bool useDateRangeFieldSpecified;
+
         private bool usePassBackField;
+
+        private bool usePassBackFieldSpecified;
 
         private string[] weekReader1AccessField;
 
@@ -696,23 +758,6 @@ namespace Gate.WebReference {
         private System.DateTime[] weekTimeEndField;
 
         private System.DateTime[] weekTimeStartField;
-
-        public AccessLevel() { }
-
-        public AccessLevel(string name, DateTime[] weekTimeStart, DateTime[] weekTimeEnd, string[] weekReader1Access, string[] weekReader2Access,
-    bool usePassBack, int numberOfUses, bool useDateRange, DateTime dateStart, DateTime dateEnd)
-        {
-            this.name = name;
-            this.weekTimeStart = weekTimeStart;
-            this.weekTimeEnd = weekTimeEnd;
-            this.weekReader1Access = weekReader1Access;
-            this.weekReader2Access = weekReader2Access;
-            this.usePassBack = usePassBack;
-            this.numberOfUses = numberOfUses;
-            this.useDateRange = useDateRange;
-            this.dateStart = dateStart;
-            this.dateEnd = dateEnd;
-        }
 
         /// <remarks/>
         public System.DateTime dateEnd
@@ -727,6 +772,19 @@ namespace Gate.WebReference {
             }
         }
 
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool dateEndSpecified
+        {
+            get
+            {
+                return this.dateEndFieldSpecified;
+            }
+            set
+            {
+                this.dateEndFieldSpecified = value;
+            }
+        }
 
         /// <remarks/>
         public System.DateTime dateStart
@@ -738,6 +796,20 @@ namespace Gate.WebReference {
             set
             {
                 this.dateStartField = value;
+            }
+        }
+
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool dateStartSpecified
+        {
+            get
+            {
+                return this.dateStartFieldSpecified;
+            }
+            set
+            {
+                this.dateStartFieldSpecified = value;
             }
         }
 
@@ -769,6 +841,20 @@ namespace Gate.WebReference {
         }
 
         /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool numberOfUsesSpecified
+        {
+            get
+            {
+                return this.numberOfUsesFieldSpecified;
+            }
+            set
+            {
+                this.numberOfUsesFieldSpecified = value;
+            }
+        }
+
+        /// <remarks/>
         public bool useDateRange
         {
             get
@@ -782,6 +868,20 @@ namespace Gate.WebReference {
         }
 
         /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool useDateRangeSpecified
+        {
+            get
+            {
+                return this.useDateRangeFieldSpecified;
+            }
+            set
+            {
+                this.useDateRangeFieldSpecified = value;
+            }
+        }
+
+        /// <remarks/>
         public bool usePassBack
         {
             get
@@ -791,6 +891,20 @@ namespace Gate.WebReference {
             set
             {
                 this.usePassBackField = value;
+            }
+        }
+
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool usePassBackSpecified
+        {
+            get
+            {
+                return this.usePassBackFieldSpecified;
+            }
+            set
+            {
+                this.usePassBackFieldSpecified = value;
             }
         }
 
@@ -868,19 +982,13 @@ namespace Gate.WebReference {
 
         private int cardCodeField;
 
+        private bool cardCodeFieldSpecified;
+
         private System.DateTime dateAddedField;
 
+        private bool dateAddedFieldSpecified;
+
         private string nameField;
-
-        public Card() { }
-
-        public Card(string name, int cardCode, string accessLevel, DateTime dateAdded)
-        {
-            this.name = name;
-            this.cardCode = cardCode;
-            this.accessLevel = accessLevel;
-            this.dateAdded = dateAdded;
-        }
 
         /// <remarks/>
         [System.Xml.Serialization.XmlElementAttribute(IsNullable = true)]
@@ -910,6 +1018,20 @@ namespace Gate.WebReference {
         }
 
         /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool cardCodeSpecified
+        {
+            get
+            {
+                return this.cardCodeFieldSpecified;
+            }
+            set
+            {
+                this.cardCodeFieldSpecified = value;
+            }
+        }
+
+        /// <remarks/>
         public System.DateTime dateAdded
         {
             get
@@ -919,6 +1041,20 @@ namespace Gate.WebReference {
             set
             {
                 this.dateAddedField = value;
+            }
+        }
+
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool dateAddedSpecified
+        {
+            get
+            {
+                return this.dateAddedFieldSpecified;
+            }
+            set
+            {
+                this.dateAddedFieldSpecified = value;
             }
         }
 

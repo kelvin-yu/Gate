@@ -103,9 +103,6 @@
     <AndroidResource Include="Resources\layout\AddAccessLevel.axml">
       <SubType>AndroidResource</SubType>
     </AndroidResource>
-    <AndroidResource Include="Resources\layout\Settings.axml">
-      <SubType>AndroidResource</SubType>
-    </AndroidResource>
     <AndroidResource Include="Resources\layout\ListDisplay2.axml">
       <SubType>AndroidResource</SubType>
     </AndroidResource>
@@ -171,10 +168,10 @@
     <WebReferences Include="Web References\" />
   </ItemGroup>
   <ItemGroup>
-    <WebReferenceUrl Include="http://192.168.2.238:8000/DMTSolutions/CardReader">
+    <WebReferenceUrl Include="http://localhost:8000/DMTSolutions/CardReader">
       <UrlBehavior>Dynamic</UrlBehavior>
       <RelPath>Web References\WebReference\</RelPath>
-      <UpdateFromURL>http://192.168.2.238:8000/DMTSolutions/CardReader</UpdateFromURL>
+      <UpdateFromURL>http://localhost:8000/DMTSolutions/CardReader</UpdateFromURL>
       <ServiceLocationURL>
       </ServiceLocationURL>
       <CachedDynamicPropName>

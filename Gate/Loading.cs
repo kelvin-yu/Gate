@@ -22,7 +22,7 @@ namespace Gate
         {
             base.OnCreate(bundle);
 
-            ReaderServices.UpdateInfo(this);
+            //ReaderServices.UpdateInfo(this);
 
             Console.WriteLine("Finished Loading");
 

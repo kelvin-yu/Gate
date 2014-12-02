@@ -16,7 +16,7 @@ using Android.Preferences;
 using System.Diagnostics;
 using System.Net.NetworkInformation;
 using Android.Net.Wifi;
-
+using Android.Net;
 
 namespace Gate
 {
@@ -166,111 +166,179 @@ namespace Gate
             bar.Max = 100;
             bar.Show();
         }
+        public static void ReaderConnectionFailed()
+        {
+
+        }
 
         public static void UpdateInfo(Activity a)
         {
-            Console.WriteLine("Happened");
+            bool readerCon = false, servCon = false;
             ISharedPreferences prefs = PreferenceManager.GetDefaultSharedPreferences(a);
-            if (isConnectable(prefs.GetString("reader_ip", "192.168.2.180")))
+            WifiManager wifiManager = (WifiManager)a.GetSystemService(Context.WifiService);
+
+            a.RunOnUiThread(() => CreateProgress(a));
+
+            wifiManager.StartScan();
+            IList<ScanResult> results = wifiManager.ScanResults;
+            foreach (ScanResult result in results)
             {
-                TCP tcp = new TCP();
-                tcp.Connect(prefs.GetString("reader_ip", "192.168.2.180"), a);
-                Stopwatch watch = new Stopwatch();
-                watch.Start();
-
-                bool SQLStatus = true;
-                try
-                {
-                    Global.cs.Hello();
-                }
-                catch (Exception e)
-                {
-                    Console.WriteLine(e.Source + " " + e.Message);
-                    SQLStatus = false;
-                    if (prefs.GetBoolean("visible", true))
-                    {
-                        a.RunOnUiThread(() => CreateOkDialog("No Connection", "No connection to database!", a));
-                    }
-                }
-                if (SQLStatus)
-                {
-                    a.RunOnUiThread(() => CreateProgress(a));
-
-                    //Card Stuff
-                    string cardSort = prefs.GetString("card_sort", "Name");
-                    List<Card> sqlCardList = new List<Card>(Global.cs.GetCardList());
-                    sqlCardList = SerializeTools.sortCard(sqlCardList, prefs.GetString("card_sort", "Name"));
-                    SerializeTools.serializeCardList(sqlCardList);
-                    bar.Progress = 10;
-
-                    //Access Level Stuff
-                    string accessSort = prefs.GetString("access_sort", "Name");
-                    List<AccessLevel> sqlAccessList = new List<AccessLevel>(Global.cs.GetAccessLevelList());
-                    sqlAccessList = SerializeTools.sortAccess(sqlAccessList, prefs.GetString("access_sort", "Name"));
-                    SerializeTools.serializeAccessLevelList(sqlAccessList);
-                    bar.Progress = 20;
-
-                    //Transaction Stuff
-                    List<Transaction> sqlTransList = new List<Transaction>(Global.cs.GetTransactionList());
-                    List<Transaction> newList = new List<Transaction>();
-                    while (true)
-                    {
-                        string data = "";
-                        tcp.Write("t", out data);
-                        if (data.Length < 5)
-                            break;
-                        if (data.Substring(0, 1) != "t")
-                            break;
-                        string[] split = data.Split(new char[] { '\t' });
-                        int numOfTrans = Convert.ToInt32(split[1]);
-                        for (int trans = 0; trans < numOfTrans; trans++)
-                        {
-                            int offset = trans * 5;
-                            int readerNumber = Convert.ToInt32(split[offset + 2]);
-                            int cardCode = Convert.ToInt32(split[offset + 3]);
-
-                            long ftime = (((1980L * 365L) + 114) * 86400L);
-                            DateTime dateTime = DateTime.MinValue;
-                            ftime += Convert.ToInt64(split[offset + 4]);
-                            dateTime = dateTime.AddSeconds(ftime);
-
-                            string cardHolder = "Not On File";
-                            foreach (Card card in sqlCardList)
-                            {
-                                if (card.cardCode == cardCode)
-                                {
-                                    cardHolder = card.name;
-                                    break;
-                                }
-                            }
-                            int errorCode = Convert.ToInt32(split[offset + 5]);
-                            newList.Add(new Transaction(readerNumber, cardCode, dateTime, errorCode, cardHolder));
-                        }
-                    }
-                    bar.Progress = 50;
-                    sqlTransList.AddRange(newList);
-                    bool result, resultSpecified;
-                    Global.cs.UpdateTransactionSQL(newList.ToArray(), out result, out resultSpecified);
-                    bar.Progress = 70;
-                    string transactionSort = prefs.GetString("transaction_sort", "Newest to Oldest");
-                    sqlTransList = SerializeTools.sortTransaction(sqlTransList, prefs.GetString("transaction_sort", "Newest to Oldest"));
-                    bar.Progress = 85;
-                    SerializeTools.serializeTransaction(sqlTransList);
-                    bar.Progress = 100;
-                    Thread.Sleep(500);
-                    bar.Dismiss();
-                }
-
-                watch.Stop();
-                Console.WriteLine("Elapsed miliseconds" + watch.Elapsed.Milliseconds.ToString());
-                tcp.Close();
+                if (result.Ssid.Equals(prefs.GetString("reader_ssid", null)))
+                    readerCon = true;
+                else if (result.Ssid.Equals(prefs.GetString("service_ssid", null)))
+                    servCon = true;
+                if (readerCon == true && servCon == true)
+                    break;
             }
-            else
+
+            if (readerCon == false)
             {
                 if (prefs.GetBoolean("visible", true))
                 {
                     a.RunOnUiThread(() => CreateOkDialog("No Connection", "No connection to reader!", a));
                 }
+                bar.Dismiss();
+                return;
+            }
+            else if (servCon == false)
+            {
+                if (prefs.GetBoolean("visible", true))
+                {
+                    a.RunOnUiThread(() => CreateOkDialog("No Connection", "No connection to database!", a));
+                }
+                bar.Dismiss();
+                return;
+            }
+
+            //Reader
+            wifiManager.Disconnect();
+            wifiManager.EnableNetwork(prefs.GetInt("reader_id", -1), true);
+            Thread.Sleep(1000);
+            Console.WriteLine(wifiManager.ConnectionInfo.SupplicantState.ToString());
+            while (!wifiManager.ConnectionInfo.SupplicantState.ToString().Equals("COMPLETED"))
+            {
+                Thread.Sleep(1000);
+            }
+            if (!isConnectable(prefs.GetString("reader_ip", null)))
+            {
+                if (prefs.GetBoolean("visible", true))
+                {
+                    a.RunOnUiThread(() => CreateOkDialog("No Connection", "No connection to reader!", a));
+                }
+                bar.Dismiss();
+                return;
+            }
+            
+            //Service
+            wifiManager.Disconnect();
+            wifiManager.EnableNetwork(prefs.GetInt("service_id", -1), true);
+            Thread.Sleep(1000);
+            while (!wifiManager.ConnectionInfo.SupplicantState.ToString().Equals("COMPLETED"))
+            {
+                Thread.Sleep(1000);
+            }
+            try
+            {
+                Global.cs.Hello();
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Source + " " + e.Message);
+                if (prefs.GetBoolean("visible", true))
+                {
+                    a.RunOnUiThread(() => CreateOkDialog("No Connection", "No connection to database!", a));
+                }
+                bar.Dismiss();
+                return;
+            }
+
+            //Card Stuff
+            string cardSort = prefs.GetString("card_sort", "Name");
+            List<Card> sqlCardList = new List<Card>(Global.cs.GetCardList());
+            sqlCardList = SerializeTools.sortCard(sqlCardList, prefs.GetString("card_sort", "Name"));
+            SerializeTools.serializeCardList(sqlCardList);
+            bar.Progress = 10;
+
+            //Access Level Stuff
+            string accessSort = prefs.GetString("access_sort", "Name");
+            List<AccessLevel> sqlAccessList = new List<AccessLevel>(Global.cs.GetAccessLevelList());
+            sqlAccessList = SerializeTools.sortAccess(sqlAccessList, prefs.GetString("access_sort", "Name"));
+            SerializeTools.serializeAccessLevelList(sqlAccessList);
+            bar.Progress = 20;
+
+            //Transaction Stuff
+            List<Transaction> sqlTransList = new List<Transaction>(Global.cs.GetTransactionList());
+            List<Transaction> newList = new List<Transaction>();
+
+            wifiManager.Disconnect();
+            wifiManager.EnableNetwork(prefs.GetInt("reader_id", -1), true);
+            Thread.Sleep(1000);
+            while (!wifiManager.ConnectionInfo.SupplicantState.ToString().Equals("COMPLETED"))
+            {
+                Thread.Sleep(1000);
+            }
+            TCP tcp = new TCP();
+            tcp.Connect(prefs.GetString("reader_ip", "192.168.2.180"), a);
+            while (true)
+            {
+                string data = "";
+                tcp.Write("t", out data);
+                if (data.Length < 5)
+                    break;
+                if (data.Substring(0, 1) != "t")
+                    break;
+                string[] split = data.Split(new char[] { '\t' });
+                int numOfTrans = Convert.ToInt32(split[1]);
+                for (int trans = 0; trans < numOfTrans; trans++)
+                {
+                    int offset = trans * 5;
+                    int readerNumber = Convert.ToInt32(split[offset + 2]);
+                    int cardCode = Convert.ToInt32(split[offset + 3]);
+
+                    long ftime = (((1980L * 365L) + 114) * 86400L);
+                    DateTime dateTime = DateTime.MinValue;
+                    ftime += Convert.ToInt64(split[offset + 4]);
+                    dateTime = dateTime.AddSeconds(ftime);
+
+                    string cardHolder = "Not On File";
+                    foreach (Card card in sqlCardList)
+                    {
+                        if (card.cardCode == cardCode)
+                        {
+                            cardHolder = card.name;
+                            break;
+                        }
+                    }
+                    int errorCode = Convert.ToInt32(split[offset + 5]);
+                    newList.Add(new Transaction(readerNumber, cardCode, dateTime, errorCode, cardHolder));
+                }
+            }
+            tcp.Close();
+            wifiManager.Disconnect();
+            wifiManager.EnableNetwork(prefs.GetInt("service_id", -1), true);
+            Thread.Sleep(1000);
+            while (!wifiManager.ConnectionInfo.SupplicantState.ToString().Equals("COMPLETED"))
+            {
+                Thread.Sleep(1000);
+            }
+            bar.Progress = 50;
+            sqlTransList.AddRange(newList);
+            bool res, resultSpecified;
+            Global.cs.UpdateTransactionSQL(newList.ToArray(), out res, out resultSpecified);
+            bar.Progress = 70;
+            string transactionSort = prefs.GetString("transaction_sort", "Newest to Oldest");
+            sqlTransList = SerializeTools.sortTransaction(sqlTransList, prefs.GetString("transaction_sort", "Newest to Oldest"));
+            bar.Progress = 85;
+            SerializeTools.serializeTransaction(sqlTransList);
+            bar.Progress = 100;
+            Thread.Sleep(500);
+            bar.Dismiss();
+            wifiManager.Disconnect();
+            wifiManager.EnableNetwork(prefs.GetInt("reader_id", -1), true);
+            Thread.Sleep(1000);
+            while (!wifiManager.ConnectionInfo.SupplicantState.ToString().Equals("COMPLETED"))
+            {
+                Thread.Sleep(1000);
             }
         }
 
@@ -279,7 +347,8 @@ namespace Gate
             Ping p = new Ping();
             try
             {
-                PingReply reply = p.Send(ip, 500);
+                PingReply reply = p.Send(ip, 1000);
+                Console.WriteLine(reply.Status.ToString());
                 if (reply.Status == IPStatus.Success)
                     return true;
             }

@@ -157,18 +157,6 @@ namespace Gate
 			// aapt resource value: 0x7f070028
 			public const int dayHeader2 = 2131165224;
 			
-			// aapt resource value: 0x7f070073
-			public const int deleteAccessLevels = 2131165299;
-			
-			// aapt resource value: 0x7f070071
-			public const int deleteAll = 2131165297;
-			
-			// aapt resource value: 0x7f070072
-			public const int deleteCards = 2131165298;
-			
-			// aapt resource value: 0x7f070074
-			public const int deleteTransactions = 2131165300;
-			
 			// aapt resource value: 0x7f070058
 			public const int doneAccessButton = 2131165272;
 			
@@ -415,14 +403,14 @@ namespace Gate
 			// aapt resource value: 0x7f07004b
 			public const int textView23 = 2131165259;
 			
-			// aapt resource value: 0x7f070079
-			public const int textView3 = 2131165305;
+			// aapt resource value: 0x7f070075
+			public const int textView3 = 2131165301;
 			
 			// aapt resource value: 0x7f07006a
 			public const int textView4 = 2131165290;
 			
-			// aapt resource value: 0x7f070075
-			public const int textView5 = 2131165301;
+			// aapt resource value: 0x7f070071
+			public const int textView5 = 2131165297;
 			
 			// aapt resource value: 0x7f07001b
 			public const int thursdayView1 = 2131165211;
@@ -433,20 +421,20 @@ namespace Gate
 			// aapt resource value: 0x7f07006f
 			public const int title = 2131165295;
 			
-			// aapt resource value: 0x7f070077
-			public const int transactionCard = 2131165303;
+			// aapt resource value: 0x7f070073
+			public const int transactionCard = 2131165299;
 			
-			// aapt resource value: 0x7f07007b
-			public const int transactionError = 2131165307;
+			// aapt resource value: 0x7f070077
+			public const int transactionError = 2131165303;
+			
+			// aapt resource value: 0x7f070072
+			public const int transactionHolder = 2131165298;
 			
 			// aapt resource value: 0x7f070076
-			public const int transactionHolder = 2131165302;
+			public const int transactionReader = 2131165302;
 			
-			// aapt resource value: 0x7f07007a
-			public const int transactionReader = 2131165306;
-			
-			// aapt resource value: 0x7f070078
-			public const int transactionTime = 2131165304;
+			// aapt resource value: 0x7f070074
+			public const int transactionTime = 2131165300;
 			
 			// aapt resource value: 0x7f070013
 			public const int tuesdayView1 = 2131165203;
@@ -510,10 +498,7 @@ namespace Gate
 			public const int SearchResults = 2130903047;
 			
 			// aapt resource value: 0x7f030008
-			public const int Settings = 2130903048;
-			
-			// aapt resource value: 0x7f030009
-			public const int Transaction = 2130903049;
+			public const int Transaction = 2130903048;
 			
 			static Layout()
 			{

@@ -3,22 +3,22 @@
   <PreferenceCategory
     android:summary="Connection information"
     android:title="Connection information" >
-    <EditTextPreference
-       android:key="reader_ip"
-       android:summary="IP Address of the card reader"
-       android:title="Reader IP"
-       android:defaultValue="192.168.2.180"/>
-    <EditTextPreference
-      android:key="service_ip"
-      android:summary="IP Address of SQL service"
-      android:title="Service IP"
-      android:defaultValue="192.168.2.180"/>
+    <Preference
+       android:key="reader"
+       android:summary="Connection Address of the card reader"
+       android:title="Reader Connection" />
+    <Preference
+      android:key="service"
+      android:summary="Connection Address of SQL service"
+      android:title="Service Connection" />
+    <!--
     <EditTextPreference
       android:key="refresh"
       android:summary="Time before SQL service refreshes in minutes"
       android:title="SQL Refresh Rate"
       android:inputType="number"
       android:defaultValue="1"/>
+    -->
 
   </PreferenceCategory>
 

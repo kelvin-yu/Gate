@@ -22,12 +22,14 @@ namespace Gate
         public List<Card> Card;
         Fragment[] fragments;
         IMenu menu1;
-        Timer timer;
+        //Timer timer;
 
+        /*
         private void TimerCallback(object state)
         {
             ReaderServices.UpdateInfo(this);
         }
+         */
 
         protected override void OnCreate(Bundle bundle)
         {
@@ -69,7 +71,7 @@ namespace Gate
             ISharedPreferencesEditor editor = prefs.Edit();
             editor.PutBoolean("visible", true);
             editor.Apply();
-            timer = new Timer(TimerCallback, null, Convert.ToInt32(prefs.GetString("refresh", "1")) * 60000, Convert.ToInt32(prefs.GetString("refresh", "1")) * 60000);
+            //timer = new Timer(TimerCallback, null, Convert.ToInt32(prefs.GetString("refresh", "1")) * 60000, Convert.ToInt32(prefs.GetString("refresh", "1")) * 60000);
         }
 
         public void AddTab(string text)
