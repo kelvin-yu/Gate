@@ -1,241 +1,42 @@
 <?xml version="1.0" encoding="utf-8"?>
-<xs:schema xmlns:tns="http://dmtserv.CardServices" elementFormDefault="qualified" targetNamespace="http://dmtserv.CardServices" xmlns:xs="http://www.w3.org/2001/XMLSchema">
-  <xs:import schemaLocation="http://localhost:8000/DMTSolutions/CardReader?xsd=xsd2" namespace="http://schemas.microsoft.com/2003/10/Serialization/Arrays" />
-  <xs:element name="Hello">
-    <xs:complexType>
-      <xs:sequence />
-    </xs:complexType>
-  </xs:element>
-  <xs:element name="HelloResponse">
-    <xs:complexType>
-      <xs:sequence>
-        <xs:element minOccurs="0" name="HelloResult" nillable="true" type="xs:string" />
-      </xs:sequence>
-    </xs:complexType>
-  </xs:element>
-  <xs:element name="GetTransactionList">
-    <xs:complexType>
-      <xs:sequence />
-    </xs:complexType>
-  </xs:element>
-  <xs:element name="GetTransactionListResponse">
-    <xs:complexType>
-      <xs:sequence>
-        <xs:element minOccurs="0" name="GetTransactionListResult" nillable="true" type="tns:ArrayOfTransaction" />
-      </xs:sequence>
-    </xs:complexType>
-  </xs:element>
-  <xs:complexType name="ArrayOfTransaction">
-    <xs:sequence>
-      <xs:element minOccurs="0" maxOccurs="unbounded" name="Transaction" nillable="true" type="tns:Transaction" />
-    </xs:sequence>
-  </xs:complexType>
-  <xs:element name="ArrayOfTransaction" nillable="true" type="tns:ArrayOfTransaction" />
-  <xs:complexType name="Transaction">
-    <xs:sequence>
-      <xs:element minOccurs="0" name="cardCode" type="xs:int" />
-      <xs:element minOccurs="0" name="cardHolder" nillable="true" type="xs:string" />
-      <xs:element minOccurs="0" name="dateTime" type="xs:dateTime" />
-      <xs:element minOccurs="0" name="errorNumber" type="xs:int" />
-      <xs:element minOccurs="0" name="readerNumber" type="xs:int" />
-    </xs:sequence>
-  </xs:complexType>
-  <xs:element name="Transaction" nillable="true" type="tns:Transaction" />
-  <xs:element name="UpdateTransactionSQL">
-    <xs:complexType>
-      <xs:sequence>
-        <xs:element minOccurs="0" name="newTransactions" nillable="true" type="tns:ArrayOfTransaction" />
-      </xs:sequence>
-    </xs:complexType>
-  </xs:element>
-  <xs:element name="UpdateTransactionSQLResponse">
-    <xs:complexType>
-      <xs:sequence>
-        <xs:element minOccurs="0" name="UpdateTransactionSQLResult" type="xs:boolean" />
-      </xs:sequence>
-    </xs:complexType>
-  </xs:element>
-  <xs:element name="DeleteTransaction">
-    <xs:complexType>
-      <xs:sequence>
-        <xs:element minOccurs="0" name="tTime" type="xs:dateTime" />
-      </xs:sequence>
-    </xs:complexType>
-  </xs:element>
-  <xs:element name="DeleteTransactionResponse">
-    <xs:complexType>
-      <xs:sequence>
-        <xs:element minOccurs="0" name="DeleteTransactionResult" type="xs:boolean" />
-      </xs:sequence>
-    </xs:complexType>
-  </xs:element>
-  <xs:element name="DeleteAllTransactions">
-    <xs:complexType>
-      <xs:sequence />
-    </xs:complexType>
-  </xs:element>
-  <xs:element name="DeleteAllTransactionsResponse">
-    <xs:complexType>
-      <xs:sequence>
-        <xs:element minOccurs="0" name="DeleteAllTransactionsResult" type="xs:boolean" />
-      </xs:sequence>
-    </xs:complexType>
-  </xs:element>
-  <xs:element name="AddOneCardSQL">
-    <xs:complexType>
-      <xs:sequence>
-        <xs:element minOccurs="0" name="card" nillable="true" type="tns:Card" />
-      </xs:sequence>
-    </xs:complexType>
-  </xs:element>
-  <xs:complexType name="Card">
-    <xs:sequence>
-      <xs:element minOccurs="0" name="accessLevel" nillable="true" type="xs:string" />
-      <xs:element minOccurs="0" name="cardCode" type="xs:int" />
-      <xs:element minOccurs="0" name="dateAdded" type="xs:dateTime" />
-      <xs:element minOccurs="0" name="name" nillable="true" type="xs:string" />
-    </xs:sequence>
-  </xs:complexType>
-  <xs:element name="Card" nillable="true" type="tns:Card" />
-  <xs:element name="AddOneCardSQLResponse">
-    <xs:complexType>
-      <xs:sequence>
-        <xs:element minOccurs="0" name="AddOneCardSQLResult" type="xs:boolean" />
-      </xs:sequence>
-    </xs:complexType>
-  </xs:element>
-  <xs:element name="GetCardList">
-    <xs:complexType>
-      <xs:sequence />
-    </xs:complexType>
-  </xs:element>
-  <xs:element name="GetCardListResponse">
-    <xs:complexType>
-      <xs:sequence>
-        <xs:element minOccurs="0" name="GetCardListResult" nillable="true" type="tns:ArrayOfCard" />
-      </xs:sequence>
-    </xs:complexType>
-  </xs:element>
-  <xs:complexType name="ArrayOfCard">
-    <xs:sequence>
-      <xs:element minOccurs="0" maxOccurs="unbounded" name="Card" nillable="true" type="tns:Card" />
-    </xs:sequence>
-  </xs:complexType>
-  <xs:element name="ArrayOfCard" nillable="true" type="tns:ArrayOfCard" />
-  <xs:element name="DeleteCard">
-    <xs:complexType>
-      <xs:sequence>
-        <xs:element minOccurs="0" name="cName" nillable="true" type="xs:string" />
-      </xs:sequence>
-    </xs:complexType>
-  </xs:element>
-  <xs:element name="DeleteCardResponse">
-    <xs:complexType>
-      <xs:sequence>
-        <xs:element minOccurs="0" name="DeleteCardResult" type="xs:boolean" />
-      </xs:sequence>
-    </xs:complexType>
-  </xs:element>
-  <xs:element name="DeleteAllCards">
-    <xs:complexType>
-      <xs:sequence />
-    </xs:complexType>
-  </xs:element>
-  <xs:element name="DeleteAllCardsResponse">
-    <xs:complexType>
-      <xs:sequence>
-        <xs:element minOccurs="0" name="DeleteAllCardsResult" type="xs:boolean" />
-      </xs:sequence>
-    </xs:complexType>
-  </xs:element>
-  <xs:element name="AddOneAccessSQL">
-    <xs:complexType>
-      <xs:sequence>
-        <xs:element minOccurs="0" name="access" nillable="true" type="tns:AccessLevel" />
-      </xs:sequence>
-    </xs:complexType>
-  </xs:element>
-  <xs:complexType name="AccessLevel">
-    <xs:sequence>
-      <xs:element minOccurs="0" name="dateEnd" type="xs:dateTime" />
-      <xs:element minOccurs="0" name="dateStart" type="xs:dateTime" />
-      <xs:element minOccurs="0" name="name" nillable="true" type="xs:string" />
-      <xs:element minOccurs="0" name="numberOfUses" type="xs:int" />
-      <xs:element minOccurs="0" name="useDateRange" type="xs:boolean" />
-      <xs:element minOccurs="0" name="usePassBack" type="xs:boolean" />
-      <xs:element xmlns:q1="http://schemas.microsoft.com/2003/10/Serialization/Arrays" minOccurs="0" name="weekReader1Access" nillable="true" type="q1:ArrayOfstring" />
-      <xs:element xmlns:q2="http://schemas.microsoft.com/2003/10/Serialization/Arrays" minOccurs="0" name="weekReader2Access" nillable="true" type="q2:ArrayOfstring" />
-      <xs:element xmlns:q3="http://schemas.microsoft.com/2003/10/Serialization/Arrays" minOccurs="0" name="weekTimeEnd" nillable="true" type="q3:ArrayOfdateTime" />
-      <xs:element xmlns:q4="http://schemas.microsoft.com/2003/10/Serialization/Arrays" minOccurs="0" name="weekTimeStart" nillable="true" type="q4:ArrayOfdateTime" />
-    </xs:sequence>
-  </xs:complexType>
-  <xs:element name="AccessLevel" nillable="true" type="tns:AccessLevel" />
-  <xs:element name="AddOneAccessSQLResponse">
-    <xs:complexType>
-      <xs:sequence>
-        <xs:element minOccurs="0" name="AddOneAccessSQLResult" type="xs:boolean" />
-      </xs:sequence>
-    </xs:complexType>
-  </xs:element>
-  <xs:element name="GetAccessLevelList">
-    <xs:complexType>
-      <xs:sequence />
-    </xs:complexType>
-  </xs:element>
-  <xs:element name="GetAccessLevelListResponse">
-    <xs:complexType>
-      <xs:sequence>
-        <xs:element minOccurs="0" name="GetAccessLevelListResult" nillable="true" type="tns:ArrayOfAccessLevel" />
-      </xs:sequence>
-    </xs:complexType>
-  </xs:element>
-  <xs:complexType name="ArrayOfAccessLevel">
-    <xs:sequence>
-      <xs:element minOccurs="0" maxOccurs="unbounded" name="AccessLevel" nillable="true" type="tns:AccessLevel" />
-    </xs:sequence>
-  </xs:complexType>
-  <xs:element name="ArrayOfAccessLevel" nillable="true" type="tns:ArrayOfAccessLevel" />
-  <xs:element name="DeleteAccess">
-    <xs:complexType>
-      <xs:sequence>
-        <xs:element minOccurs="0" name="aName" nillable="true" type="xs:string" />
-      </xs:sequence>
-    </xs:complexType>
-  </xs:element>
-  <xs:element name="DeleteAccessResponse">
-    <xs:complexType>
-      <xs:sequence>
-        <xs:element minOccurs="0" name="DeleteAccessResult" type="xs:boolean" />
-      </xs:sequence>
-    </xs:complexType>
-  </xs:element>
-  <xs:element name="DeleteAllAccessAndCards">
-    <xs:complexType>
-      <xs:sequence />
-    </xs:complexType>
-  </xs:element>
-  <xs:element name="DeleteAllAccessAndCardsResponse">
-    <xs:complexType>
-      <xs:sequence>
-        <xs:element minOccurs="0" name="DeleteAllAccessAndCardsResult" type="xs:boolean" />
-      </xs:sequence>
-    </xs:complexType>
-  </xs:element>
-  <xs:element name="ModifyValues">
-    <xs:complexType>
-      <xs:sequence>
-        <xs:element minOccurs="0" name="table" nillable="true" type="xs:string" />
-        <xs:element minOccurs="0" name="column" nillable="true" type="xs:string" />
-        <xs:element minOccurs="0" name="oldv" nillable="true" type="xs:anyType" />
-        <xs:element minOccurs="0" name="newv" nillable="true" type="xs:anyType" />
-      </xs:sequence>
-    </xs:complexType>
-  </xs:element>
-  <xs:element name="ModifyValuesResponse">
-    <xs:complexType>
-      <xs:sequence>
-        <xs:element minOccurs="0" name="ModifyValuesResult" type="xs:boolean" />
-      </xs:sequence>
-    </xs:complexType>
-  </xs:element>
+<xs:schema xmlns:tns="http://schemas.microsoft.com/2003/10/Serialization/" attributeFormDefault="qualified" elementFormDefault="qualified" targetNamespace="http://schemas.microsoft.com/2003/10/Serialization/" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:element name="anyType" nillable="true" type="xs:anyType" />
+  <xs:element name="anyURI" nillable="true" type="xs:anyURI" />
+  <xs:element name="base64Binary" nillable="true" type="xs:base64Binary" />
+  <xs:element name="boolean" nillable="true" type="xs:boolean" />
+  <xs:element name="byte" nillable="true" type="xs:byte" />
+  <xs:element name="dateTime" nillable="true" type="xs:dateTime" />
+  <xs:element name="decimal" nillable="true" type="xs:decimal" />
+  <xs:element name="double" nillable="true" type="xs:double" />
+  <xs:element name="float" nillable="true" type="xs:float" />
+  <xs:element name="int" nillable="true" type="xs:int" />
+  <xs:element name="long" nillable="true" type="xs:long" />
+  <xs:element name="QName" nillable="true" type="xs:QName" />
+  <xs:element name="short" nillable="true" type="xs:short" />
+  <xs:element name="string" nillable="true" type="xs:string" />
+  <xs:element name="unsignedByte" nillable="true" type="xs:unsignedByte" />
+  <xs:element name="unsignedInt" nillable="true" type="xs:unsignedInt" />
+  <xs:element name="unsignedLong" nillable="true" type="xs:unsignedLong" />
+  <xs:element name="unsignedShort" nillable="true" type="xs:unsignedShort" />
+  <xs:element name="char" nillable="true" type="tns:char" />
+  <xs:simpleType name="char">
+    <xs:restriction base="xs:int" />
+  </xs:simpleType>
+  <xs:element name="duration" nillable="true" type="tns:duration" />
+  <xs:simpleType name="duration">
+    <xs:restriction base="xs:duration">
+      <xs:pattern value="\-?P(\d*D)?(T(\d*H)?(\d*M)?(\d*(\.\d*)?S)?)?" />
+      <xs:minInclusive value="-P10675199DT2H48M5.4775808S" />
+      <xs:maxInclusive value="P10675199DT2H48M5.4775807S" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:element name="guid" nillable="true" type="tns:guid" />
+  <xs:simpleType name="guid">
+    <xs:restriction base="xs:string">
+      <xs:pattern value="[\da-fA-F]{8}-[\da-fA-F]{4}-[\da-fA-F]{4}-[\da-fA-F]{4}-[\da-fA-F]{12}" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:attribute name="FactoryType" type="xs:QName" />
+  <xs:attribute name="Id" type="xs:ID" />
+  <xs:attribute name="Ref" type="xs:IDREF" />
 </xs:schema>

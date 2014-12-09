@@ -74,23 +74,18 @@ namespace Gate
             else
             {
                 ISharedPreferences prefs = PreferenceManager.GetDefaultSharedPreferences(a);
-                Console.WriteLine("HEREE");
-                Console.WriteLine(prefs.GetBoolean("visible", true));
-                if (prefs.GetBoolean("visible", true))
+                a.RunOnUiThread(() =>
                 {
-                    a.RunOnUiThread(() =>
+                    AlertDialog.Builder builder = new AlertDialog.Builder(a);
+                    AlertDialog alertDialog = builder.Create();
+                    alertDialog.SetTitle("No Connection");
+                    alertDialog.SetIcon(Android.Resource.Drawable.IcDialogAlert);
+                    alertDialog.SetMessage("No connection to reader!");
+                    alertDialog.SetButton("OK", (s, ev) =>
                     {
-                        AlertDialog.Builder builder = new AlertDialog.Builder(a);
-                        AlertDialog alertDialog = builder.Create();
-                        alertDialog.SetTitle("No Connection");
-                        alertDialog.SetIcon(Android.Resource.Drawable.IcDialogAlert);
-                        alertDialog.SetMessage("No connection to reader!");
-                        alertDialog.SetButton("OK", (s, ev) =>
-                        {
-                        });
-                        alertDialog.Show();
                     });
-                }
+                    alertDialog.Show();
+                });
             }
             return ok;
         }

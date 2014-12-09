@@ -27,6 +27,7 @@ namespace Gate
         CheckBox usePassBack, useDateRange;
         TextView dateStart, dateEnd, dateStartView, dateEndView;
         Button doneButton, cancelButton;
+        ProgressDialog bar;
 
         List<AccessLevel> accessLevelList;
         List<string> accessNameList = new List<string>();
@@ -62,6 +63,12 @@ namespace Gate
 
             InitiateViews();
             InitiateListeners();
+
+            bar = new ProgressDialog(this);
+            bar.SetCancelable(false);
+            bar.SetMessage("Updating Access Level");
+            bar.SetProgressStyle(ProgressDialogStyle.Horizontal);
+            bar.Max = 100;
 
             foreach (AccessLevel access in accessLevelList)
                 accessNameList.Add(access.name.ToLower());
@@ -164,6 +171,57 @@ namespace Gate
             dateStart.Text = currentAccessLevel.dateStart.ToString("M/d/yyyy");
             dateEnd.Text = currentAccessLevel.dateEnd.ToString("M/d/yyyy");
         }
+
+        private void AsyncUpdateAccess()
+        {
+            bar.Progress = 0;
+            RunOnUiThread(() => bar.Show());
+            ISharedPreferences prefs = PreferenceManager.GetDefaultSharedPreferences(this);
+            if (!name.Text.Equals(String.Empty) && !numberOfUses.Text.Equals(String.Empty) && !accessNameList.Contains(name.Text))
+            {
+                if (!ReaderServices.AreWifiOn(this))
+                {
+                    RunOnUiThread(() => CreateOkDialog("No Connection", "Reader or service wifi connections are disabled!"));
+                    bar.Dismiss();
+                    return;
+                }
+                bar.Progress = 20;
+                ReaderServices.ConnectToReader(this);
+                bar.Progress = 40;
+                if (ReaderServices.isConnectable(prefs.GetString("reader_ip", "192.168.2.180")))
+                {
+                    bool SQLStatus = true;
+                    ReaderServices.ConnectToService(this);
+                    try
+                    {
+                        Global.cs.Hello();
+                    }
+                    catch(Exception e)
+                    {
+                        Console.WriteLine(e.Message);
+                        SQLStatus = false;
+                        RunOnUiThread(() => CreateOkDialog("No Connection", "No connection to database!"));
+                    }
+                    if (SQLStatus)
+                    {
+                        bar.Progress = 60;
+                        UpdateAccessLevel();
+                        bar.Dismiss();
+                        Finish();
+                    }
+                }
+                else
+                    RunOnUiThread(() => CreateOkDialog("No Connection", "No connection to reader!"));
+            }
+            else if (name.Text.Equals(string.Empty))
+                RunOnUiThread(() => CreateOkDialog("Name", "You must set a name!"));
+            else if (numberOfUses.Text.Equals(String.Empty))
+                RunOnUiThread(() => CreateOkDialog("Number of Uses", "You must set a number of uses!"));
+            else
+                RunOnUiThread(() => CreateOkDialog("Access Level Name", "Access level already exists!"));
+            bar.Dismiss();
+        }
+
         private void InitiateListeners()
         {
             sunStart.Click += delegate { ShowDialog(TIME_DIALOG_ID_SUNS); };
@@ -205,37 +263,7 @@ namespace Gate
 
             doneButton.Click += delegate
             {
-                ISharedPreferences prefs = PreferenceManager.GetDefaultSharedPreferences(this);
-                if (!name.Text.Equals(String.Empty) && !numberOfUses.Text.Equals(String.Empty) && (!accessNameList.Contains(name.Text) || name.Text.Equals(accessLevelList[levelIndex].name)))
-                {
-                    if (ReaderServices.isConnectable(prefs.GetString("reader_ip", "192.168.2.180")))
-                    {
-                        bool SQLStatus = true;
-                        try
-                        {
-                            Global.cs.Hello();
-                        }
-                        catch
-                        {
-                            SQLStatus = false;
-                            CreateOkDialog("No Connection", "No connection to database!");
-                        }
-                        if (SQLStatus)
-                        {
-                            UpdateAccessLevel();
-                            Finish();
-                        }
-                    }
-                    else
-                        CreateOkDialog("No Connection", "No connection to reader!");
-                }
-                else if (name.Text.Equals(string.Empty))
-                    CreateOkDialog("Name", "You must set a name!");
-                else if (numberOfUses.Text.Equals(String.Empty))
-                    CreateOkDialog("Number of Uses", "You must set a number of uses!");
-                else
-                    CreateOkDialog("Access Level Name", "Access level already exists!");
-
+                ThreadPool.QueueUserWorkItem(o => AsyncUpdateAccess());
             };
             cancelButton.Click += delegate { Finish(); };
         }
@@ -298,12 +326,15 @@ namespace Gate
             accessLevelList.RemoveAt(levelIndex);
             accessLevelList.Add(new AccessLevel(name.Text, startTime, endTime, r1, r2, usePassBack.Checked, Convert.ToInt16(numberOfUses.Text), useDateRange.Checked, dStart, dEnd));
             SerializeTools.serializeAccessLevelList(accessLevelList);
-            //Send to reader
-            ReaderServices.sendAccessLevel(accessLevelList, this);
             //Add to SQL
             bool result2, resultSpecified2;
             Global.cs.DeleteAccess(oldName, out result2, out resultSpecified2);
             Global.cs.AddOneAccessSQL(new AccessLevel(name.Text, startTime, endTime, r1, r2, usePassBack.Checked, Convert.ToInt16(numberOfUses.Text), useDateRange.Checked, dStart, dEnd), out result2, out resultSpecified2);
+            bar.Progress = 80;
+            //Send to reader
+            ReaderServices.ConnectToReader(this);
+            ReaderServices.sendAccessLevel(accessLevelList, this);
+            bar.Progress = 100;
         }
 
         public override bool OnCreateOptionsMenu(IMenu menu)
@@ -324,26 +355,7 @@ namespace Gate
                     alertDialog.SetMessage("Deleting this access level with delete all cards associated with this access level!");
                     alertDialog.SetButton("OK", (s, ev) =>
                     {
-                        bool result, resultSpecified;
-                        for (int i = 0; i < cardList.Count; i++) // Deleting all cards associated with access level
-                        {
-                            if (cardList[i].accessLevel == accessLevelList[levelIndex].name)
-                            {
-                                Global.cs.DeleteCard(cardList[i].name, out result, out resultSpecified);
-                                cardList.RemoveAt(i--);
-                            }
-                        }
-                        //Writing to local
-                        SerializeTools.serializeCardList(cardList);
-                        SerializeTools.serializeAccessLevelList(accessLevelList);
-                        //to reader
-                        ReaderServices.sendCard(cardList, this);
-                        ReaderServices.sendAccessLevel(accessLevelList, this);
-                        //to SQL
-                        Global.cs.DeleteAccess(accessLevelList[levelIndex].name, out result, out resultSpecified);
-                        accessLevelList.RemoveAt(levelIndex);
-
-                        Finish();
+                        ThreadPool.QueueUserWorkItem(o => AsyncDeleteAccess());
                     });
                     alertDialog.SetButton2("Cancel", (s, ev) =>
                     {
@@ -353,6 +365,66 @@ namespace Gate
                 default:
                     return base.OnOptionsItemSelected(item);
             }
+        }
+
+        private void AsyncDeleteAccess()
+        {
+            bar.Progress = 0;
+            RunOnUiThread(() => bar.Show());
+            ISharedPreferences prefs = PreferenceManager.GetDefaultSharedPreferences(this);
+            if (ReaderServices.AreWifiOn(this))
+            {
+                bar.Progress = 20;
+                ReaderServices.ConnectToReader(this);
+                bar.Progress = 40;
+                if (ReaderServices.isConnectable(prefs.GetString("reader_ip", "192.168.2.180")))
+                {
+                    bool SQLStatus = true;
+                    ReaderServices.ConnectToService(this);
+                    try
+                    {
+                        Global.cs.Hello();
+                    }
+                    catch
+                    {
+                        SQLStatus = false;
+                        RunOnUiThread(() => CreateOkDialog("No Connection", "No connection to database!"));
+                    }
+                    if (SQLStatus)
+                    {
+                        bar.Progress = 60;
+                        bool result, resultSpecified;
+                        for (int i = 0; i < cardList.Count; i++) // Deleting all cards associated with access level
+                        {
+                            if (cardList[i].accessLevel == accessLevelList[levelIndex].name)
+                            {
+                                Global.cs.DeleteCard(cardList[i].name, out result, out resultSpecified);
+                                cardList.RemoveAt(i--);
+                            }
+                        }
+                        SerializeTools.serializeCardList(cardList);
+                        Global.cs.DeleteAccess(accessLevelList[levelIndex].name, out result, out resultSpecified);
+                        accessLevelList.RemoveAt(levelIndex);
+                        SerializeTools.serializeAccessLevelList(accessLevelList);
+                        ReaderServices.ConnectToReader(this);
+                        bar.Progress = 80;
+                        ReaderServices.sendCard(cardList, this);
+                        ReaderServices.sendAccessLevel(accessLevelList, this);
+                        bar.Progress = 100;
+                        bar.Dismiss();
+                        Finish();
+                    }
+                }
+                else
+                    RunOnUiThread(() => CreateOkDialog("No Connection", "No connection to reader!"));
+            }
+            else
+            {
+                RunOnUiThread(() => CreateOkDialog("No Connection", "Reader or service wifi connections are disabled!"));
+                bar.Dismiss();
+                return;
+            }
+            bar.Dismiss();
         }
 
         public void CreateOkDialog(string title, string message)

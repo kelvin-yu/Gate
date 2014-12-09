@@ -55,25 +55,6 @@ namespace Gate
             AddTab("Readers");
         }
 
-        protected override void OnStop()
-        {
-            base.OnStop();
-            ISharedPreferences prefs = PreferenceManager.GetDefaultSharedPreferences(this);
-            ISharedPreferencesEditor editor = prefs.Edit();
-            editor.PutBoolean("visible", false);
-            editor.Apply();
-        } 
-
-        protected override void OnResume()
-        {
-            base.OnResume();
-            ISharedPreferences prefs = PreferenceManager.GetDefaultSharedPreferences(this);
-            ISharedPreferencesEditor editor = prefs.Edit();
-            editor.PutBoolean("visible", true);
-            editor.Apply();
-            //timer = new Timer(TimerCallback, null, Convert.ToInt32(prefs.GetString("refresh", "1")) * 60000, Convert.ToInt32(prefs.GetString("refresh", "1")) * 60000);
-        }
-
         public void AddTab(string text)
         {
             ActionBar.Tab tab = ActionBar.NewTab();

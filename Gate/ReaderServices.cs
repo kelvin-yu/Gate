@@ -160,25 +160,18 @@ namespace Gate
         {
             bar = new ProgressDialog(a);
             bar.SetCancelable(false);
-            bar.SetMessage("Refreshing Information");
+            bar.SetMessage("Retrieving Information");
             bar.SetProgressStyle(ProgressDialogStyle.Horizontal);
             bar.Progress = 0;
             bar.Max = 100;
             bar.Show();
         }
-        public static void ReaderConnectionFailed()
-        {
 
-        }
-
-        public static void UpdateInfo(Activity a)
+        public static bool AreWifiOn(Activity a)
         {
             bool readerCon = false, servCon = false;
             ISharedPreferences prefs = PreferenceManager.GetDefaultSharedPreferences(a);
             WifiManager wifiManager = (WifiManager)a.GetSystemService(Context.WifiService);
-
-            a.RunOnUiThread(() => CreateProgress(a));
-
             wifiManager.StartScan();
             IList<ScanResult> results = wifiManager.ScanResults;
             foreach (ScanResult result in results)
@@ -188,55 +181,75 @@ namespace Gate
                 else if (result.Ssid.Equals(prefs.GetString("service_ssid", null)))
                     servCon = true;
                 if (readerCon == true && servCon == true)
-                    break;
+                    return true;
+            }
+            return false;
+        }
+
+        public static void ConnectToReader(Activity a)
+        {
+            WifiManager wifiManager = (WifiManager)a.GetSystemService(Context.WifiService);
+            ISharedPreferences prefs = PreferenceManager.GetDefaultSharedPreferences(a);
+            wifiManager.Disconnect();
+            Thread.Sleep(1000);
+            wifiManager.EnableNetwork(prefs.GetInt("reader_id", -1), true);
+            ConnectivityManager connManager = (ConnectivityManager)a.GetSystemService(Context.ConnectivityService);
+            NetworkInfo mWifi = connManager.GetNetworkInfo(ConnectivityType.Wifi);
+            while (!mWifi.IsConnected)
+            {
+                connManager = (ConnectivityManager)a.GetSystemService(Context.ConnectivityService);
+                mWifi = connManager.GetNetworkInfo(ConnectivityType.Wifi);
+                Thread.Sleep(1000);
+            }
+            Thread.Sleep(2000);
+        }
+
+        public static void ConnectToService(Activity a)
+        {
+            WifiManager wifiManager = (WifiManager)a.GetSystemService(Context.WifiService);
+            ISharedPreferences prefs = PreferenceManager.GetDefaultSharedPreferences(a);
+            wifiManager.Disconnect();
+            Thread.Sleep(1000);
+            wifiManager.EnableNetwork(prefs.GetInt("service_id", -1), true);
+            ConnectivityManager connManager = (ConnectivityManager)a.GetSystemService(Context.ConnectivityService);
+            NetworkInfo mWifi = connManager.GetNetworkInfo(ConnectivityType.Wifi);
+            while (!mWifi.IsConnected)
+            {
+                connManager = (ConnectivityManager)a.GetSystemService(Context.ConnectivityService);
+                mWifi = connManager.GetNetworkInfo(ConnectivityType.Wifi);
+                Thread.Sleep(1000);
+            }
+            Thread.Sleep(2000);
+        }
+
+        public static void UpdateInfo(Activity a)
+        {
+            ISharedPreferences prefs = PreferenceManager.GetDefaultSharedPreferences(a);
+            WifiManager wifiManager = (WifiManager)a.GetSystemService(Context.WifiService);
+
+            a.RunOnUiThread(() => CreateProgress(a));
+
+            if (!AreWifiOn(a))
+            {
+                a.RunOnUiThread(() => CreateOkDialog("No Connection", "Reader or service wifi connections are disabled!", a));
+                bar.Dismiss();
+                return;
             }
 
-            if (readerCon == false)
-            {
-                if (prefs.GetBoolean("visible", true))
-                {
-                    a.RunOnUiThread(() => CreateOkDialog("No Connection", "No connection to reader!", a));
-                }
-                bar.Dismiss();
-                return;
-            }
-            else if (servCon == false)
-            {
-                if (prefs.GetBoolean("visible", true))
-                {
-                    a.RunOnUiThread(() => CreateOkDialog("No Connection", "No connection to database!", a));
-                }
-                bar.Dismiss();
-                return;
-            }
+            bar.Progress = 10;
 
             //Reader
-            wifiManager.Disconnect();
-            wifiManager.EnableNetwork(prefs.GetInt("reader_id", -1), true);
-            Thread.Sleep(1000);
-            Console.WriteLine(wifiManager.ConnectionInfo.SupplicantState.ToString());
-            while (!wifiManager.ConnectionInfo.SupplicantState.ToString().Equals("COMPLETED"))
-            {
-                Thread.Sleep(1000);
-            }
+            ConnectToReader(a);
             if (!isConnectable(prefs.GetString("reader_ip", null)))
             {
-                if (prefs.GetBoolean("visible", true))
-                {
-                    a.RunOnUiThread(() => CreateOkDialog("No Connection", "No connection to reader!", a));
-                }
+                a.RunOnUiThread(() => CreateOkDialog("No Connection", "No connection to reader!", a));
                 bar.Dismiss();
                 return;
             }
+            bar.Progress = 20;
             
             //Service
-            wifiManager.Disconnect();
-            wifiManager.EnableNetwork(prefs.GetInt("service_id", -1), true);
-            Thread.Sleep(1000);
-            while (!wifiManager.ConnectionInfo.SupplicantState.ToString().Equals("COMPLETED"))
-            {
-                Thread.Sleep(1000);
-            }
+            ConnectToService(a);
             try
             {
                 Global.cs.Hello();
@@ -244,39 +257,32 @@ namespace Gate
             catch (Exception e)
             {
                 Console.WriteLine(e.Source + " " + e.Message);
-                if (prefs.GetBoolean("visible", true))
-                {
-                    a.RunOnUiThread(() => CreateOkDialog("No Connection", "No connection to database!", a));
-                }
+                a.RunOnUiThread(() => CreateOkDialog("No Connection", "No connection to database!", a));
                 bar.Dismiss();
                 return;
             }
+            bar.Progress = 30;
 
             //Card Stuff
             string cardSort = prefs.GetString("card_sort", "Name");
             List<Card> sqlCardList = new List<Card>(Global.cs.GetCardList());
             sqlCardList = SerializeTools.sortCard(sqlCardList, prefs.GetString("card_sort", "Name"));
             SerializeTools.serializeCardList(sqlCardList);
-            bar.Progress = 10;
+            bar.Progress = 40;
 
             //Access Level Stuff
             string accessSort = prefs.GetString("access_sort", "Name");
             List<AccessLevel> sqlAccessList = new List<AccessLevel>(Global.cs.GetAccessLevelList());
             sqlAccessList = SerializeTools.sortAccess(sqlAccessList, prefs.GetString("access_sort", "Name"));
             SerializeTools.serializeAccessLevelList(sqlAccessList);
-            bar.Progress = 20;
+            bar.Progress = 50;
 
             //Transaction Stuff
             List<Transaction> sqlTransList = new List<Transaction>(Global.cs.GetTransactionList());
             List<Transaction> newList = new List<Transaction>();
 
-            wifiManager.Disconnect();
-            wifiManager.EnableNetwork(prefs.GetInt("reader_id", -1), true);
-            Thread.Sleep(1000);
-            while (!wifiManager.ConnectionInfo.SupplicantState.ToString().Equals("COMPLETED"))
-            {
-                Thread.Sleep(1000);
-            }
+            ConnectToReader(a);
+            bar.Progress = 60;
             TCP tcp = new TCP();
             tcp.Connect(prefs.GetString("reader_ip", "192.168.2.180"), a);
             while (true)
@@ -314,36 +320,26 @@ namespace Gate
                 }
             }
             tcp.Close();
-            wifiManager.Disconnect();
-            wifiManager.EnableNetwork(prefs.GetInt("service_id", -1), true);
             Thread.Sleep(1000);
-            while (!wifiManager.ConnectionInfo.SupplicantState.ToString().Equals("COMPLETED"))
-            {
-                Thread.Sleep(1000);
-            }
-            bar.Progress = 50;
+            bar.Progress = 70;
+            ConnectToService(a);
+            bar.Progress = 80;
             sqlTransList.AddRange(newList);
             bool res, resultSpecified;
             Global.cs.UpdateTransactionSQL(newList.ToArray(), out res, out resultSpecified);
-            bar.Progress = 70;
+            bar.Progress = 90;
             string transactionSort = prefs.GetString("transaction_sort", "Newest to Oldest");
             sqlTransList = SerializeTools.sortTransaction(sqlTransList, prefs.GetString("transaction_sort", "Newest to Oldest"));
-            bar.Progress = 85;
+            bar.Progress = 95;
             SerializeTools.serializeTransaction(sqlTransList);
             bar.Progress = 100;
             Thread.Sleep(500);
             bar.Dismiss();
-            wifiManager.Disconnect();
-            wifiManager.EnableNetwork(prefs.GetInt("reader_id", -1), true);
-            Thread.Sleep(1000);
-            while (!wifiManager.ConnectionInfo.SupplicantState.ToString().Equals("COMPLETED"))
-            {
-                Thread.Sleep(1000);
-            }
         }
 
         public static bool isConnectable(string ip)
         {
+            Console.WriteLine(ip);
             Ping p = new Ping();
             try
             {
@@ -358,7 +354,5 @@ namespace Gate
             }
             return false;
         }
-
-
     }
 }

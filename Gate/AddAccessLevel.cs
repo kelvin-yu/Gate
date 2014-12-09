@@ -28,7 +28,7 @@ namespace Gate
         CheckBox usePassBack, useDateRange;
         TextView dateStart, dateEnd, dateStartView, dateEndView;
         Button doneButton, cancelButton;
-
+        ProgressDialog bar;
         List<AccessLevel> accessLevelList;
         List<string> accessNameList = new List<string>();
 
@@ -60,6 +60,12 @@ namespace Gate
 
             InitiateViews();
             InitiateListeners();
+
+            bar = new ProgressDialog(this);
+            bar.SetCancelable(false);
+            bar.SetMessage("Sending Access Level");
+            bar.SetProgressStyle(ProgressDialogStyle.Horizontal);
+            bar.Max = 100;
 
             foreach (AccessLevel acc in accessLevelList)
                 accessNameList.Add(acc.name.ToLower());
@@ -116,6 +122,56 @@ namespace Gate
             dateStart.Text = DateTime.Now.ToString("M/d/yyyy");
             dateEnd.Text = DateTime.Now.ToString("M/d/yyyy");
         }
+
+        private void AsyncAddAccess()
+        {
+            bar.Progress = 0;
+            RunOnUiThread(() => bar.Show());
+            ISharedPreferences prefs = PreferenceManager.GetDefaultSharedPreferences(this);
+            if (!name.Text.Equals(String.Empty) && !numberOfUses.Text.Equals(String.Empty) && !accessNameList.Contains(name.Text))
+            {
+                if (!ReaderServices.AreWifiOn(this))
+                {
+                    RunOnUiThread(() => CreateOkDialog("No Connection", "Reader or service wifi connections are disabled!"));
+                    bar.Dismiss();
+                    return;
+                }
+                bar.Progress = 20;
+                ReaderServices.ConnectToReader(this);
+                bar.Progress = 40;
+                if (ReaderServices.isConnectable(prefs.GetString("reader_ip", "192.168.2.180")))
+                {
+                    bool SQLStatus = true;
+                    ReaderServices.ConnectToService(this);
+                    try
+                    {
+                        Global.cs.Hello();
+                    }
+                    catch
+                    {
+                        SQLStatus = false;
+                        RunOnUiThread(() => CreateOkDialog("No Connection", "No connection to database!"));
+                    }
+                    if (SQLStatus)
+                    {
+                        bar.Progress = 60;
+                        AddNewAccessLevel();
+                        bar.Dismiss();
+                        Finish();
+                    }
+                }
+                else
+                    RunOnUiThread(() => CreateOkDialog("No Connection", "No connection to reader!"));
+            }
+            else if (name.Text.Equals(string.Empty))
+                RunOnUiThread(() => CreateOkDialog("Name", "You must set a name!"));
+            else if (numberOfUses.Text.Equals(String.Empty))
+                RunOnUiThread(() => CreateOkDialog("Number of Uses", "You must set a number of uses!"));
+            else
+                RunOnUiThread(() => CreateOkDialog("Access Level Name", "Access level already exists!"));
+            bar.Dismiss();
+        }
+
         private void InitiateListeners()
         {
             sunStart.Click += delegate { ShowDialog(TIME_DIALOG_ID_SUNS); };
@@ -157,38 +213,7 @@ namespace Gate
 
             doneButton.Click += delegate
             {
-                ISharedPreferences prefs = PreferenceManager.GetDefaultSharedPreferences(this);
-                if (!name.Text.Equals(String.Empty) && !numberOfUses.Text.Equals(String.Empty) && !accessNameList.Contains(name.Text))
-                {
-                    Console.WriteLine(prefs.GetString("reader_ip", "192.168.2.180"));
-                    if (ReaderServices.isConnectable(prefs.GetString("reader_ip", "192.168.2.180")))
-                    {
-                        bool SQLStatus = true;
-                        try
-                        {
-                            Global.cs.Hello();
-                        }
-                        catch
-                        {
-                            SQLStatus = false;
-                            CreateOkDialog("No Connection", "No connection to database!");
-                        }
-                        if (SQLStatus)
-                        {
-                            AddNewAccessLevel();
-                            Finish();
-                        }
-                    }
-                    else
-                        CreateOkDialog("No Connection", "No connection to reader!");
-                }
-                else if (name.Text.Equals(string.Empty))
-                    CreateOkDialog("Name", "You must set a name!");
-                else if (numberOfUses.Text.Equals(String.Empty))
-                    CreateOkDialog("Number of Uses", "You must set a number of uses!");
-                else
-                    CreateOkDialog("Access Level Name", "Access level already exists!");
-
+                ThreadPool.QueueUserWorkItem(o => AsyncAddAccess());
             };
             cancelButton.Click += delegate { Finish(); };
         }
@@ -239,11 +264,14 @@ namespace Gate
             accessLevelList.Add(new AccessLevel(name.Text, startTime, endTime, r1, r2, usePassBack.Checked, Convert.ToInt16(numberOfUses.Text), useDateRange.Checked, dStart, dEnd));
             accessLevelList = SerializeTools.sortAccess(accessLevelList, prefs.GetString("access_sort", "Name"));
             SerializeTools.serializeAccessLevelList(accessLevelList);
-            //Sending the updated list to the reader
-            ReaderServices.sendAccessLevel(accessLevelList, this);
             //Adding to sql
             bool result, resultSpecified;
             Global.cs.AddOneAccessSQL(new AccessLevel(name.Text, startTime, endTime, r1, r2, usePassBack.Checked, Convert.ToInt16(numberOfUses.Text), useDateRange.Checked, dStart, dEnd), out result, out resultSpecified);
+            bar.Progress = 80;
+            //Sending the updated list to the reader
+            ReaderServices.ConnectToReader(this);
+            ReaderServices.sendAccessLevel(accessLevelList, this);
+            bar.Progress = 100;
         }
 
         public void CreateOkDialog(string title, string message)

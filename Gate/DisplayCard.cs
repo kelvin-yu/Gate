@@ -30,6 +30,7 @@ namespace Gate
         List<string> cardNameList = new List<string>();
         List<string> spinnerList = new List<string>();
         int cardIndex;
+        ProgressDialog bar;
 
         protected override void OnCreate(Bundle bundle)
         {
@@ -41,6 +42,11 @@ namespace Gate
 
             InitiateViews();
             InitiateListeners();
+
+            bar = new ProgressDialog(this);
+            bar.SetCancelable(false);
+            bar.SetMessage("Updating Card");
+            bar.SetProgressStyle(ProgressDialogStyle.Horizontal);
 
             foreach (Card card in cardList)
                 cardNameList.Add(card.name.ToLower());
@@ -72,42 +78,62 @@ namespace Gate
             dateAdded.Text = cardList[cardIndex].dateAdded.ToString("MM/dd/yy HH:mm");
         }
 
+        private void AsyncUpdateCard()
+        {
+            bar.Progress = 0;
+            RunOnUiThread(() => bar.Show());
+            ISharedPreferences prefs = PreferenceManager.GetDefaultSharedPreferences(this);
+            if (!nameField.Text.Equals(String.Empty) && !numberField.Text.Equals(String.Empty) && spinner.SelectedItem != null && !cardNameList.Contains(nameField.Text))
+            {
+                if (!ReaderServices.AreWifiOn(this))
+                {
+                    RunOnUiThread(() => CreateOkDialog("No Connection", "Reader or service wifi connections are disabled!"));
+                    bar.Dismiss();
+                    return;
+                }
+                bar.Progress = 20;
+                ReaderServices.ConnectToReader(this);
+                bar.Progress = 40;
+                if (ReaderServices.isConnectable(prefs.GetString("reader_ip", "192.168.2.180")))
+                {
+                    bool SQLStatus = true;
+                    ReaderServices.ConnectToService(this);
+                    try
+                    {
+                        Global.cs.Hello();
+                    }
+                    catch
+                    {
+                        SQLStatus = false;
+                        RunOnUiThread(() => CreateOkDialog("No Connection", "No connection to database!"));
+                    }
+                    if (SQLStatus)
+                    {
+                        bar.Progress = 60;
+                        UpdateCard();
+                        bar.Dismiss();
+                        Finish();
+                    }
+                }
+                else
+                    RunOnUiThread(() => CreateOkDialog("No Connection", "No connection to reader!"));
+            }
+            else if (nameField.Text.Equals(string.Empty))
+                RunOnUiThread(() => CreateOkDialog("Name", "You must set a name!"));
+            else if (spinner.SelectedItem == null)
+                RunOnUiThread(() => CreateOkDialog("Access Level", "No access levels found!"));
+            else if (numberField.Text.Equals(String.Empty))
+                RunOnUiThread(() => CreateOkDialog("Card Number", "You must set a card number!"));
+            else
+                RunOnUiThread(() => CreateOkDialog("Card Name", "Card already exists!"));
+            bar.Dismiss();
+        }
+
         public void InitiateListeners()
         {
             updateButton.Click += delegate
             {
-                ISharedPreferences pref = PreferenceManager.GetDefaultSharedPreferences(this);
-                if (!nameField.Text.Equals(String.Empty) && !numberField.Text.Equals(String.Empty) && (!cardNameList.Contains(nameField.Text) || nameField.Text.Equals(cardList[cardIndex].name)))
-                {
-                    if (ReaderServices.isConnectable(pref.GetString("reader_ip", "192.168.2.180")))
-                    {
-                        bool SQLStatus = true;
-                        try
-                        {
-                            Global.cs.Hello();
-                        }
-                        catch
-                        {
-                            SQLStatus = false;
-                            CreateOkDialog("No Connection", "No connection to database!");
-                        }
-                        if (SQLStatus)
-                        {
-                            UpdateCard();
-                            Finish();
-                        }
-                    }
-                    else
-                        CreateOkDialog("No Connection", "No connection to reader!");
-                }
-                else if (nameField.Text.Equals(string.Empty))
-                    CreateOkDialog("Name", "You must set a name!");
-                else if (spinner.SelectedItem == null)
-                    CreateOkDialog("Access Level", "No access levels found!");
-                else if (numberField.Text.Equals(String.Empty))
-                    CreateOkDialog("Card Number", "You must set a card number!");
-                else
-                    CreateOkDialog("Card Name", "Card already exists!");
+                ThreadPool.QueueUserWorkItem(o => AsyncUpdateCard());
             };
 
             cancelButton.Click += delegate { Finish(); };
@@ -122,12 +148,15 @@ namespace Gate
             cardList.RemoveAt(cardIndex);
             cardList.Add(new Card(nameField.Text, Convert.ToInt32(numberField.Text), spinner.SelectedItem.ToString(), dateCreated));
             SerializeTools.serializeCardList(cardList);
-            //to Reader
-            ReaderServices.sendCard(cardList, this);
             //to SQL
             bool result, resultSpecified;
             Global.cs.DeleteCard(oldName, out result, out resultSpecified);
             Global.cs.AddOneCardSQL(new Card(nameField.Text, Convert.ToInt32(numberField.Text), spinner.SelectedItem.ToString(), dateCreated), out result, out resultSpecified);
+            bar.Progress = 80;
+            //to Reader
+            ReaderServices.ConnectToReader(this);
+            ReaderServices.sendCard(cardList, this);
+            bar.Progress = 100;
         }
 
         public void CreateOkDialog(string title, string message)
@@ -149,17 +178,62 @@ namespace Gate
             return true;
         }
 
+        private void AsyncDeleteCard()
+        {
+            bar.Progress = 0;
+            RunOnUiThread(() => bar.Show());
+            ISharedPreferences prefs = PreferenceManager.GetDefaultSharedPreferences(this);
+            if (ReaderServices.AreWifiOn(this))
+            {
+                bar.Progress = 20;
+                ReaderServices.ConnectToReader(this);
+                bar.Progress = 40;
+                if (ReaderServices.isConnectable(prefs.GetString("reader_ip", "192.168.2.180")))
+                {
+                    bool SQLStatus = true;
+                    ReaderServices.ConnectToService(this);
+                    try
+                    {
+                        Global.cs.Hello();
+                    }
+                    catch
+                    {
+                        SQLStatus = false;
+                        RunOnUiThread(() => CreateOkDialog("No Connection", "No connection to database!"));
+                    }
+                    if (SQLStatus)
+                    {
+                        bar.Progress = 60;
+                        bool result, resultSpecified;
+                        Global.cs.DeleteCard(cardList[cardIndex].name, out result, out resultSpecified);
+                        cardList.RemoveAt(cardIndex);
+                        SerializeTools.serializeCardList(cardList);
+                        ReaderServices.ConnectToReader(this);
+                        bar.Progress = 80;
+                        ReaderServices.sendCard(cardList, this);
+                        bar.Progress = 100;
+                        bar.Dismiss();
+                        Finish();
+                    }
+                }
+                else
+                    RunOnUiThread(() => CreateOkDialog("No Connection", "No connection to reader!"));
+            }
+            else
+            {
+                RunOnUiThread(() => CreateOkDialog("No Connection", "Reader or service wifi connections are disabled!"));
+                bar.Dismiss();
+                return;
+            }
+            bar.Dismiss();
+        }
+
         public override bool OnOptionsItemSelected(IMenuItem item)
         {
             switch (item.ItemId)
             {
                 case 0:
-                    bool result, resultSpecified;
-                    Global.cs.DeleteCard(cardList[cardIndex].name, out result, out resultSpecified);
-                    cardList.RemoveAt(cardIndex);
-                    SerializeTools.serializeCardList(cardList);
-                    ReaderServices.sendCard(cardList, this);
-                    Finish();
+                    ThreadPool.QueueUserWorkItem(o => AsyncDeleteCard());
                     return true;
                 default:
                     return base.OnOptionsItemSelected(item);
